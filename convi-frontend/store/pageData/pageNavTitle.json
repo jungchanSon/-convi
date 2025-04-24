@@ -1,0 +1,31 @@
+{
+  "Introduce": {
+    "Title": "Convi",
+    "Intro": "Project Convi 소개",
+    "Tools": "Convi의 도구들"
+  },
+  "LintBuddy": {
+    "Title": "Lint Buddy",
+    "Intro": "Lint Buddy 소개",
+    "Manual": "Lint Buddy 사용법",
+    "Customizing": "커스터마이징"
+  },
+  "CommitBuddy": {
+    "Title": "Commit Buddy",
+    "Intro": "Commit Buddy 소개",
+    "VSCode": "VS Code에서 사용하기",
+    "Intellij": "Intellij에서 사용하기"
+  },
+  "ReviewBuddy": {
+    "Title": "Review Buddy",
+    "Intro": "Review Buddy 소개",
+    "HowToUse": "Review Buddy 사용법"
+  },
+  "Community": {
+    "Title": "Community",
+    "ContributionGuide": "Contribution Guide",
+    "Github": "Github",
+    "Gitlab": "Gitlab",
+    "version": "버전 히스토리"
+  }
+}

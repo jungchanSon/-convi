@@ -1,0 +1,15 @@
+{
+  "PageTitle": "Lint Buddy 소개",
+  "Title": "Lint Buddy",
+  "NameDesc": "Git 컨벤션, 더 쉽고 자연스럽게",
+  "Desc": [
+    {
+      "Title": "AI로 협업을 더 편리하게",
+      "Description": [
+        "Convi는 초보 개발자도 자연스럽게 Git 컨벤션을 지킬 수 있도록 돕는 AI 기반 오픈소스 도우미입니다.",
+        "IDE 플러그인, Web UI, GitLab 연동을 통해 커밋, 브랜치, MR 작성 시 컨벤션을 자동 검사하고 추천합니다.",
+        "복잡한 규칙은 Convi가 알아서! 실수 없이 일관된 협업 환경을 만들어드립니다."
+      ]
+    }
+  ]
+}

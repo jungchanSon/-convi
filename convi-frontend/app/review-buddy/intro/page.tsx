@@ -2,10 +2,8 @@ import { AppSidebar } from "@/components/app-sidebar"
 import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
-
-import descriptions from "../../../store/pageData/introduce/intro/pageDescription.json"
-import commonData from "@/store/pageData/common/commonData.json"
 import IntroPageDescription from "@/features/introPageDescription";
+import descriptions from "@/store/pageData/reviewBuddy/intro/pageDescription.json"
 
 export default function Page() {
   return (
@@ -20,7 +18,7 @@ export default function Page() {
       <AppSidebar variant="inset" />
       <IntroPageDescription
         pageTitle={descriptions.PageTitle}
-        projectName={commonData.ProjectName}
+        projectName={descriptions.Title}
         projectNameDescription={descriptions.NameDesc}
         descriptions={descriptions} />
     </SidebarProvider>
