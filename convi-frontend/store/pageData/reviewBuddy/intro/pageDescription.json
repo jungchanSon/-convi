@@ -1,0 +1,15 @@
+{
+  "PageTitle": "Review Buddy 소개",
+  "Title": "Review Buddy",
+  "NameDesc": "Merge Request 작성, 더 똑똑하게",
+  "Desc": [
+    {
+      "Title": "자동화된 MR 제목/본문 추천",
+      "Description": [
+        "Review Buddy는 GitLab에서 MR을 생성할 때, 변경된 코드를 기반으로 적절한 제목과 본문을 AI가 자동 추천해주는 도구입니다.",
+        "번거로운 설명 작성 없이도 명확한 MR 작성이 가능해져 협업 속도를 높이고 리뷰 효율을 극대화할 수 있습니다.",
+        "코드 리뷰는 제외하고, 협업 문서의 품질만 스마트하게 개선합니다."
+      ]
+    }
+  ]
+}
