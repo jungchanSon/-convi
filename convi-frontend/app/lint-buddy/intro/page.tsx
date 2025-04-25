@@ -1,12 +1,9 @@
 import { AppSidebar } from "@/components/app-sidebar"
-import { SiteHeader } from "@/components/site-header"
 import {
-  SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
 import IntroPageDescription from "@/features/introPageDescription";
 import descriptions from "@/store/pageData/lintBuddy/intro/pageDescription.json"
-import commonData from "@/store/pageData/common/commonData.json";
 
 export default function Page() {
   return (

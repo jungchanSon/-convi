@@ -1,5 +1,6 @@
 import {SiteHeader} from "@/components/site-header";
 import {SidebarInset} from "@/components/ui/sidebar";
+import Image from "next/image";
 
 type IntroPageDescription = {
   pageTitle: string,
@@ -9,6 +10,7 @@ type IntroPageDescription = {
     Desc: {
       Title: string,
       Description: string[]
+      Image?: string
     }[]
   }
 }
@@ -19,6 +21,7 @@ const IntroPageDescription = ({
   projectNameDescription,
   descriptions
 } : IntroPageDescription) => {
+
   return (
       <SidebarInset>
         <SiteHeader siteTitle={pageTitle}/>
@@ -35,12 +38,13 @@ const IntroPageDescription = ({
                   </h3>
                 </div>
 
-                <div className={"items-center mt-5" }>
+                <div className={"items-center mt-5"}>
                   {descriptions.Desc.map( (item, key) =>
-                    <div key={key}>
+                    <div key={key} className={"mt-5"}>
                       <h2 className="text-xl font-semibold mx-3 mb-2">
                         {item.Title}
                       </h2>
+                      { item.Image && <Image src={item.Image} alt={item.Title} height={100} width={100}/>}
                       {item.Description.map((item, key2) =>
                         <div key={key2} className={"mx-5"}>
                           <p className={"p-1"}> {item} </p>

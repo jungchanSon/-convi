@@ -4,7 +4,6 @@ import {
 } from "@/components/ui/sidebar"
 import IntroPageDescription from "@/features/introPageDescription";
 import descriptions from "@/store/pageData/commitBuddy/intro/pageDescription.json";
-import commonData from "@/store/pageData/common/commonData.json";
 
 export default function Page() {
   return (
