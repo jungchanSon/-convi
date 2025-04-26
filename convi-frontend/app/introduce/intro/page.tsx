@@ -3,7 +3,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 
-import descriptions from "../../../store/pageData/introduce/intro/pageDescription.json"
+import descriptions from "@/store/pageData/introduce/intro/pageDescription.json"
 import commonData from "@/store/pageData/common/commonData.json"
 import IntroPageDescription from "@/features/introPageDescription";
 

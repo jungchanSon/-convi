@@ -1,13 +1,24 @@
 {
-  "PageTitle":  "Convi 소개",
-  "NameDesc": "개발 흐름을 더 똑똑하게, 더 깔끔하게",
+  "PageTitle": "Lint Buddy 메뉴얼",
+  "Title": "Lint Buddy",
+  "NameDesc": "Git 컨벤션, 더 쉽고 자연스럽게",
   "Desc": [
     {
-      "Title": "스마트하게 협업",
+      "Title": "사용법 1",
+      "Image": "/file.svg",
       "Description": [
-        "DevFlow는 일관된 협업과 스마트한 개발 환경을 위한 통합 Git Workflow 도우미입니다.",
-        "DevFlow는 협업 품질을 높이고, 커밋/PR 실수를 줄이며, 개발자의 집중력을 유지할 수 있도록 도와주는 도구입니다.",
-        "복잡한 규칙과 반복 작업은 DevFlow에 맡기고, 코드에 집중하세요."
+        "Convi는 초보 개발자도 자연스럽게 Git 컨벤션을 지킬 수 있도록 돕는 AI 기반 오픈소스 도우미입니다.",
+        "IDE 플러그인, Web UI, GitLab 연동을 통해 커밋, 브랜치, MR 작성 시 컨벤션을 자동 검사하고 추천합니다.",
+        "복잡한 규칙은 Convi가 알아서! 실수 없이 일관된 협업 환경을 만들어드립니다."
+      ]
+    },
+    {
+      "Title": "사용법 2",
+      "Image": "/file.svg",
+      "Description": [
+        "Convi는 초보 개발자도 자연스럽게 Git 컨벤션을 지킬 수 있도록 돕는 AI 기반 오픈소스 도우미입니다.",
+        "IDE 플러그인, Web UI, GitLab 연동을 통해 커밋, 브랜치, MR 작성 시 컨벤션을 자동 검사하고 추천합니다.",
+        "복잡한 규칙은 Convi가 알아서! 실수 없이 일관된 협업 환경을 만들어드립니다."
       ]
     }
   ]
