@@ -4,6 +4,8 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
+import ConventionTypes from "@/features/lint-buddy/customizing/commitConventionButtons/ConventionContainer";
+import ConventionCustomizeBoard from "@/features/lint-buddy/customizing/board/ConventionCustomizeBoard";
 
 
 export default function Page() {
@@ -17,9 +19,18 @@ export default function Page() {
       }
     >
       <AppSidebar variant="inset" />
-      <SidebarInset>
-        <SiteHeader siteTitle={"Git Convention 커스터마이징"}/>
-      </SidebarInset>
+        <SidebarInset>
+            <SiteHeader siteTitle={"Git Convention 커스터마이징"}/>
+            <div className={"flex flex-row h-full w-full"}>
+                <div className={"border-1 border-black h-full p-3"}>
+                    <ConventionTypes />
+                </div>
+                <div className={"border-1 border-black h-full w-full"}>
+                    <ConventionCustomizeBoard/>
+                </div>
+            </div>
+        </SidebarInset>
+
     </SidebarProvider>
   )
 }
