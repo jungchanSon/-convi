@@ -1,3 +1,4 @@
+'use client'
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
 import {
@@ -6,6 +7,8 @@ import {
 } from "@/components/ui/sidebar"
 import ConventionTypes from "@/features/lint-buddy/customizing/commitConventionButtons/ConventionContainer";
 import ConventionCustomizeBoard from "@/features/lint-buddy/customizing/board/ConventionCustomizeBoard";
+import {HTML5Backend} from "react-dnd-html5-backend";
+import {DndProvider} from "react-dnd";
 
 
 export default function Page() {
@@ -25,9 +28,12 @@ export default function Page() {
                 <div className={"border-1 border-black h-full p-3"}>
                     <ConventionTypes />
                 </div>
-                <div className={"border-1 border-black h-full w-full"}>
-                    <ConventionCustomizeBoard/>
-                </div>
+
+                <DndProvider backend={HTML5Backend}>
+                    <div className={"border-1 border-black h-full w-full"}>
+                        <ConventionCustomizeBoard/>
+                    </div>
+                </DndProvider>
             </div>
         </SidebarInset>
 
