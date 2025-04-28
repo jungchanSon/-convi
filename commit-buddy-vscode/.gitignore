@@ -1,0 +1,25 @@
+# 빌드 결과물
+out/
+dist/
+
+# 의존성
+node_modules/
+
+# VS Code 테스트 폴더
+.vscode-test/
+*.vsix
+
+# VS Code 설정 (로컬 설정 제외, 특정 파일만 커밋)
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# VS Code Local History
+.history/
+.ionide/
+
+# VS Code 확장 배포 파일
+*.vsix
