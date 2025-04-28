@@ -1,26 +1,41 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+// VS Code API 가져오기
 import * as vscode from 'vscode';
+// Git 유틸 함수들 가져오기 (저장소 감지, diff 조회, 워크스페이스 경로)
+import { isGitRepo, getStagedDiff, getWorkspacePath } from './gitUtils';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+// 플러그인 활성화 시 호출
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "commit-buddy" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('commit-buddy.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from commit-buddy!');
-	});
+	// Staged Diff 출력 커맨드 등록
+	const diffDisposable = vscode.commands.registerCommand('commit-buddy.showStagedDiff', async () => {
 
-	context.subscriptions.push(disposable);
+		// 현재 열려있는 워크스페이스(폴더) 경로 가져오기
+		const workspacePath = getWorkspacePath();
+		if (!workspacePath) {
+		  vscode.window.showErrorMessage('No workspace is opened.');
+		  return;
+		}
+	  
+		// 현재 워크스페이스가 Git 저장소인지 확인
+		const isRepo = await isGitRepo(workspacePath);
+		if (!isRepo) {
+		  vscode.window.showErrorMessage('Not a Git repository.');
+		  return;
+		}
+	  
+		// 스테이지된 변경사항(diff) 가져오기 (git diff --staged)
+		const diff = await getStagedDiff(workspacePath);
+		if (!diff) {
+		  vscode.window.showInformationMessage('No staged changes.');
+		} else {
+		  console.log('Diff:', diff);  // DEBUG CONSOLE에 출력
+		}
+	  });
+
+	context.subscriptions.push(diffDisposable);
 }
 
-// This method is called when your extension is deactivated
+// 플러그인 비활성화 시 호출
 export function deactivate() {}
