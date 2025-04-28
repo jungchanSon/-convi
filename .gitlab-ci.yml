@@ -1,0 +1,20 @@
+stages:
+  - review
+
+review_bot:
+  stage: review
+  image: python:3.11
+  before_script:
+    - apt-get update && apt-get install -y curl unzip
+    - curl -fsSL https://ollama.com/install.sh | sh
+    - nohup ollama serve > /dev/null 2>&1 &
+    - ollama run phi:2 || true
+    - pip install -r requirements.txt
+  script:
+    - python run_reviewbot.py
+  only:
+    - merge_requests
+  variables:
+    GITLAB_TOKEN: $GITLAB_TOKEN
+    OLLAMA_HOST: "http://localhost:11434"
+    MODEL_NAME: "phi:2"
