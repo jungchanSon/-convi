@@ -1,7 +1,8 @@
 import CommitSignatureType from "@/features/lint-buddy/customizing/board/CommitSignatureType";
+import TypeRegex from "@/features/lint-buddy/customizing/signatureRegex/enum/TypeRegex";
 
 const CommitSignatures :CommitSignatureType[] = [
-    { name: "type", sample: "feat"},
+    { name: "type", sample: "feat", regex: TypeRegex.LOWER_CASE},
     { name: "scope", sample: "api" },
     { name: "description", sample: "카카오 소셜 로그인 추가."},
     { name: "emoji", sample: "✨"},
@@ -14,13 +15,13 @@ const CommitSignatures :CommitSignatureType[] = [
 - 새로운 API 경로 /auth/kakao 추가`},
     // { name: "footer"},
     { name: "jira-ticket", sample: "S12P31A101-45"},
-    { name: ":", sample: ":"},
-    { name: "<", sample: "<"},
-    { name: ">", sample: ">"},
-    { name: "(", sample: "("},
-    { name: ")", sample: ")"},
-    { name: "[", sample: "["},
-    { name: "]", sample: "]"},
+    { name: ":", sample: ":", regex: ":"},
+    { name: "<", sample: "<", regex: "<"},
+    { name: ">", sample: ">", regex: ">"},
+    { name: "(", sample: "(", regex: "\\("},
+    { name: ")", sample: ")", regex: "\\)"},
+    { name: "[", sample: "[", regex: "\\["},
+    { name: "]", sample: "]", regex: "\\]"},
 ]
 
 export default CommitSignatures
