@@ -14,14 +14,14 @@ const CommitSignatures :CommitSignatureType[] = [
 - 기존 로그인 로직과 통합
 - 새로운 API 경로 /auth/kakao 추가`},
     // { name: "footer"},
-    { name: "jira-ticket", sample: "S12P31A101-45"},
-    { name: ":", sample: ":", regex: ":"},
-    { name: "<", sample: "<", regex: "<"},
-    { name: ">", sample: ">", regex: ">"},
-    { name: "(", sample: "(", regex: "\\("},
-    { name: ")", sample: ")", regex: "\\)"},
-    { name: "[", sample: "[", regex: "\\["},
-    { name: "]", sample: "]", regex: "\\]"},
+    {name: "jira-ticket", sample: "S12P31A101-45"},
+    {name: ":", sample: ":", regex: Regex.Colon},
+    {name: "<", sample: "<", regex: Regex.AngleBracket.OPEN},
+    {name: ">", sample: ">", regex: Regex.AngleBracket.CLOSE},
+    {name: "(", sample: "(", regex: Regex.Parenthesis.OPEN},
+    {name: ")", sample: ")", regex: Regex.Parenthesis.CLOSE},
+    {name: "[", sample: "[", regex: Regex.Bracket.OPEN},
+    {name: "]", sample: "]", regex: Regex.Bracket.CLOSE},
 ]
 
 export default CommitSignatures
