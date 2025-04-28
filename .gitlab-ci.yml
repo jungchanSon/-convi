@@ -3,18 +3,15 @@ stages:
 
 review_bot:
   stage: review
-  image: python:3.11
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    GITLAB_TOKEN: $GITLAB_TOKEN
   before_script:
-    - apt-get update && apt-get install -y curl unzip
-    - curl -fsSL https://ollama.com/install.sh | sh
-    - nohup ollama serve > /dev/null 2>&1 &
-    - ollama run phi:2 || true
-    - pip install -r requirements.txt
+    - apk add --no-cache docker-compose
   script:
-    - python run_reviewbot.py
+    - docker-compose up --build --abort-on-container-exit
   only:
     - merge_requests
-  variables:
-    GITLAB_TOKEN: $GITLAB_TOKEN
-    OLLAMA_HOST: "http://localhost:11434"
-    MODEL_NAME: "phi:2"
