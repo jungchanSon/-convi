@@ -1,7 +1,7 @@
 type CommitSignatureType = {
     name: string,
     sample: string,
-    id?: number,
+    regex?: string,
 }
 
 export default CommitSignatureType

@@ -8,7 +8,7 @@ import {useSignatureStore} from "@/store/lintBuddy/signature-store";
 import {Button} from "@/components/ui/button";
 
 const ConventionCustomizeBoard = () => {
-    const {signatureList,  addSignature, removeAll} = useSignatureStore();
+    const {signatureList, signatureRegexList, addSignature, removeAll} = useSignatureStore();
 
     const [, drop] = useDrop({
         accept: 'signature',
@@ -26,7 +26,7 @@ const ConventionCustomizeBoard = () => {
         <div className="p-1 border-black flex flex-col w-full h-full">
             <div className="w-full flex flex-wrap">
                 {CommitSignatures.map((item, key) => (
-                    <CommitSignatureButton key={key} name={item.name} sample={item.sample}/>
+                    <CommitSignatureButton key={key} name={item.name} sample={item.sample} regex={item.regex}/>
                 ))}
             </div>
             <div
