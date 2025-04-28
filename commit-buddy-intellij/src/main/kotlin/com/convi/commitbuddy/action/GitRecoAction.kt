@@ -9,6 +9,7 @@ import com.intellij.openapi.vcs.changes.Change
 class GitRecoAction(
 ) : AnAction() {
     val ollama = Ollama()
+    val ollama2 = Ollama()
 
     override fun actionPerformed(e: AnActionEvent) {
         val checkinPanel = getCheckinProjectPanel(e)
