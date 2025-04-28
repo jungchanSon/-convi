@@ -6,6 +6,9 @@ review_bot:
   image: docker:latest
   services:
     - docker:dind
+  tags :
+    - docker
+    - ci
   variables:
     DOCKER_DRIVER: overlay2
     GITLAB_TOKEN: $GITLAB_TOKEN
