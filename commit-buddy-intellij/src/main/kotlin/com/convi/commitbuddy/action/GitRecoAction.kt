@@ -10,6 +10,7 @@ class GitRecoAction(
 ) : AnAction() {
     val ollama = Ollama()
     val ollama2 = Ollama()
+    val ollama3 = Ollama()
 
     override fun actionPerformed(e: AnActionEvent) {
         val checkinPanel = getCheckinProjectPanel(e)
