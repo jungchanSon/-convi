@@ -6,26 +6,35 @@ export enum Type {
 
 export const Scope = `(?<type>.+)`
 
-export const Description = `(?<subject>.+)`
+export const Subject = `(?<subject>.+)`
+export enum Body {
+    noDash = `(?<body>^.+$)`,
+    Dash = `(?<body>^(?!-+[^ ])-\s.+$)`,
+}
+
 export const Emoji = `(?<emoji>:[^:]+:\s)`
+export const NewLine = `\n`
+export const Blank = `\s`
+export const JiraTicket = `(?<jira_ticket>[A-Z][A-Z0-9_]+-\\d+)`
+
 export enum AngleBracket {
     OPEN = `<`,
     CLOSE = `>`,
 }
 
 export enum Brace {
-    OPEN = `\\{`,
-    CLOSE = `\\}`,
+    OPEN = `\{`,
+    CLOSE = `\}`,
 }
 
 export enum Bracket  {
-    OPEN = `\\[`,
-    CLOSE = `\\]`,
+    OPEN = `\[`,
+    CLOSE = `\]`,
 }
 
 export enum Parenthesis {
-    OPEN = `\\(`,
-    CLOSE = `\\)`,
+    OPEN = `\(`,
+    CLOSE = `\)`,
 }
 
 export const Colon = `:`
