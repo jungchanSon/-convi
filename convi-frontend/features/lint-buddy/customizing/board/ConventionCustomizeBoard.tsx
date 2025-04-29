@@ -6,9 +6,10 @@ import CommitSignatureType from "@/features/lint-buddy/customizing/board/CommitS
 import CommitSignatureSampleButton from "@/features/lint-buddy/customizing/board/CommitSignatureSampleButton";
 import {useSignatureStore} from "@/store/lintBuddy/signature-store";
 import {Button} from "@/components/ui/button";
+import CommitHookDownloader from "@/features/lint-buddy/customizing/board/githooksDownloader/CommitHookDownloader";
 
 const ConventionCustomizeBoard = () => {
-    const {signatureList, signatureRegexList, addSignature, removeAll} = useSignatureStore();
+    const {signatureList, addSignature, removeAll} = useSignatureStore();
 
     const [, drop] = useDrop({
         accept: 'signature',
@@ -43,7 +44,7 @@ const ConventionCustomizeBoard = () => {
                 )}
             </div>
             <Button variant={"destructive"} className={"bg-red-300 my-1"} onClick={() => removeAll()}> 모두 지우기 </Button>
-            <Button variant={"default"} className={"text-black bg-green-300 my-2 hover:bg-green-500"} onClick={() => removeAll()}> .git 파일로 받기 </Button>
+            <CommitHookDownloader text={".git 파일 받기"}/>
         </div>
     )
 }
