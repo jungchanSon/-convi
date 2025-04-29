@@ -41,7 +41,7 @@ fi`
 
     return (
         <>
-            <Button onClick={() => downloadCommitHook()}> {text} </Button>
+            <Button className={"hover:bg-[#21A79A] bg-[#9bd3ce]"} onClick={() => downloadCommitHook()}> {text} </Button>
         </>
     )
 }
