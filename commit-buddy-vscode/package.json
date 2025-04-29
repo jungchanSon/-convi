@@ -1,13 +1,14 @@
 {
   "name": "commit-buddy",
   "displayName": "commit-buddy",
-  "description": "",
-  "version": "0.0.1",
+  "description": "AI-powered commit message recommender for better Git conventions",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.99.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "SCM Providers"
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
@@ -15,9 +16,46 @@
     "commands": [
       {
         "command": "commit-buddy.showStagedDiff",
-        "title": "Commit Buddy: Show Staged Diff"
+        "title": "Commit Buddy: 스테이지된 변경사항 보기"
+      },
+      {
+        "command": "commit-buddy.recommendMessage",
+        "title": "Commit Buddy: AI 커밋 메시지 추천",
+        "icon": {
+          "light": "resources/light/convi.svg",
+          "dark": "resources/dark/convi.svg"
+        }
       }
-    ]
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "command": "commit-buddy.recommendMessage",
+          "group": "navigation",
+          "when": "scmProvider == git"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Commit Buddy",
+      "properties": {
+        "commitBuddy.modelName": {
+          "type": "string",
+          "default": "codellama:latest",
+          "description": "Ollama에서 사용할 LLM 모델 이름"
+        },
+        "commitBuddy.maxDiffLength": {
+          "type": "number",
+          "default": 5000,
+          "description": "LLM에 전송할 최대 Diff 길이 (글자 수)"
+        },
+        "commitBuddy.numSuggestions": {
+          "type": "number",
+          "default": 3,
+          "description": "생성할 추천 메시지 개수"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
