@@ -25,12 +25,12 @@ export default function Page() {
         <SidebarInset>
             <SiteHeader siteTitle={"Git Convention 커스터마이징"}/>
             <div className={"flex flex-row h-full w-full"}>
-                <div className={"border-1 border-black h-full p-3"}>
+                <div className={"border-r-1 border-t-1 border-gray-200 h-full p-3"}>
                     <ConventionTypes />
                 </div>
 
                 <DndProvider backend={HTML5Backend}>
-                    <div className={"border-1 border-black h-full w-full"}>
+                    <div className={"h-full w-full"}>
                         <ConventionCustomizeBoard/>
                     </div>
                 </DndProvider>

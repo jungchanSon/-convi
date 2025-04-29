@@ -13,7 +13,7 @@ const ConventionContainer = () => {
                 ConventionTypes.map((item, key) =>
                 <div key={ key}>
                     <Button
-                        className={"mb-1 w-full"}
+                        className={"mb-3 w-full bg-white border-1 border-gray drop-shadow text-black hover:bg-gray-200"}
                         onClick={() => setConvention(item.type)}
                     >
                         {item.name}
@@ -22,7 +22,7 @@ const ConventionContainer = () => {
             }
             <Button
                 variant={"destructive"}
-                className={"mb-1 w-full"}
+                className={"mb-1 w-full bg-[#9bd3ce] drop-shadow text-black hover:bg-white"}
                 onClick={() => setConvention(ConventionType.CUSTOMIZE)}
             > 직접 커스터마이징하기</Button>
         </div>

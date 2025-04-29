@@ -24,18 +24,19 @@ const ConventionCustomizeBoard = () => {
     });
 
     return (
-        <div className="p-1 border-black flex flex-col w-full h-full">
-            <div className="w-full flex flex-wrap">
+        <div className="flex flex-col w-full h-full">
+            <div className="border-1 border-r-0 border-gray-200 w-full h-2/5">
+
                 {CommitSignatures.map((item, key) => (
                     <CommitSignatureButton key={key} name={item.name} sample={item.sample} regex={item.regex}/>
                 ))}
             </div>
             <div
-                className="my-1 rounded-md p-1 bg-red-100 w-full min-h-1/3"
+                className="border-1 border-r-0 border-gray-200 w-full h-3/5 p-3 flex-wrap"
                 ref={(node) => {drop(node)}}
             >
                 { signatureList.length === 0 &&
-                    <p className={"font-bold"}>
+                    <p className={"text-gray-300 font-bold"}>
                         위 버튼을 클릭하거나 여기로 드래그하면, 미리보기가 보입니다.
                     </p>
                 }
@@ -43,8 +44,10 @@ const ConventionCustomizeBoard = () => {
                     <CommitSignatureSampleButton key={key} name={item.name} sample={item.sample} k={key}/>
                 )}
             </div>
-            <Button variant={"destructive"} className={"bg-red-300 my-1"} onClick={() => removeAll()}> 모두 지우기 </Button>
-            <CommitHookDownloader text={".git 파일 받기"}/>
+            <div className="flex flex-row place-items-center justify-end border-t-1 border-l-1 border-gray-200 w-full px-1">
+                <Button className={"mx-1 border-1 text-black bg-white border-[#9bd3ce] hover:bg-[#9bd3ce] my-1"} onClick={() => removeAll()}> 모두 지우기 </Button>
+                <CommitHookDownloader text={"생성"}/>
+            </div>
         </div>
     )
 }

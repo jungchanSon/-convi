@@ -24,7 +24,7 @@ const CommitSignatureButton = ({ name, sample, regex }: CommitSignatureProps) =>
     return (
         <Button
             ref={(node)=> {drag(node)}}
-            className={`m-1 ${isDragging ? 'opacity-50' : 'opacity-100'}`}
+            className={`m-1 bg-white hover:bg-[#9BD3CE] border-1 text-black font-bold border-gray-200 drop-shadow  ${isDragging ? 'opacity-50' : 'opacity-100'} `}
             onClick={() => addSignature(signatureList.length, {name, sample, regex})}
         >
             {name}
