@@ -8,6 +8,11 @@ services:
     volumes:
       - ollama_data:/root/.ollama
     restart: unless-stopped
+    command: >
+      sh -c "ollama serve &
+             sleep 5 &&
+             ollama pull phi:2 &&
+             wait"
 
   reviewbot:
     build:

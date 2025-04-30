@@ -19,11 +19,13 @@ COPY reviewbot/ /app/
 # 파이썬 패키지 설치
 RUN pip install --no-cache-dir -r requirements.txt
 
-# ollama 서버 백그라운드 실행
-RUN nohup ollama serve > /dev/null 2>&1 &
-
-# phi-2 모델 preload
-RUN ollama run phi:2 || true
-
 # 기본 실행 명령
-CMD ["python", "run_reviewbot.py"]
+CMD ["sh", "-c", "\
+  for i in {1..10}; do \
+    if curl -fs $OLLAMA_HOST/api/tags | grep phi:2; then \
+      echo 'Ollama is ready'; break; \
+    fi; \
+    echo 'Waiting for Ollama...'; sleep 2; \
+  done; \
+  python run_reviewbot.py \
+"]
