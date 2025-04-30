@@ -1,28 +1,18 @@
-# docker-compose.yml
 version: '3.8'
-
 services:
   ollama:
-    image: ollama/ollama
+    image: $CI_REGISTRY_IMAGE/ollama:phi2
     ports:
       - "11434:11434"
     volumes:
       - ollama_data:/root/.ollama
-    restart: unless-stopped
-    command: >
-      sh -c "ollama serve &
-             sleep 5 &&
-             ollama pull phi:2 &&
-             wait"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      test: ["CMD-SHELL", "curl -sf http://localhost:11434/api/tags | grep -q phi:2"]
       interval: 5s
-      retries: 10
+      retries: 5
 
   reviewbot:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: $CI_REGISTRY_IMAGE/reviewbot:latest
     depends_on:
       ollama:
         condition: service_healthy
