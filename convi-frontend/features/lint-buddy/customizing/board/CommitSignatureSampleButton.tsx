@@ -61,7 +61,7 @@ const CommitSignatureSampleButton = ({name, sample, k}: CommitSignatureProps) =>
     return (
         <Button
             variant={"ghost"}
-            className={`${name === "blank line" ? "": null} shadow border-r-1 border-b-1 border-1 border-gray-300 relative px-2 ${isSampleDragging ? 'opacity-50' : 'opacity-100'}`}
+            className={`shadow border-r-1 border-b-1 border-1 border-gray-300 relative px-2 ${isSampleDragging ? 'opacity-50' : 'opacity-100'}`}
             key={k}
             onClick={() => removeSignature(k)}
             ref={(node) => {signatureSampleDrag(node)}}

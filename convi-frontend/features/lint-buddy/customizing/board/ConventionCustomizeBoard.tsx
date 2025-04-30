@@ -32,7 +32,7 @@ const ConventionCustomizeBoard = () => {
                 ))}
             </div>
             <div
-                className="border-1 border-r-0 border-gray-200 w-full h-3/5 p-3 flex-wrap"
+                className="border-1 border-r-0 border-gray-200 w-full h-3/5 p-3"
                 ref={(node) => {drop(node)}}
             >
                 { signatureList.length === 0 &&
@@ -40,8 +40,10 @@ const ConventionCustomizeBoard = () => {
                         위 버튼을 클릭하거나 여기로 드래그하면, 미리보기가 보입니다.
                     </p>
                 }
-                {signatureList && signatureList.map((item, key) =>
-                    <CommitSignatureSampleButton key={key} name={item.name} sample={item.sample} k={key}/>
+                {signatureList && signatureList.flatMap((item, key) =>
+                  item.name === "blank line" ?
+                    [<CommitSignatureSampleButton key={key} name={item.name} sample={item.sample} k={key}/>, <br key={"br-"+key} />]
+                    : <CommitSignatureSampleButton key={key} name={item.name} sample={item.sample} k={key}/>
                 )}
             </div>
             <div className="flex flex-row place-items-center justify-end border-t-1 border-l-1 border-gray-200 w-full px-1">

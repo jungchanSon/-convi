@@ -6,7 +6,7 @@ const CommitSignatures: CommitSignatureType[] = [
     {name: "scope", sample: "api", regex: Regex.Scope},
     {name: "subject", sample: "카카오 소셜 로그인 추가", regex: Regex.Subject},
     {name: "emoji", sample: "✨ ", regex: Regex.Emoji},
-    {name: "blank line", sample: "\u00A0", regex: Regex.NewLine},
+    {name: "blank line", sample: "줄바꿈(\\n)", regex: Regex.NewLine},
     {name: "blank", sample: "\u00A0", regex: Regex.Blank},
     {name: "body no -", sample: "카카오 OAuth2 인증을 통해 소셜 로그인을 지원합니다.\n로그인 완료 후 서버에서 사용자 정보를 받아 저장합니다.", regex: Regex.Body.noDash},
     {
