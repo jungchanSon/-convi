@@ -48,7 +48,7 @@ const ConventionCustomizeBoard = () => {
             </div>
             <div className="flex flex-row place-items-center justify-end border-t-1 border-l-1 border-gray-200 w-full px-1">
                 <Button className={"mx-1 border-1 text-black bg-white border-[#9bd3ce] hover:bg-[#9bd3ce] my-1"} onClick={() => removeAll()}> 모두 지우기 </Button>
-                <CommitHookDownloader text={"생성"}/>
+                <CommitHookDownloader disable={signatureList.length === 0} text={"생성"} />
             </div>
         </div>
     )
