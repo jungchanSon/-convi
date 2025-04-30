@@ -4,9 +4,10 @@ import JSZip from "jszip";
 
 type CommitHookDownloaderProp = {
     text: string
+    disable: boolean
 }
 
-const CommitHookDownloader = ({text} : CommitHookDownloaderProp) => {
+const CommitHookDownloader = ({text, disable} : CommitHookDownloaderProp) => {
     const {signatureRegexList, signatureList} = useSignatureStore();
     const zip = new JSZip
 
@@ -24,7 +25,7 @@ const CommitHookDownloader = ({text} : CommitHookDownloaderProp) => {
   exit 1
 fi`
 
-        zip.folder(".git")?.folder("hooks")?.file("commit-msg", shellScript)
+        zip.file(".convirc", commitRegex).folder(".git")?.folder("hooks")?.file("commit-msg", shellScript)
         zip.generateAsync({type: 'blob'}).then((blob) => {
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
@@ -41,7 +42,7 @@ fi`
 
     return (
         <>
-            <Button className={"hover:bg-[#21A79A] bg-[#9bd3ce]"} onClick={() => downloadCommitHook()}> {text} </Button>
+            <Button disabled={disable} className={"hover:bg-[#21A79A] bg-[#9bd3ce]"} onClick={() => downloadCommitHook()}> {text} </Button>
         </>
     )
 }
