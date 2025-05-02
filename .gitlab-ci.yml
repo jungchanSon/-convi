@@ -9,7 +9,7 @@ mr_review:
   image: rnrmf/mr-review-bot:latest
   variables:
     CI_PROJECT_ID: $CI_PROJECT_ID
-    GIT_LAB_KEY: "TEST_KEY"
+    GITLAB_TOKEN: $GITLAB_TOKEN
   only:
     - merge_requests
   script:
