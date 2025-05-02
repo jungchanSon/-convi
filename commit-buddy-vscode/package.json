@@ -10,8 +10,10 @@
     "Other",
     "SCM Providers"
   ],
-  "activationEvents": [],
-  "main": "./out/extension.js",
+  "activationEvents": [
+    "onCommand:commit-buddy.showStagedDiff"
+  ],
+  "main": "./extension.ts",
   "contributes": {
     "commands": [
       {
