@@ -41,7 +41,7 @@
       "properties": {
         "commitBuddy.modelName": {
           "type": "string",
-          "default": "codellama:latest",
+          "default": "llama3.2:latest",
           "description": "Ollama에서 사용할 LLM 모델 이름"
         },
         "commitBuddy.maxDiffLength": {
