@@ -1,3 +1,5 @@
+import os
+
 import requests
 
 def getDiffFromMR(host, projectId, state, privateToken, contentType, iid):
@@ -22,6 +24,11 @@ def main():
     STATE = "state=opened"
     PRIVATE_TOKEN = "DT3XFH7Jx9JkKRymqv6X"
     CONTENT_TYPE = "application/json"
+    pid = os.getenv("CI_PROJECT_ID")
+    print(os.getenv("CI_MERGE_REQUEST_IID"))
+    print(os.getenv("CI_MERGE_REQUEST_IID"))
+    print(pid)
+    print(pid)
     getDiffFromMR(HOST, PROJECT_ID, STATE, PRIVATE_TOKEN, CONTENT_TYPE, 27)
 
 if __name__ == "__main__":
