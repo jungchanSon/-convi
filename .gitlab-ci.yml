@@ -11,3 +11,5 @@ mr_review:
     CI_PROJECT_ID: $CI_PROJECT_ID
   only:
     - merge_requests
+  script:
+    - python review_buddy.py
