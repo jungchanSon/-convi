@@ -12,4 +12,5 @@ mr_review:
   only:
     - merge_requests
   script:
-    - python review_buddy.py
+    - ls
+    - python ~/review_buddy.py
