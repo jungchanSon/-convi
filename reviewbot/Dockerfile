@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
   coreutils \
   && rm -rf /var/lib/apt/lists/*
 
-RUN pip install requests ollama
+RUN pip install requests ollama langchain langchain-community langchain-openai
 
 RUN curl -fsSL https://ollama.com/install.sh | bash
 
@@ -18,7 +18,8 @@ RUN ollama serve & \
   sleep 5 && \
   ollama pull llama3.2
 
-WORKDIR /app
-COPY review_buddy.py .
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
-CMD bash -c "ollama serve & sleep 5 && python3 review_buddy.py"
+WORKDIR /app
+COPY entrypoint.sh .
+COPY review_buddy.py .
