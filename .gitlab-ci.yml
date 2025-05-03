@@ -11,3 +11,4 @@ mr_review:
     - merge_requests
   script:
     - ls
+    - ollama serve
