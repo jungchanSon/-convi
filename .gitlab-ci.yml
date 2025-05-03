@@ -11,4 +11,5 @@ mr_review:
     - merge_requests
   script:
     - ls
-    - ollama serve
+    - ollama serve &
+    - python ~/review_buddy.py
