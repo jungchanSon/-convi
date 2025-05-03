@@ -6,12 +6,9 @@ mr_review:
   image: rnrmf/mr-review-bot:latest
   variables:
     CI_PROJECT_ID: $CI_PROJECT_ID
-    GITLAB_TOKEN: $GITLAB_TOKEN
-    TESTENV: $TESTKEY
-  only:
-    - merge_requests
-  script:
-    - echo $TESTKEY
-    - echo $TESTENV
+    OPEN_AI_KEY: $OPEN_AI_KEY
+  ONLY:
+    - MERGE_REQUESTS
+  SCRIPT:
     - ollama serve &
     - python ~/review_buddy.py
