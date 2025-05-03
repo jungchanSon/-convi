@@ -11,4 +11,3 @@ mr_review:
     - merge_requests
   script:
     - ls
-    - python ~/review_buddy.py
