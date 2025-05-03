@@ -1,71 +1,50 @@
-# commit-buddy README
+네, 이해했습니다. 좀 더 현재 상황에 맞는 간단한 README.md를 작성해 드리겠습니다.
 
-This is the README for your extension "commit-buddy". After writing up a brief description, we recommend including the following sections.
+# Commit Buddy - Git 커밋 메시지 도우미
 
-## Features
+Commit Buddy는 AI를 활용하여 Git 변경사항을 분석하고 적절한 커밋 메시지를 추천해주는 VS Code 확장 프로그램입니다. Git과 협업 컨벤션에 익숙하지 않은 개발자들이 일관된 형식의 커밋 메시지를 작성할 수 있도록 도와줍니다.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## 주요 기능
 
-For example if there is an image subfolder under your extension project workspace:
+- AI 기반으로 스테이징된 변경사항 분석 후 커밋 메시지 추천
+- Conventional Commits 형식 지원 (feat, fix, docs, style 등)
+- Ollama 기반 로컬 LLM 모델 활용
 
-\!\[feature X\]\(images/feature-x.png\)
+## 개발 중인 기능
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- 커밋 메시지 포맷 커스터마이징
+- 팀 컨벤션 설정 기능
+- 린트 검사 기능
 
-## Requirements
+## 개발 환경 설정
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+```bash
+# 의존성 설치
+npm install
 
-## Extension Settings
+# TypeScript 컴파일
+npm run compile
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+# 개발 모드로 실행 (VS Code에서 F5)
+```
 
-For example:
+## 사용 방법 (개발 중)
 
-This extension contributes the following settings:
+1. VS Code에서 확장 프로그램을 실행합니다
+2. Git 변경사항을 스테이징합니다
+3. 소스 제어 탭에서 "Commit Buddy: AI 커밋 메시지 추천" 명령을 실행합니다
+4. AI가 추천하는 메시지 중 하나를 선택하거나 직접 입력합니다
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+## 요구사항
 
-## Known Issues
+- VS Code 1.99.0 이상
+- Git 설치
+- Ollama 설치 및 실행 (기본 모델: llama3.2:latest)
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+## Convi 프로젝트
 
-## Release Notes
+이 확장 프로그램은 Convi 프로젝트의 일부로, Git과 협업에 익숙하지 않은 초보 개발자들을 위한 AI 기반 자동화 도우미 시리즈 중 하나입니다.
 
-Users appreciate release notes as you update your extension.
+## 라이센스
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+MIT

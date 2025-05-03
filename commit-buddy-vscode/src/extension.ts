@@ -7,9 +7,9 @@ import { isGitRepo, getStagedDiff, getWorkspacePath } from './gitUtils';
 export function activate(context: vscode.ExtensionContext) {
   console.log('"commit-buddy" 플러그인이 활성화되었습니다!');
 
-  // 설정에서 모델 이름 가져오기 (기본값: codellama:latest)
+  // 설정에서 모델 이름 가져오기 (기본값: llama3.2:latest)
   const config = vscode.workspace.getConfiguration('commitBuddy');
-  const modelName = config.get<string>('modelName') || 'codellama:latest';
+  const modelName = config.get<string>('modelName') || 'llama3.2:latest';
   
   // 백그라운드에서 모델 미리 로드 (활성화 시 모델 준비)
   preloadModel(modelName);
@@ -116,9 +116,9 @@ export function activate(context: vscode.ExtensionContext) {
       return;
     }
 
-    // 설정에서 모델 이름 가져오기 (기본값: codellama:latest)
+    // 설정에서 모델 이름 가져오기 (기본값: llama3.2:latest)
     const config = vscode.workspace.getConfiguration('commitBuddy');
-    const modelName = config.get<string>('modelName') || 'codellama:latest';
+    const modelName = config.get<string>('modelName') || 'llama3.2:latest';
     
     const modelExists = await checkOllamaModel(modelName);
     if (!modelExists) {
@@ -189,7 +189,7 @@ export function activate(context: vscode.ExtensionContext) {
       if (e.affectsConfiguration('commitBuddy')) {
         // 설정이 변경되면 모델 다시 로드
         console.log('Commit Buddy 설정이 변경되었습니다.');
-        const newModelName = config.get<string>('modelName') || 'codellama:latest';
+        const newModelName = config.get<string>('modelName') || 'llama3.2:latest';
         preloadModel(newModelName);
       }
     })
