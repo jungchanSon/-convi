@@ -7,8 +7,11 @@ mr_review:
   variables:
     CI_PROJECT_ID: $CI_PROJECT_ID
     GITLAB_TOKEN: $GITLAB_TOKEN
+    TESTENV: $TESTKEY
   only:
     - merge_requests
   script:
+    - echo $TESTKEY
+    - echo $TESTENV
     - ollama serve &
     - python ~/review_buddy.py
