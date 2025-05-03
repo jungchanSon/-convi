@@ -1,16 +1,16 @@
 stages:
   - review
 
-variables:
-  REGISTRY: "$CI_REGISTRY_IMAGE"
-
 mr_review:
   stage: review
   image: rnrmf/mr-review-bot:latest
   variables:
     CI_PROJECT_ID: $CI_PROJECT_ID
-    GIT_LAB_KEY: "TEST_KEY"
+    GITLAB_TOKEN: $GITLAB_TOKEN
+    OPEN_AI_KEY: $OPEN_AI_KEY
+    REVIEW_BUDDY: $REVIEW_BUDDY
   only:
     - merge_requests
   script:
-    - python review_buddy.py
+    - ollama serve &
+    - python ~/review_buddy.py OpenAI

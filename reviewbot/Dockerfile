@@ -1,5 +1,25 @@
-FROM python:3.9-alpine
-WORKDIR /root
-ADD review_buddy.py .
-RUN pip3 install requests
-CMD ["python3", "review_buddy.py"]
+FROM ubuntu:22.04
+
+RUN apt-get update && apt-get install -y \
+  curl \
+  gnupg \
+  ca-certificates \
+  tar \
+  python3 \
+  python3-pip \
+  coreutils \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN pip install requests ollama langchain langchain-community langchain-openai
+
+RUN curl -fsSL https://ollama.com/install.sh | bash
+
+RUN ollama serve & \
+  sleep 5 && \
+  ollama pull llama3.2
+
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
+WORKDIR /app
+COPY entrypoint.sh .
+COPY review_buddy.py .
