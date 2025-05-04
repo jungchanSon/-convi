@@ -203,10 +203,24 @@ export function activate(context: vscode.ExtensionContext) {
 async function commitWithMessage(message: string): Promise<void> {
   try {
     // Git 커밋 명령 실행
-    await vscode.commands.executeCommand('git.commitStagedWithMessage', message);
-    vscode.window.showInformationMessage(`커밋 완료: ${message}`);
+    // await vscode.commands.executeCommand('git.commitStagedWithMessage', message);
+    const gitExtension = vscode.extensions.getExtension('vscode.git');
+    if (!gitExtension) {
+      throw new Error('Unable to find the Git extension.');
+    }
+
+    const api = gitExtension.exports.getAPI(1);
+    if (!api || api.repositories.length === 0) {
+      throw new Error('Unable to access the Git repositories.');
+    }
+
+    const repository = api.repositories[0];
+
+    repository.inputBox.value = message;
+    
+    vscode.window.showInformationMessage(`커밋 추천 완료: ${message}`);
   } catch (error) {
-    vscode.window.showErrorMessage(`커밋 실패: ${error instanceof Error ? error.message : String(error)}`);
+    vscode.window.showErrorMessage(`커밋 추천 실패: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 

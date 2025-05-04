@@ -13,7 +13,7 @@
   "activationEvents": [
     "onCommand:commit-buddy.showStagedDiff"
   ],
-  "main": "./extension.ts",
+  "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
