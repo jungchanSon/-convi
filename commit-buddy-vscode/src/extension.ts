@@ -205,7 +205,16 @@ async function commitWithMessage(message: string): Promise<void> {
     // Git 커밋 명령 실행
     // await vscode.commands.executeCommand('git.commitStagedWithMessage', message);
     const gitExtension = vscode.extensions.getExtension('vscode.git');
-    let repository = gitExtension?.exports.getAPI(1).repositories[0];
+    if (!gitExtension) {
+      throw new Error('Unable to find the Git extension.');
+    }
+
+    const api = gitExtension.exports.getAPI(1);
+    if (!api || api.repositories.length === 0) {
+      throw new Error('Unable to access the Git repositories.');
+    }
+
+    const repository = api.repositories[0];
 
     repository.inputBox.value = message;
     
