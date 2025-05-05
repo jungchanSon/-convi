@@ -43,7 +43,11 @@ const ConventionCustomizeBoard = () => {
                 {signatureList && signatureList.flatMap((item, key) =>
                   item.name === "blank line" ?
                     [<CommitSignatureSampleButton key={key} name={item.name} sample={item.sample} k={key}/>, <br key={"br-"+key} />]
-                    : <CommitSignatureSampleButton key={key} name={item.name} sample={item.sample} k={key}/>
+                    :
+                      item.name === "body no -" || item.name === "body -" ?
+                          [<br key={"br-"+key} />, <CommitSignatureSampleButton key={key} name={item.name} sample={item.sample} k={key}/>]
+                          :
+                          <CommitSignatureSampleButton key={key} name={item.name} sample={item.sample} k={key}/>
                 )}
             </div>
             <div className="flex flex-row place-items-center justify-end border-t-1 border-l-1 border-gray-200 w-full px-1">

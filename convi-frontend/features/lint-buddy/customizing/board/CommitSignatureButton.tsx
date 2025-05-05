@@ -7,7 +7,7 @@ import {useSignatureStore} from "@/store/lintBuddy/signature-store";
 type CommitSignatureProps = {
     name: string,
     sample: string,
-    regex?: string,
+    regex: string,
 }
 
 const CommitSignatureButton = ({ name, sample, regex }: CommitSignatureProps) => {
@@ -15,7 +15,7 @@ const CommitSignatureButton = ({ name, sample, regex }: CommitSignatureProps) =>
 
     const [{ isDragging }, drag] = useDrag({
         type: 'signature',
-        item: { name , sample},
+        item: { name , sample, regex},
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
