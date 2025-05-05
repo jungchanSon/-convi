@@ -4,7 +4,7 @@ import * as Regex from "@/features/lint-buddy/customizing/signatureRegex/enum/Ty
 const CommitSignatures: CommitSignatureType[] = [
     {name: "type", sample: "feat", regex: Regex.Type.LOWER_CASE},
     {name: "scope", sample: "api", regex: Regex.Scope},
-    {name: "subject", sample: "카카오 소셜 로그인 추가", regex: Regex.Subject},
+    {name: "description", sample: "카카오 소셜 로그인 추가", regex: Regex.Subject},
     {name: "emoji", sample: "✨ ", regex: Regex.Emoji},
     {name: "blank line", sample: "줄바꿈(\\n)", regex: Regex.NewLine},
     {name: "blank", sample: "\u00A0", regex: Regex.Blank},
