@@ -4,10 +4,17 @@ import {useConventionStore} from "@/store/lintBuddy/convention-store";
 import ConventionTypes  from "@/features/lint-buddy/customizing/commitConventionButtons/ConventionTypes";
 import ConventionType from "@/features/lint-buddy/customizing/commitConventionButtons/enums/ConventionType";
 import {useSignatureStore} from "@/store/lintBuddy/signature-store";
+import {gtag} from "ga-gtag";
 
 const ConventionContainer = () => {
     const {setConvention} = useConventionStore();
     const {setSignature } = useSignatureStore();
+
+    const sendGAClickEvent = (name: string) => {
+        gtag('event', 'click', {
+            'clickLintTypes': name,
+        });
+    }
 
     return (
         <div className={"flex flex-col"}>
@@ -19,6 +26,7 @@ const ConventionContainer = () => {
                             onClick={() => {
                                 setConvention(item.type)
                                 setSignature(item.value)
+                                sendGAClickEvent(item.name)
                             }}>
                             {item.name}
                         </Button>
@@ -30,6 +38,7 @@ const ConventionContainer = () => {
                 onClick={() => {
                     setConvention(ConventionType.CUSTOMIZE)
                     setSignature([])
+                    sendGAClickEvent("직접커스터마이징")
                 }}
             > 직접 커스터마이징하기</Button>
         </div>

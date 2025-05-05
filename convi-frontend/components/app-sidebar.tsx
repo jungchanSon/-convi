@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from "react"
 import { ChevronRight } from "lucide-react"
 
@@ -23,6 +25,7 @@ import {
 
 import navigation from "@/store/pageData/navigation";
 import Link from "next/link";
+import { gtag } from 'ga-gtag';
 
 // This is sample data.
 const data = {
@@ -31,6 +34,14 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+  const clickNav = (name: string) => {
+    gtag('event', 'click', {
+      'event_category': 'nav-button',
+      'nav-button': name
+    });
+  }
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -64,7 +75,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <SidebarMenu>
                     {item.items.map((item) => (
                       <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild >
+                        <SidebarMenuButton asChild onClick={() => clickNav(item.title)}>
                           {
                             item.url && <Link href={item.url}>{item.title}</Link>
                           }
