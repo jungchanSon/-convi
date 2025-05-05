@@ -20,7 +20,9 @@ const CommitHookDownloader = ({text, disable} : CommitHookDownloaderProp) => {
         })
         const sampleMessage = samples.join("")
         const shellScript =
-`if ! grep -qE '${commitRegex}' "$1"; then
+`#!/bin/sh
+
+if ! grep -Pz '${commitRegex}' "$1"; then
   echo >&2 "Error: ${sampleMessage}"
   exit 1
 fi`
