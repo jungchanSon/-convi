@@ -1,6 +1,7 @@
 import {Button} from "@/components/ui/button";
 import {useSignatureStore} from "@/store/lintBuddy/signature-store";
 import JSZip from "jszip";
+import {gtag} from "ga-gtag";
 
 type CommitHookDownloaderProp = {
     text: string
@@ -11,7 +12,15 @@ const CommitHookDownloader = ({text, disable} : CommitHookDownloaderProp) => {
     const {signatureRegexList, signatureList} = useSignatureStore();
     const zip = new JSZip
 
+    const sendGAClickEvent = () => {
+        gtag('event', 'click', {
+            'event_category': 'downloadCommitHook',
+        });
+    }
+
     function downloadCommitHook() {
+        sendGAClickEvent()
+
         const commitRegex = signatureRegexList.join("")
         const samples = signatureList.map(it => {
             if(it.sample === "✨ ")
