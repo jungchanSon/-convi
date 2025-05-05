@@ -6,7 +6,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 
-import descriptions from "../../../store/pageData/introduce/tools/pageDescription.json"
+import descriptions from "../../store/pageData/introduce/tools/pageDescription.json"
 
 export default function Page() {
   return (

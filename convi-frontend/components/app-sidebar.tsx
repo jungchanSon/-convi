@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/sidebar"
 
 import navigation from "@/store/pageData/navigation";
+import Link from "next/link";
 
 // This is sample data.
 const data = {
@@ -64,7 +65,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     {item.items.map((item) => (
                       <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild >
-                          <a href={item.url}>{item.title}</a>
+                          {
+                            item.url && <Link href={item.url}>{item.title}</Link>
+                          }
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
