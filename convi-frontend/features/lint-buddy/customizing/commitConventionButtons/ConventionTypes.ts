@@ -4,23 +4,22 @@ import CommitSignatures from "@/features/lint-buddy/customizing/board/CommitSign
 const ConventionTypes = [
     {
         name: "기본", type: ConventionType.BASIC, value: [
-            CommitSignatures[0], CommitSignatures[9], CommitSignatures[5], CommitSignatures[2],
+            CommitSignatures[0], CommitSignatures[7], CommitSignatures[5], CommitSignatures[2],
         ]
     },
     {
         name: "Gitmoji", type: ConventionType.GITMOJI, value: [
-            CommitSignatures[3], CommitSignatures[0], CommitSignatures[9], CommitSignatures[5], CommitSignatures[2],
+            CommitSignatures[3], CommitSignatures[0], CommitSignatures[7], CommitSignatures[5], CommitSignatures[2],
         ]
     },
     {
         name: "Angular", type: ConventionType.ANGULAR, value: [
             CommitSignatures[0], CommitSignatures[9], CommitSignatures[5], CommitSignatures[2],
-            CommitSignatures[7], CommitSignatures[7],
         ]
     },
     {
         name: "Jira", type: ConventionType.JIRA, value: [
-            CommitSignatures[14],CommitSignatures[8], CommitSignatures[15], CommitSignatures[5], CommitSignatures[0], CommitSignatures[9], CommitSignatures[5], CommitSignatures[2],
+            CommitSignatures[12],CommitSignatures[6], CommitSignatures[13], CommitSignatures[5], CommitSignatures[0], CommitSignatures[7], CommitSignatures[5], CommitSignatures[2],
         ]
     },
 ]
