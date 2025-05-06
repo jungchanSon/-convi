@@ -18,10 +18,6 @@
   "contributes": {
     "commands": [
       {
-        "command": "commit-buddy.showStagedDiff",
-        "title": "Commit Buddy: 스테이지된 변경사항 보기"
-      },
-      {
         "command": "commit-buddy.recommendMessage",
         "title": "Commit Buddy: AI 커밋 메시지 추천",
         "icon": {
