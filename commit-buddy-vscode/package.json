@@ -2,7 +2,7 @@
   "name": "commit-buddy",
   "displayName": "commit-buddy",
   "description": "AI-powered commit message recommender for better Git conventions",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "vscode": "^1.99.0"
   },
@@ -17,10 +17,6 @@
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
-      {
-        "command": "commit-buddy.showStagedDiff",
-        "title": "Commit Buddy: 스테이지된 변경사항 보기"
-      },
       {
         "command": "commit-buddy.recommendMessage",
         "title": "Commit Buddy: AI 커밋 메시지 추천",

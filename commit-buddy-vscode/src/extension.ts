@@ -242,7 +242,6 @@ function readConvirc(): string|null {
   }
 
   const content = fs.readFileSync(convircPath, 'utf-8');
-  vscode.window.showInformationMessage(content);
 
   return content;
 }
