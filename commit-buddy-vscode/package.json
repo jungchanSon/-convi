@@ -2,7 +2,7 @@
   "name": "commit-buddy",
   "displayName": "commit-buddy",
   "description": "AI-powered commit message recommender for better Git conventions",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.99.0"
   },
@@ -10,6 +10,7 @@
     "Other",
     "SCM Providers"
   ],
+  "publisher": "convi",
   "activationEvents": [
     "onCommand:commit-buddy.showStagedDiff"
   ],
