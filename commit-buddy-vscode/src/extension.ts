@@ -2,6 +2,9 @@
 import * as vscode from 'vscode';
 // Git 유틸 함수들 가져오기 (저장소 감지, diff 조회, 워크스페이스 경로)
 import { isGitRepo, getStagedDiff, getWorkspacePath } from './gitUtils';
+import * as path from 'path';
+import * as fs from "fs";
+
 
 // 플러그인 활성화 시 호출
 export function activate(context: vscode.ExtensionContext) {
@@ -224,6 +227,26 @@ async function commitWithMessage(message: string): Promise<void> {
   }
 }
 
+function readConvirc(): string|null {
+  const workspaceFolders = vscode.workspace.workspaceFolders;
+  
+  if(!workspaceFolders || workspaceFolders.length === 0) {
+    return null;
+  }
+
+  const fsPath = workspaceFolders[0].uri.fsPath;
+  const convircPath = path.join(fsPath, ".convirc");
+  if(!fs.existsSync(convircPath)) {
+    vscode.window.showErrorMessage(`.convirc가 없습니다. root 디렉토리에 .convirc를 추가하면, 규칙에 맞게 추천해드립니다.`);
+    return null;
+  }
+
+  const content = fs.readFileSync(convircPath, 'utf-8');
+  vscode.window.showInformationMessage(content);
+
+  return content;
+}
+
 /**
  * Ollama LLM API 호출 함수
  * @param diff Git diff 문자열
@@ -237,6 +260,7 @@ async function fetchLLMRecommendation(diff: string, modelName: string): Promise<
   // 타임아웃 설정
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 20000); // 20초 타임아웃
+  const convirc = readConvirc();
 
   try {
     const response = await fetch('http://localhost:11434/api/generate', {
@@ -244,26 +268,23 @@ async function fetchLLMRecommendation(diff: string, modelName: string): Promise<
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: modelName,
-        prompt: `다음 Git diff를 참고해서 **3개의 좋은 커밋 메시지**를 제안해주세요.
-          
-          규칙:
-          - 정확히 3개의 커밋 메시지만 작성할 것
-          - 각 메시지는 새 줄에 번호와 함께 작성 (1., 2., 3.)
-          - 영어로 작성
-          - 명령형 동사 사용 (Add, Fix, Update 등)
-          - 50자 이내로 간결하게
-          - conventional commit 형식 사용 (feat, fix, docs, style, refactor, test, chore)
-          - 각 메시지 전후에 추가 설명이나 텍스트를 포함하지 말 것 (메시지만 작성)
-          
+        prompt: `Please suggest 3 good commit messages based on the Git diff below and follow example format.
+
+          Rules:
+            - Write exactly 3 commit messages
+            - Each message must be on a new line, prefixed with a number (1., 2., 3.)
+            - Use imperative mood (e.g., Add, Fix, Update)
+            - Keep each message under 50 characters
+            - Use the conventional commit format (feat, fix, docs, style, refactor, test, chore)
+            - Write in English
+            - follow example format below
+
+          Example regex:
+            ${convirc}
+
           Git diff:
-          ${truncatedDiff}
+            ${truncatedDiff}`,
           
-          다음 형식으로만 응답하세요:
-          1. <type>: <subject>
-          2. <type>: <subject>
-          3. <type>: <subject>
-          
-          어떤 설명도 추가하지 말고 위 형식의 3줄만 응답하세요.`,
         stream: false
       }),
       signal: controller.signal
@@ -272,32 +293,33 @@ async function fetchLLMRecommendation(diff: string, modelName: string): Promise<
     clearTimeout(timeoutId);
     const data = await response.json() as { response?: string };
     console.log('LLM 응답:', data);
-    
     // 응답에서 커밋 메시지 추출 로직 개선
     const responseText = data?.response || '';
     let suggestions: string[] = [];
     
     // 패턴 1: 숫자+점 형식으로 시작하는 라인 찾기
-    const numberedPattern = /^\s*(\d+)\.\s*([a-z]+(\([a-z-]+\))?:.+)$/gm;
-    let match;
-    const numberedMatches = [];
+    // const numberedPattern = /^\s*(\d+)\.\s*([a-z]+(\([a-z-]+\))?:.+)$/gm;
+    // let match;
+    // const numberedMatches = [];
     
-    while ((match = numberedPattern.exec(responseText)) !== null) {
-      numberedMatches.push(match[2].trim());
-    }
-    
-    if (numberedMatches.length > 0) {
-      suggestions = numberedMatches;
-    } else {
+    // while ((match = numberedPattern.exec(responseText)) !== null) {
+    //   numberedMatches.push(match[2].trim());
+    // }
+    // console.log("numberedMatches", numberedMatches);
+
+    // if (numberedMatches.length > 0) {
+    //   suggestions = numberedMatches;
+    // } else {
       // 패턴 2: 각 줄이 <type>: <subject> 형식인지 확인
-      const lines = responseText.split('\n')
-        .map(line => line.trim())
-        .filter(line => line.length > 0);
-      
-      const typePattern = /^[a-z]+(\([a-z-]+\))?:.+$/;
-      suggestions = lines.filter(line => typePattern.test(line));
-    }
-    
+    const lines = responseText.split(/[1-3].\s/)
+      .map(line => line.trim())
+      .filter(line => line.length > 0);
+
+    // const typePattern = /^[a-z]+(\([a-z-]+\))?:.+$/;
+    // suggestions = lines.filter(line => typePattern.test(line));
+    // }
+    lines.splice(0,1);
+    suggestions = lines;
     // 제안 메시지가 없거나 3개 미만인 경우, 기본 메시지 추가
     if (suggestions.length === 0) {
       // 기본 메시지 제안
