@@ -3,28 +3,41 @@ package com.convi.commitbuddy.action
 import com.convi.commitbuddy.llm.Ollama
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.CheckinProjectPanel
 import com.intellij.openapi.vcs.changes.Change
+import java.io.File
 
-class GitRecoAction(
-) : AnAction() {
+class GitRecoAction : AnAction() {
     val ollama = Ollama()
 
     override fun actionPerformed(e: AnActionEvent) {
         val checkinPanel = getCheckinProjectPanel(e)
-        val selectedChanges = checkinPanel?.selectedChanges
+        val selectedChanges = checkinPanel?.selectedChanges ?: return
+        val project = e.project ?: return
 
-        var diff = StringBuilder()
+        val regex = readConvicRegex(project) ?: return
 
-        selectedChanges?.forEach{change ->
+        val diff = StringBuilder()
+        selectedChanges.forEach { change ->
             val diffForChange = getDiffFromChange(change)
             diff.append(diffForChange).append("\n")
-
         }
 
-        val makePrompt = makePrompt(diff.toString())
-        val prompt = ollama.prompt(makePrompt)!!
-        checkinPanel?.setCommitMessage(prompt)
+        val prompt = makePrompt(diff.toString(), regex)
+        val response = ollama.prompt(prompt) ?: return
+
+        var responseArr = response.split(Regex("[1-3]+\\.\\s")).filter { it.isNotBlank() }
+        responseArr = responseArr.drop(1)
+
+        val result = responseArr.joinToString("\n")
+
+        checkinPanel.setCommitMessage(result)
+    }
+
+    private fun readConvicRegex(project: Project): String? {
+        val convicFile = File(project.basePath, ".convirc ")
+        return if (convicFile.exists()) convicFile.readText().trim() else null
     }
 
     fun getDiffFromChange(change: Change): String {
@@ -54,28 +67,24 @@ class GitRecoAction(
     fun getCheckinProjectPanel(e: AnActionEvent) =
         e.getData(CheckinProjectPanel.PANEL_KEY) as? CheckinProjectPanel
 
-    fun makePrompt(git_diff: String) =
-        "The following is the result of git diff:\n" +
-                "\n" +
-                "----\n" +
-                "```\n" +
-                "$git_diff\n" +
-                "```\n" +
-                "----\n" +
-                "\n" +
-                "Please generate a conventional commit message. just one line.\n" +
-                "Output MUST strictly follow the format below:\n" +
-                "\n" +
-                "[type]: short description\n" +
-                "- detail 1 \n" +
-                "- detail 2 \n" +
-                "- detail 3 \n" +
-                "\n" +
-                "Rules:\n" +
-                "1. Use one of these types: feat, fix, docs, style, refactor, test, chore\n" +
-                "2. The short description must be a **concise summary** of the change.\n" +
-                "4. Do not repeat words or phrases across detail lines.\n" +
-                "5. Do NOT include English translations, explanations.\n" +
-                "6. Only return output in the specified format. Do not include comments or extra text.\n" +
-                "\n"
+    fun makePrompt(gitDiff: String, regex: String): String {
+        return """
+Please suggest 3 good commit messages based on the Git diff below and follow example format.
+
+          Rules:
+            - Write exactly 3 commit messages
+            - Each message must be on a new line, prefixed with a number (1., 2., 3.)
+            - Use imperative mood (e.g., Add, Fix, Update)
+            - Keep each message under 50 characters
+            - Use the conventional commit format (feat, fix, docs, style, refactor, test, chore)
+            - Write in English
+            - follow Example Format below
+
+          Example Format:
+            ${regex}
+
+          Git diff:
+            ${gitDiff}
+    """.trimIndent()
+    }
 }
