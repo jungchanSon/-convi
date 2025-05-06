@@ -25,6 +25,10 @@ const CommitHookDownloader = ({text, disable} : CommitHookDownloaderProp) => {
         const samples = signatureList.map(it => {
             if(it.sample === "✨ ")
                 return ":spackle: "
+            if(it.sample === "줄바꿈")
+                return "\n"
+            if(it.sample === "카카오 소셜 로그인 추가")
+                return "- <description>"
             return it.sample
         })
         const sampleMessage = samples.join("")
@@ -36,7 +40,7 @@ if ! grep -Pz '${commitRegex}' "$1"; then
   exit 1
 fi`
 
-        zip.file(".convirc", commitRegex).folder(".git")?.folder("hooks")?.file("commit-msg", shellScript)
+        zip.file(".convirc", sampleMessage).folder(".git")?.folder("hooks")?.file("commit-msg", shellScript)
         zip.generateAsync({type: 'blob'}).then((blob) => {
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
