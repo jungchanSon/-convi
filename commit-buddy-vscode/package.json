@@ -2,7 +2,7 @@
   "name": "commit-buddy",
   "displayName": "commit-buddy",
   "description": "AI-powered commit message recommender for better Git conventions",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "vscode": "^1.99.0"
   },
