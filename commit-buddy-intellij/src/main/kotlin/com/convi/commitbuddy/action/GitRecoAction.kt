@@ -18,8 +18,6 @@ class GitRecoAction : AnAction() {
 
         val regex = readConvicRegex(project) ?: return
 
-        println(regex)
-
         val diff = StringBuilder()
         selectedChanges.forEach { change ->
             val diffForChange = getDiffFromChange(change)
@@ -28,7 +26,13 @@ class GitRecoAction : AnAction() {
 
         val prompt = makePrompt(diff.toString(), regex)
         val response = ollama.prompt(prompt) ?: return
-        checkinPanel.setCommitMessage(response)
+
+        var responseArr = response.split(Regex("[1-3]+\\.\\s")).filter { it.isNotBlank() }
+        responseArr = responseArr.drop(1)
+
+        val result = responseArr.joinToString("\n")
+
+        checkinPanel.setCommitMessage(result)
     }
 
     private fun readConvicRegex(project: Project): String? {
@@ -65,30 +69,22 @@ class GitRecoAction : AnAction() {
 
     fun makePrompt(gitDiff: String, regex: String): String {
         return """
-        The following is the result of git diff:
+Please suggest 3 good commit messages based on the Git diff below and follow example format.
 
-        ----
-        ```
-        $gitDiff
-        ```
-        ----
+          Rules:
+            - Write exactly 3 commit messages
+            - Each message must be on a new line, prefixed with a number (1., 2., 3.)
+            - Use imperative mood (e.g., Add, Fix, Update)
+            - Keep each message under 50 characters
+            - Use the conventional commit format (feat, fix, docs, style, refactor, test, chore)
+            - Write in English
+            - follow Example Format below
 
-        Please generate a commit message that strictly matches the following regular expression:
+          Example Format:
+            ${regex}
 
-        ```
-        $regex
-        ```
-
-        Rules:
-        - Return only one line that exactly matches the regex.
-        - Use a valid Jira-style ticket (e.g., [ABC-123]).
-        - Use one of the valid types (feat, fix, etc.).
-        - Add one space after the ticket and after the colon.
-        - The subject must summarize the change clearly.
-        - Do not include any explanation, comments, or placeholders.
-
-        ✅ Example:
-        [FOO-456] fix: handle null pointer exception in login flow
+          Git diff:
+            ${gitDiff}
     """.trimIndent()
     }
 }
