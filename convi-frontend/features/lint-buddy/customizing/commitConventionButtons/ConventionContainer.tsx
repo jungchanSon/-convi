@@ -10,10 +10,10 @@ const ConventionContainer = () => {
     const {setConvention} = useConventionStore();
     const {setSignature } = useSignatureStore();
 
-    const sendGAClickEvent = () => {
-        if (typeof window !== "undefined" && Array.isArray(window.dataLayer)) {
+    const sendGAClickEvent = (name: string) => {
+        if (typeof window !== "undefined" ) {
             gtag('event', 'click', {
-                'event_category': 'downloadCommitHook',
+                'event_category': name,
             });
         } else {
             console.log("Skipping GA event: dataLayer not available");
@@ -42,7 +42,7 @@ const ConventionContainer = () => {
                 onClick={() => {
                     setConvention(ConventionType.CUSTOMIZE)
                     setSignature([])
-                    sendGAClickEvent("직접커스터마이징")
+                    sendGAClickEvent("커스터마이징")
                 }}
             > 직접 커스터마이징하기</Button>
         </div>

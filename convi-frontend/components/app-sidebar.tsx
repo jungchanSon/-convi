@@ -36,7 +36,7 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const clickNav = (name: string) => {
-    if (typeof window !== "undefined" && typeof gtag === "function" && Array.isArray(window.dataLayer)) {
+    if (typeof window !== "undefined" && typeof gtag === "function") {
         gtag('event', 'click', {
           'event_category': 'nav-button',
           'nav-button': name
