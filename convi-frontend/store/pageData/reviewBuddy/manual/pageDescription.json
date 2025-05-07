@@ -7,56 +7,57 @@
       "Title": "1. 사진 속 순서대로 Gitlab project runner를 생성해주세요.",
       "Image": "/reviewBuddy/img.png",
       "Description": [
-        "cicd runner cmd"
       ]
     },
     {
-      "Title": "2. runner의 이름을 작성 후, 생성해주세요.",
+      "Title": "",
       "Image": "/reviewBuddy/img_1.png",
       "Description": [
       ]
     },
     {
-      "Title": "3. 이후 나오는 runner token을 환경변수로 등록해주세요.",
+      "Title": "2. 이후 나오는 runner token을 환경변수로 등록해주세요.",
       "Image": "/reviewBuddy/img_2.png",
       "Description": [
         "export gitlab_runner_token={token}"
       ]
     },
     {
-      "Title": "4. 아래 2개의 명령어를 순서대로 실행해주세요.",
+      "Title": "3. 아래 2개의 명령어를 EC2에서 순서대로 실행해주세요.",
       "Description": [
         "runner-cmd-1",
         "runner-cmd-2"
       ]
     },
     {
-      "Title": "5. 레포지토리의 액세스 토큰을 발급해주세요.",
+      "Title": "4. 레포지토리의 액세스 토큰을 발급해주세요.",
       "Image": "/reviewBuddy/img_3.png",
       "Description": [
-        "MR에 리뷰 업로드에 대한 권한이 필요해요."
+        "※ MR에 리뷰 업로드에 대한 권한이 필요해요."
       ]
     },
     {
-      "Title": "6. 레포지토리의 액세스 토큰을 발급해주세요.",
+      "Title": "",
       "Image": "/reviewBuddy/img_4.png",
       "Description": [
       ]
     },
     {
-      "Title": "7. 6에서 발급한 엑새스 토큰을 CI/CD 환경변수로 등록해주세요.",
+      "Title": "5. 4에서 발급한 access token을 CI/CD 환경 변수에 등록해주세요.",
       "Image": "/reviewBuddy/img_5.png",
       "Description": [
+        "※ 변수의 key 값은 GITLAB_TOKEN 으로 지정해주세요."
       ]
     },
     {
-      "Title": "8. 변수의 key 값은 GITLAB_TOKEN 으로 지정해주세요.",
+      "Title": "6. 변수의 key 값은 GITLAB_TOKEN 으로 지정해주세요.",
       "Image": "/reviewBuddy/img_6.png",
       "Description": [
+        "※ 변수의 key 값은 GITLAB_TOKEN 으로 지정해주세요."
       ]
     },
     {
-      "Title": "9. 아래 버튼을 눌러, 파일을 깃랩 레포지토리 최상위에 넣어주세요.",
+      "Title": "7. 아래 버튼을 눌러, 파일을 깃랩 레포지토리 최상위에 넣어주세요.",
       "Image": "/reviewBuddy/img_7.png",
       "Description": [
         "ci"

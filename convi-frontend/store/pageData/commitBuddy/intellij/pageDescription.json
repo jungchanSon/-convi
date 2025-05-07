@@ -12,6 +12,12 @@
     },
     {
       "Title": "2. intellij 플러그인에서 Install Plugin from Disk 버튼을 클릭해주세요.",
+      "Image": "/commitBuddyIntellij/img_4.png",
+      "Description": [
+      ]
+    },
+    {
+      "Title": "",
       "Image": "/commitBuddyIntellij/img.png",
       "Description": [
       ]

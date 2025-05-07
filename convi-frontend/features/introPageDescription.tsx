@@ -63,7 +63,7 @@ const IntroPageDescription = ({
                         <h2 className="text-xl font-semibold mx-3 mb-2">
                           {item.Title}
                         </h2>
-                        {item.Image && <Image src={item.Image} alt={item.Title} height={200} width={600}/>}
+                        {item.Image && <Image className={"border-black border-2"} src={item.Image} alt={item.Title} height={200} width={600}/>}
                         {item.Description.map((item, key2) => {
                           if(item === "intellij plugin download") {
                             return <Button className={"mx-5"} key={key}>
@@ -77,7 +77,7 @@ const IntroPageDescription = ({
                             return <CopyBlock codeBlock={true} text={runnerCmd2} language={"sh"} key={key} />
                           } else if(item === "ci"){
                             return <Button className={"mx-2 my-2"} key={key}>
-                              <a href={"https://docs.google.com/uc?export=download&id=1jmVsdccAYA7o10lfPCCBBv3QJ9S9pH-O&confirm=t"}>intellij
+                              <a href={"https://docs.google.com/uc?export=download&id=1jmVsdccAYA7o10lfPCCBBv3QJ9S9pH-O&confirm=t"}>
                                 ci 파일 다운로드
                               </a>
                             </Button>
