@@ -11,4 +11,4 @@ mr_review:
     - merge_requests
   script:
     - ollama serve &
-    - python ~/review_buddy.py OpenAI
+    - python /app/review_buddy.py OpenAI
