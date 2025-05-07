@@ -67,7 +67,7 @@ const IntroPageDescription = ({
                         {item.Description.map((item, key2) => {
                           if(item === "intellij plugin download") {
                             return <Button className={"mx-5"} key={key}>
-                              <a href={"https://docs.google.com/uc?export=download&id=1rxGdV7994qG6p7xW98RQgZl9QGeSWcih&confirm=t"}>intellij
+                              <a href={"https://docs.google.com/uc?export=download&id=1hPe-lywjfgb3U4TgztaPFbacBUIekhJF&confirm=t"}>intellij
                                 플러그인 다운로드
                               </a>
                             </Button>
