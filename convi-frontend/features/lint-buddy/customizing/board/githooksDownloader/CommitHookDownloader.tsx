@@ -13,7 +13,7 @@ const CommitHookDownloader = ({text, disable} : CommitHookDownloaderProp) => {
     const zip = new JSZip
 
     const sendGAClickEvent = () => {
-        if (typeof window !== "undefined" && Array.isArray(window.dataLayer)) {
+        if (typeof window !== "undefined") {
             gtag('event', 'click', {
                 'event_category': 'downloadCommitHook',
             });
