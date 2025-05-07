@@ -8,9 +8,9 @@ import CommitSignatureSampleButton from "@/features/lint-buddy/customizing/board
 import { useSignatureStore } from "@/store/lintBuddy/signature-store";
 import { Button } from "@/components/ui/button";
 import CommitHookDownloader from "@/features/lint-buddy/customizing/board/githooksDownloader/CommitHookDownloader";
-//import PopupModal from "@/features/lint-buddy/customizing/popup/PopupModal";
-//import TestingPopupContent from "@/features/lint-buddy/customizing/popup/TestingPopupContent";
-//import SettingsPopupContent from "@/features/lint-buddy/customizing/popup/SettingsPopupCentent";
+import PopupModal from "@/features/lint-buddy/customizing/popup/PopupModal";
+import TestingPopupContent from "@/features/lint-buddy/customizing/popup/TestingPopupContent";
+import SettingsPopupContent from "@/features/lint-buddy/customizing/popup/SettingsPopupCentent";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 
@@ -18,7 +18,8 @@ const ConventionCustomizeBoard = () => {
   const { signatureList, addSignature, removeAll } = useSignatureStore();
   const [isTestOpen, setIsTestOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
+  const combinedRegexPattern = signatureList.map(item => item.regex).join("");
+  const combinedRegexExample = signatureList.map(item => item.sample).join("");
   const [, drop] = useDrop({
     accept: 'signature',
     drop: (item: CommitSignatureType, monitor) => {
@@ -74,7 +75,7 @@ const ConventionCustomizeBoard = () => {
 
       <div className="flex flex-row justify-between border-t-1 border-l-1 border-gray-200 w-full px-1">
         <div className="flex flex-row">
-          {/* <Button
+          <Button
             className={"mx-1 border-1 text-black bg-white border-[#9bd3ce] hover:bg-[#9bd3ce] my-1"}
             onClick={() => setIsSettingsOpen(true)}
           >
@@ -85,7 +86,7 @@ const ConventionCustomizeBoard = () => {
             onClick={() => setIsTestOpen(true)}
           >
             테스트
-          </Button> */}
+          </Button>
         </div>
         <div className="flex flex-row place-items-center">
           <Button className={"mx-1 border-1 text-black bg-white border-[#9bd3ce] hover:bg-[#9bd3ce] my-1"} onClick={() => removeAll()}> 모두 지우기 </Button>
@@ -94,13 +95,13 @@ const ConventionCustomizeBoard = () => {
       </div>
 
         {/* Test Modal */}
-        {/* <PopupModal
-            title="Test Popup"
-            description="sample string을 regex로 검사합니다."
+        <PopupModal
+            title="정규식 테스트"
+            description="아래 예제들을 넣고, 정규식이 잘 매칭되는지 확인해보세요."
             open={isTestOpen}
             onOpenChange={setIsTestOpen}
             >
-            <TestingPopupContent regexPattern="your-regex-here" />
+        <TestingPopupContent regexPattern={combinedRegexPattern} regexExample ={combinedRegexExample}/>
         </PopupModal>
 
         <PopupModal
@@ -110,7 +111,7 @@ const ConventionCustomizeBoard = () => {
         onOpenChange={setIsSettingsOpen}
         >
         <SettingsPopupContent />
-        </PopupModal> */}
+        </PopupModal>
     </div>
   );
 };
