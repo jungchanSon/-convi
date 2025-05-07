@@ -36,11 +36,15 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const clickNav = (name: string) => {
-    gtag('event', 'click', {
-      'event_category': 'nav-button',
-      'nav-button': name
-    });
-  }
+    if (typeof window !== "undefined" && typeof gtag === "function" && Array.isArray(window.dataLayer)) {
+        gtag('event', 'click', {
+          'event_category': 'nav-button',
+          'nav-button': name
+        });
+    } else {
+        console.log(`[debug] Skipping GA event (nav-button: ${name}) — gtag or dataLayer not available`);
+    }
+}
 
   return (
     <Sidebar {...props}>

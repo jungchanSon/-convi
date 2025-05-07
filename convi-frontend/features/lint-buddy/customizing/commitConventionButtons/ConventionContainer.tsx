@@ -10,10 +10,14 @@ const ConventionContainer = () => {
     const {setConvention} = useConventionStore();
     const {setSignature } = useSignatureStore();
 
-    const sendGAClickEvent = (name: string) => {
-        gtag('event', 'click', {
-            'clickLintTypes': name,
-        });
+    const sendGAClickEvent = () => {
+        if (typeof window !== "undefined" && Array.isArray(window.dataLayer)) {
+            gtag('event', 'click', {
+                'event_category': 'downloadCommitHook',
+            });
+        } else {
+            console.log("Skipping GA event: dataLayer not available");
+        }
     }
 
     return (
