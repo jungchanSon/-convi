@@ -13,9 +13,13 @@ const CommitHookDownloader = ({text, disable} : CommitHookDownloaderProp) => {
     const zip = new JSZip
 
     const sendGAClickEvent = () => {
-        gtag('event', 'click', {
-            'event_category': 'downloadCommitHook',
-        });
+        if (typeof window !== "undefined" && Array.isArray(window.dataLayer)) {
+            gtag('event', 'click', {
+                'event_category': 'downloadCommitHook',
+            });
+        } else {
+            console.log("Skipping GA event: dataLayer not available");
+        }
     }
 
     function downloadCommitHook() {
