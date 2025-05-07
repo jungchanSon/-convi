@@ -21,5 +21,4 @@ RUN ollama serve & \
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
 WORKDIR /app
-COPY entrypoint.sh .
 COPY review_buddy.py .

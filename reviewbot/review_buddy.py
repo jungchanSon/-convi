@@ -47,13 +47,13 @@ def getDiffFromMR(host, projectId, state, privateToken, contentType, iid):
 def getOpenedMR(host, projectId, state, privateToken, contentType):
     requestURL = f"{host}/{projectId}/merge_requests?{state}"
     header = {"PRIVATE-TOKEN": privateToken, "Content-Type": contentType}
-    get = requests.get(requestURL, headers = header)
+    requests.get(requestURL, headers = header)
 
 def postMRDiscussion(host, projectId, key, iid, content):
     requestURL = f"{host}/{projectId}/merge_requests/{iid}/discussions"
     json_body = json.dumps({"body": content}, ensure_ascii=False, indent=2)
 
-    post = requests.post(
+    requests.post(
         requestURL,
         headers={"PRIVATE-TOKEN": key, "Content-Type": "application/json"},
         data=json_body,
@@ -63,19 +63,18 @@ def main():
     HOST = "https://lab.ssafy.com/api/v4/projects"
     PROJECT_ID = os.getenv("CI_PROJECT_ID")
     STATE = "state=opened"
-    PRIVATE_TOKEN = os.environ.get("GITLAB_TOKEN")
+    GITLAB_TOKEN = os.environ.get("GITLAB_TOKEN")
     CONTENT_TYPE = "application/json"
     IID = os.getenv("CI_MERGE_REQUEST_IID")
-    OEPN_AI_KEY = os.getenv("OPEN_AI_KEY")
+    OEPN_AI_KEY = "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"
     model = sys.argv[1] if len(sys.argv) > 1 else "llama3.2"
-    REVIEW_BUDDY = os.getenv("REVIEW_BUDDY")
 
     if not isSupportModel(model):
         model = "llama3.2"
 
-    changes = getDiffFromMR(HOST, PROJECT_ID, STATE, PRIVATE_TOKEN, CONTENT_TYPE, IID)
+    changes = getDiffFromMR(HOST, PROJECT_ID, STATE, GITLAB_TOKEN, CONTENT_TYPE, IID)
     review_result = review(changes, model, OEPN_AI_KEY)
-    postMRDiscussion(HOST, PROJECT_ID, REVIEW_BUDDY, IID, review_result)
+    postMRDiscussion(HOST, PROJECT_ID, GITLAB_TOKEN, IID, review_result)
 
 def isSupportModel(model):
     return model == "llama3.2" or model == "OpenAI"
