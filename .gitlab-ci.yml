@@ -7,8 +7,6 @@ mr_review:
   variables:
     CI_PROJECT_ID: $CI_PROJECT_ID
     GITLAB_TOKEN: $GITLAB_TOKEN
-    OPEN_AI_KEY: $OPEN_AI_KEY
-    REVIEW_BUDDY: $REVIEW_BUDDY
   only:
     - merge_requests
   script:
