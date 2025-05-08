@@ -34,7 +34,7 @@ class GitRecoAction : AnAction() {
                     return
                 }
                 val prompt = PromptGenerator.generatePrompt(gitDiff, regex)
-                println(prompt)
+
                 val response = try {
                     llmClient.request(prompt)
                 } catch (e: Exception) {
