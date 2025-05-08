@@ -66,19 +66,25 @@ const IntroPageDescription = ({
                         {item.Image && <Image className={"border-black border-2"} src={item.Image} alt={item.Title} height={200} width={600}/>}
                         {item.Description.map((item, key2) => {
                           if(item === "intellij plugin download") {
-                            return <Button className={"mx-5"} key={key}>
+                            return <Button className={"mx-5"} key={key2}>
                               <a href={"https://docs.google.com/uc?export=download&id=1hPe-lywjfgb3U4TgztaPFbacBUIekhJF&confirm=t"}>intellij
                                 플러그인 다운로드
                               </a>
                             </Button>
                           } else if(item === "runner-cmd-1"){
-                            return <CopyBlock codeBlock={true} text={runnerCmd1} language={"sh"}  key={key} />
+                            return <CopyBlock codeBlock={true} text={runnerCmd1} language={"sh"}  key={key2} />
                           } else if(item === "runner-cmd-2") {
-                            return <CopyBlock codeBlock={true} text={runnerCmd2} language={"sh"} key={key} />
+                            return <CopyBlock codeBlock={true} text={runnerCmd2} language={"sh"} key={key2} />
                           } else if(item === "ci"){
-                            return <Button className={"mx-2 my-2"} key={key}>
+                            return <Button className={"mx-2 my-2"} key={key2}>
                               <a href={"https://docs.google.com/uc?export=download&id=1jmVsdccAYA7o10lfPCCBBv3QJ9S9pH-O&confirm=t"}>
                                 ci 파일 다운로드
+                              </a>
+                            </Button>
+                          } else if (item === "ollama download"){
+                            return <Button className={"mx-2 my-2"} key={key2}>
+                              <a href={"https://ollama.com/download"}>
+                                ollama 다운로드
                               </a>
                             </Button>
                           }

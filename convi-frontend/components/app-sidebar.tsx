@@ -77,7 +77,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild onClick={() => clickNav(item.title)}>
                           {
-                            item.url && <Link href={item.url}>{item.title}</Link>
+                            item.url && <Link href={item.url}>&nbsp;&nbsp;{item.title}</Link>
                           }
                         </SidebarMenuButton>
                       </SidebarMenuItem>
