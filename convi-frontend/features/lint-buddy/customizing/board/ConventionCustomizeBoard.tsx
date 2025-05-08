@@ -75,17 +75,17 @@ const ConventionCustomizeBoard = () => {
 
       <div className="flex flex-row justify-between border-t-1 border-l-1 border-gray-200 w-full px-1">
         <div className="flex flex-row">
-          <Button
-            className={"mx-1 border-1 text-black bg-white border-[#9bd3ce] hover:bg-[#9bd3ce] my-1"}
-            onClick={() => setIsSettingsOpen(true)}
-          >
-            설정
-          </Button>
+          {/*<Button*/}
+          {/*  className={"mx-1 border-1 text-black bg-white border-[#9bd3ce] hover:bg-[#9bd3ce] my-1"}*/}
+          {/*  onClick={() => setIsSettingsOpen(true)}*/}
+          {/*>*/}
+          {/*  설정*/}
+          {/*</Button>*/}
           <Button
             className={"mx-1 border-1 text-black bg-white border-[#9bd3ce] hover:bg-[#9bd3ce] my-1"}
             onClick={() => setIsTestOpen(true)}
           >
-            테스트
+            린트 테스트
           </Button>
         </div>
         <div className="flex flex-row place-items-center">
