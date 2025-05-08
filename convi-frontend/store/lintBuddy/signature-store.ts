@@ -1,5 +1,6 @@
 import {create} from "zustand/react";
 import CommitSignatureType from "@/features/lint-buddy/customizing/board/CommitSignatureType";
+import * as Regex from "@/features/lint-buddy/customizing/signatureRegex/enum/TypeRegex";
 
 export type SignatureState = {
     signatureList: CommitSignatureType[]
@@ -51,6 +52,8 @@ export const useSignatureStore = create<SignatureStore>((set) => ({
                 }
             }
     }}),
+
+    
 
     removeSignature:  (id: number) => set((state) => ({
         signatureList: state.signatureList.filter((_, index) => index !== id),

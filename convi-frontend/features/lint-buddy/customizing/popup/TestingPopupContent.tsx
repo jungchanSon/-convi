@@ -47,7 +47,7 @@ const TestingPopupContent = ({ regexPattern, regexExample }: TestingPopupContent
     if (results.some((r) => r === true)) return "⚠️ 부분적으로 맞았습니다.";
     return "";
   };
-
+  const requiresMultiline = regexPattern.includes("\\n");
   return (
     <Card className="p-4 space-y-6">
       {/* 상단: 예제 안내 */}
@@ -106,17 +106,26 @@ const TestingPopupContent = ({ regexPattern, regexExample }: TestingPopupContent
               : result === false
               ? "border-red-400"
               : "border-gray-300";
-
-          return (
-            <div key={index} className="space-y-1">
-              <Input
-                className={`border ${borderClass}`}
-                placeholder={`Example ${index + 1}`}
-                value={example}
-                onChange={(e) => updateExample(index, e.target.value)}
-              />
-            </div>
-          );
+              return (
+                <div key={index} className="space-y-1">
+                  {requiresMultiline ? (
+                    <textarea
+                      className={`border ${borderClass} w-full p-2 rounded`}
+                      placeholder={`Example ${index + 1}`}
+                      rows={3}
+                      value={example}
+                      onChange={(e) => updateExample(index, e.target.value)}
+                    />
+                  ) : (
+                    <Input
+                      className={`border ${borderClass}`}
+                      placeholder={`Example ${index + 1}`}
+                      value={example}
+                      onChange={(e) => updateExample(index, e.target.value)}
+                    />
+                  )}
+                </div>
+              );
         })}
       </CardContent>
 
