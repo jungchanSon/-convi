@@ -47,7 +47,7 @@ def requestOllama(prompt):
 
 def requestOpenAI(prompt, key):
     print("LLM : GPT-4")
-    return ChatOpenAI(api_key=key, model_name="gpt-4", max_tokens=4000).invoke(prompt).content
+    return ChatOpenAI(api_key=key, model_name="gpt-4o", max_tokens=4000).invoke(prompt).content
 
 def review(diff, model, key):
     prompt = createPrompt(diff)
@@ -137,13 +137,12 @@ def main():
         model = "llama3.2"
 
     changes = getDiffFromMR(HOST, PROJECT_ID, STATE, GITLAB_TOKEN, CONTENT_TYPE, IID)
+    diff_text = "\n".join(c["diff"] for c in changes)
     
     if RAG_FLAG == "rag":
-        diff_text = "\n".join(c["diff"] for c in changes)
         db = updateRagIndex(changes)
         review_result = getRagReview(diff_text, model, OPEN_AI_KEY, db)
     else:
-        diff_text = "\n".join(c["diff"] for c in changes)
         review_result = review(diff_text, model, OPEN_AI_KEY)
 
     postMRDiscussion(HOST, PROJECT_ID, REVIEW_BUDDY, IID, review_result)
