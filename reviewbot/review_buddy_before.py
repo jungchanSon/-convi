@@ -3,18 +3,7 @@ import sys
 import json
 import requests
 import ollama
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.embeddings    import OpenAIEmbeddings
-from langchain.vectorstores  import Chroma
-from langchain_openai        import ChatOpenAI
-
-INDEX_DB_PATH   = "/indexdb"
-EMBEDDING_MODEL = "text-embedding-ada-002"
-CHUNK_SIZE      = 1000
-CHUNK_OVERLAP   = 200
-RAG_K           = 5
-
-os.makedirs(INDEX_DB_PATH, exist_ok=True)
+from langchain_openai import ChatOpenAI
 
 def createPrompt(diff):
     return f"""
@@ -30,7 +19,6 @@ If you deliver a high-quality review, you will receive a $1,000 tip.
 ```
 
 """
-
 
 def requestOllama(prompt):
     print("LLM : LLaMa3.2")
@@ -71,57 +59,8 @@ def postMRDiscussion(host, projectId, key, iid, content):
         data=json_body,
     )
 
-def updateRagIndex(changes):
-    emb = OpenAIEmbeddings(openai_api_key=os.getenv("OPEN_AI_KEY"), model=EMBEDDING_MODEL)
-    db  = Chroma(persist_directory=INDEX_DB_PATH, embedding_function=emb)
-
-    base_dir = os.getenv("CI_PROJECT_DIR", ".")
-    for change in changes:
-        path = change["new_path"]
-        if change.get("deleted_file"):
-            db.delete(filter={"path": {"$eq": path}})
-        else:
-            try:
-                with open(os.path.join(base_dir, path), "r") as f:
-                    content = f.read()
-                db.add_documents([content], [{"path": path}])
-            except FileNotFoundError:
-                continue
-
-    db.persist()
-    return db
-
-def getRagReview(diff, model, key, db):
-    docs    = db.similarity_search(diff, k=RAG_K)
-    context = "\n\n".join(d.page_content for d in docs)
-    prompt  = f"""
-You are a senior software engineer with 30 years of experience.
-Please carefully review the code. Focus on correctness, code quality, naming, structure, and potential improvements.
-Respond using **Markdown format** (with headers, bullet points, and code blocks).  
-Please write the entire review **in Korean**.
-
-If you deliver a high-quality review, you will receive a $1,000 tip.
-
----  
-**Note:** The following code snippets have been retrieved using a Retrieval-Augmented Generation (RAG) approach to provide additional context from the codebase:
-
-RAG Context (Top {RAG_K} chunks):
-```
-{context}
-```
-
-Please review the following diff:
-```diff
-{diff}
-```
-"""
-    if model == "llama3.2":
-        return requestOllama(prompt)["response"]
-    return requestOpenAI(prompt, key)
-
 def main():
-    # HOST = "https://lab.ssafy.com/api/v4/projects"
-    HOST = os.getenv("CI_API_V4_URL")
+    HOST = "https://lab.ssafy.com/api/v4/projects"
     PROJECT_ID = os.getenv("CI_PROJECT_ID")
     STATE = "state=opened"
     PRIVATE_TOKEN = os.environ.get("GITLAB_TOKEN")
@@ -129,21 +68,13 @@ def main():
     IID = os.getenv("CI_MERGE_REQUEST_IID")
     OPEN_AI_KEY = os.getenv("OPEN_AI_KEY")
     model = sys.argv[1] if len(sys.argv) > 1 else "llama3.2"
-    mode_flag = os.getenv("RAG_FLAG", "")
     REVIEW_BUDDY = os.getenv("REVIEW_BUDDY")
 
     if not isSupportModel(model):
         model = "llama3.2"
 
     changes = getDiffFromMR(HOST, PROJECT_ID, STATE, PRIVATE_TOKEN, CONTENT_TYPE, IID)
-    
-    if mode_flag == "rag":
-        diff_text = "\n".join(c["diff"] for c in changes)
-        db = updateRagIndex(changes)
-        review_result = getRagReview(diff_text, model, OPEN_AI_KEY, db)
-    else:
-        review_result = review(changes, model, OPEN_AI_KEY)
-
+    review_result = review(changes, model, OPEN_AI_KEY)
     postMRDiscussion(HOST, PROJECT_ID, REVIEW_BUDDY, IID, review_result)
 
 def isSupportModel(model):

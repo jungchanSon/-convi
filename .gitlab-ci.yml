@@ -1,16 +1,21 @@
 stages:
   - review
 
+variables:
+  CI_PROJECT_ID: $CI_PROJECT_ID
+  GITLAB_TOKEN: $GITLAB_TOKEN
+  OPEN_AI_KEY: $OPEN_AI_KEY
+  REVIEW_BUDDY: $REVIEW_BUDDY
+
+  # 리뷰 모델과 RAG 사용 여부
+  REVIEW_MODEL: "OpenAI"   # llama3.2 도 가능
+  USE_RAG: "rag"    # "rag" 로 설정하면 RAG 모드로 동작
+
 mr_review:
   stage: review
   image: rnrmf/mr-review-bot:latest
-  variables:
-    CI_PROJECT_ID: $CI_PROJECT_ID
-    GITLAB_TOKEN: $GITLAB_TOKEN
-    OPEN_AI_KEY: $OPEN_AI_KEY
-    REVIEW_BUDDY: $REVIEW_BUDDY
   only:
     - merge_requests
   script:
     - ollama serve &
-    - python ~/review_buddy.py OpenAI
+    - python ~/review_buddy.py $REVIEW_MODEL $RAG_FLAG

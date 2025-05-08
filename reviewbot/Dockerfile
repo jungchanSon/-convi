@@ -10,7 +10,10 @@ RUN apt-get update && apt-get install -y \
   coreutils \
   && rm -rf /var/lib/apt/lists/*
 
-RUN pip install requests ollama langchain langchain-community langchain-openai
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# RUN pip install requests ollama langchain langchain-community langchain-openai
 
 RUN curl -fsSL https://ollama.com/install.sh | bash
 
@@ -21,5 +24,4 @@ RUN ollama serve & \
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
 WORKDIR /app
-COPY entrypoint.sh .
 COPY review_buddy.py .

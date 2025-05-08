@@ -1,5 +1,0 @@
-FROM ollama/ollama
-
-RUN ollama pull phi:2
-
-CMD ["sh", "-c", "ollama serve"]
