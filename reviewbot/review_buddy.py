@@ -14,6 +14,14 @@ CHUNK_SIZE      = 1000
 CHUNK_OVERLAP   = 200
 RAG_K           = 5
 
+CI_API_V4_URL      = os.getenv("CI_API_V4_URL")
+CI_PROJECT_ID      = os.getenv("CI_PROJECT_ID")
+CI_MR_IID          = os.getenv("CI_MERGE_REQUEST_IID")
+GITLAB_TOKEN       = os.getenv("GITLAB_TOKEN")
+OPEN_AI_KEY        = os.getenv("OPEN_AI_KEY")
+REVIEW_BUDDY_TOKEN = os.getenv("REVIEW_BUDDY")
+RAG_FLAG           = os.getenv("RAG_FLAG", "")
+
 os.makedirs(INDEX_DB_PATH, exist_ok=True)
 
 def createPrompt(diff):
@@ -72,7 +80,7 @@ def postMRDiscussion(host, projectId, key, iid, content):
     )
 
 def updateRagIndex(changes):
-    emb = OpenAIEmbeddings(openai_api_key=os.getenv("OPEN_AI_KEY"), model=EMBEDDING_MODEL)
+    emb = OpenAIEmbeddings(openai_api_key=OPEN_AI_KEY, model=EMBEDDING_MODEL)
     db  = Chroma(persist_directory=INDEX_DB_PATH, embedding_function=emb)
 
     base_dir = os.getenv("CI_PROJECT_DIR", ".")
@@ -82,8 +90,8 @@ def updateRagIndex(changes):
             db.delete(filter={"path": {"$eq": path}})
         else:
             try:
-                with open(os.path.join(base_dir, path), "r") as f:
-                    content = f.read()
+                with open(os.path.join(base_dir, path), "r") as file_handle:
+                    content = file_handle.read()
                 db.add_documents([content], [{"path": path}])
             except FileNotFoundError:
                 continue
@@ -121,21 +129,14 @@ Please review the following diff:
 
 def main():
     # HOST = "https://lab.ssafy.com/api/v4/projects"
-    HOST = os.getenv("CI_API_V4_URL")
-    PROJECT_ID = os.getenv("CI_PROJECT_ID")
     STATE = "state=opened"
-    PRIVATE_TOKEN = os.environ.get("GITLAB_TOKEN")
     CONTENT_TYPE = "application/json"
-    IID = os.getenv("CI_MERGE_REQUEST_IID")
-    OPEN_AI_KEY = os.getenv("OPEN_AI_KEY")
     model = sys.argv[1] if len(sys.argv) > 1 else "llama3.2"
-    mode_flag = os.getenv("RAG_FLAG", "")
-    REVIEW_BUDDY = os.getenv("REVIEW_BUDDY")
 
     if not isSupportModel(model):
         model = "llama3.2"
 
-    changes = getDiffFromMR(HOST, PROJECT_ID, STATE, PRIVATE_TOKEN, CONTENT_TYPE, IID)
+    changes = getDiffFromMR(HOST, PROJECT_ID, STATE, GITLAB_TOKEN, CONTENT_TYPE, IID)
     
     if mode_flag == "rag":
         diff_text = "\n".join(c["diff"] for c in changes)

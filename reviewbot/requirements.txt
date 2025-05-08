@@ -1,13 +1,6 @@
-# HTTP 요청
 requests>=2.31.0
-
-# Ollama Python SDK
 ollama-python>=0.2.0
-
-# LangChain 및 OpenAI 임베딩
 langchain>=0.0.270
 openai>=0.27.0
 langchain-openai>=0.4.0
-
-# ChromaDB 벡터 스토어
 chromadb>=0.3.26
