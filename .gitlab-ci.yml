@@ -9,7 +9,7 @@ variables:
 
   # 리뷰 모델과 RAG 사용 여부
   REVIEW_MODEL: "OpenAI"   # llama3.2 도 가능
-  USE_RAG: "rag"    # "rag" 로 설정하면 RAG 모드로 동작
+  RAG_FLAG: "rag"    # "rag" 로 설정하면 RAG 모드로 동작
 
 mr_review:
   stage: review
@@ -18,4 +18,4 @@ mr_review:
     - merge_requests
   script:
     - ollama serve &
-    - python ~/review_buddy.py $REVIEW_MODEL $RAG_FLAG
+    - python /app/review_buddy.py $REVIEW_MODEL $RAG_FLAG
