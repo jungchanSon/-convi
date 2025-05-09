@@ -16,10 +16,10 @@ const CommitSignatures: Record<string, CommitSignatureType[]> = {
         { name: ")", sample: ")", regex: Regex.Parenthesis.CLOSE },
         { name: "[", sample: "[", regex: Regex.Bracket.OPEN },
         { name: "]", sample: "]", regex: Regex.Bracket.CLOSE },
-        { name: "{", sample: "{", regex: Regex.Brace.OPEN },
-        { name: "}", sample: "}", regex: Regex.Brace.CLOSE },
-        { name: "\'", sample: "'", regex: Regex.SingleQuote },
-        { name: "\"", sample: "\"", regex: Regex.DoubleQuote },
+        // { name: "{", sample: "{", regex: Regex.Brace.OPEN },
+        // { name: "}", sample: "}", regex: Regex.Brace.CLOSE },
+        // { name: "\'", sample: "'", regex: Regex.SingleQuote },
+        // { name: "\"", sample: "\"", regex: Regex.DoubleQuote },
     ],
     formatting: [
         { name: " ", sample: "\u00A0", tooltip: "띄어쓰기", regex: Regex.Blank },
@@ -27,11 +27,11 @@ const CommitSignatures: Record<string, CommitSignatureType[]> = {
         { name: ":", sample: ":", regex: Regex.Colon },
         { name: "/", sample: "/", regex: Regex.Slash },
         { name: "-", sample: "-", tooltip: "대쉬", regex: Regex.dash },
-        { name: "_", sample: "_", tooltip: "밑줄", regex: Regex.Underscore },
-        { name: "#", sample: "#", regex: Regex.Hash },
+        // { name: "_", sample: "_", tooltip: "밑줄", regex: Regex.Underscore },
+        // { name: "#", sample: "#", regex: Regex.Hash },
         { name: "1~9", sample: "1~9", tooltip: "숫자", regex: Regex.Number },
         { name: ".", sample: ".", regex: Regex.Dot },
-        { name: "=", sample: "=", regex: Regex.Equal }
+        // { name: "=", sample: "=", regex: Regex.Equal }
     ],
 
     // body: [
