@@ -17,6 +17,6 @@ mr_review:
   only:
     - merge_requests
   script:
-    - echo "CI_API_V4_URL is: $CI_API_V4_URL"
+    - echo $CI_API_V4_URL
     - ollama serve &
     - python /app/review_buddy.py $REVIEW_MODEL $RAG_FLAG
