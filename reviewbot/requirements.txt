@@ -1,1 +1,7 @@
-requests
+requests>=2.32.3
+ollama>=0.4.8
+langchain>=0.1.16
+openai>=0.27.0
+langchain-openai>=0.3.16
+langchain-community>=0.0.21
+chromadb>=0.3.26
