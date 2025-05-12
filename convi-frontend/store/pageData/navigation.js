@@ -70,6 +70,10 @@ const navigation = [
     url: process.env.NEXT_PUBLIC_COMMUNITY_URL,
     items: [
       {
+        title: "문의하기",
+        url: "https://docs.google.com/forms/d/e/1FAIpQLSdC_suRrDbCePtcQikHbR0BGE3oGEXPi4froUwNMwej_tyGVg/viewform?usp=dialog"
+      },
+      {
         title: pageNavData.Community.ContributionGuide,
         url: process.env.NEXT_PUBLIC_COMMUNITY_CONTRIBUTE_GUIDE_URL
       },

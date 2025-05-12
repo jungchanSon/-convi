@@ -18,7 +18,8 @@ HOST               = os.getenv("CI_API_V4_URL")
 PROJECT_ID         = os.getenv("CI_PROJECT_ID")
 IID                = os.getenv("CI_MERGE_REQUEST_IID")
 GITLAB_TOKEN       = os.getenv("GITLAB_TOKEN")
-OPEN_AI_KEY        = os.getenv("OPEN_AI_KEY")
+# OPEN_AI_KEY        = os.getenv("OPEN_AI_KEY")
+OPEN_AI_KEY        = os.getenv("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")
 REVIEW_BUDDY       = os.getenv("REVIEW_BUDDY")
 RAG_FLAG           = os.getenv("RAG_FLAG", "")
 BASE_DIR           = "/app"
@@ -68,13 +69,13 @@ def getDiffFromMR(host, projectId, state, privateToken, contentType, iid):
 def getOpenedMR(host, projectId, state, privateToken, contentType):
     requestURL = f"{host}/{projectId}/merge_requests?{state}"
     header = {"PRIVATE-TOKEN": privateToken, "Content-Type": contentType}
-    get = requests.get(requestURL, headers = header)
+    requests.get(requestURL, headers = header)
 
 def postMRDiscussion(host, projectId, key, iid, content):
     requestURL = f"{host}/{projectId}/merge_requests/{iid}/discussions"
     json_body = json.dumps({"body": content}, ensure_ascii=False, indent=2)
 
-    post = requests.post(
+    requests.post(
         requestURL,
         headers={"PRIVATE-TOKEN": key, "Content-Type": "application/json"},
         data=json_body,

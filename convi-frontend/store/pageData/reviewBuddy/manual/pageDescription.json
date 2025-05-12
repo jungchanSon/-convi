@@ -1,24 +1,66 @@
 {
-  "PageTitle": "Lint Buddy 메뉴얼",
-  "Title": "Lint Buddy",
-  "NameDesc": "Git 컨벤션, 더 쉽고 자연스럽게",
+  "PageTitle": "Review Buddy 메뉴얼",
+  "Title": "Review Buddy",
+  "NameDesc": "GitLab에서 간편하게 MR 리뷰받기",
   "Desc": [
     {
-      "Title": "사용법 1",
-      "Image": "/file.svg",
+      "Title": "1. 사진 속 순서대로 Gitlab project runner를 생성해주세요.",
+      "Image": "/reviewBuddy/img.png",
       "Description": [
-        "Convi는 초보 개발자도 자연스럽게 Git 컨벤션을 지킬 수 있도록 돕는 AI 기반 오픈소스 도우미입니다.",
-        "IDE 플러그인, Web UI, GitLab 연동을 통해 커밋, 브랜치, MR 작성 시 컨벤션을 자동 검사하고 추천합니다.",
-        "복잡한 규칙은 Convi가 알아서! 실수 없이 일관된 협업 환경을 만들어드립니다."
       ]
     },
     {
-      "Title": "사용법 2",
-      "Image": "/file.svg",
+      "Title": "",
+      "Image": "/reviewBuddy/img_1.png",
       "Description": [
-        "Convi는 초보 개발자도 자연스럽게 Git 컨벤션을 지킬 수 있도록 돕는 AI 기반 오픈소스 도우미입니다.",
-        "IDE 플러그인, Web UI, GitLab 연동을 통해 커밋, 브랜치, MR 작성 시 컨벤션을 자동 검사하고 추천합니다.",
-        "복잡한 규칙은 Convi가 알아서! 실수 없이 일관된 협업 환경을 만들어드립니다."
+      ]
+    },
+    {
+      "Title": "2. 이후 나오는 runner token을 환경변수로 등록해주세요.",
+      "Image": "/reviewBuddy/img_2.png",
+      "Description": [
+        "export gitlab_runner_token={token}"
+      ]
+    },
+    {
+      "Title": "3. 아래 2개의 명령어를 EC2에서 순서대로 실행해주세요.",
+      "Description": [
+        "runner-cmd-1",
+        "runner-cmd-2"
+      ]
+    },
+    {
+      "Title": "4. 레포지토리의 액세스 토큰을 발급해주세요.",
+      "Image": "/reviewBuddy/img_3.png",
+      "Description": [
+        "※ MR에 리뷰 업로드에 대한 권한이 필요해요."
+      ]
+    },
+    {
+      "Title": "",
+      "Image": "/reviewBuddy/img_4.png",
+      "Description": [
+      ]
+    },
+    {
+      "Title": "5. 4에서 발급한 access token을 CI/CD 환경 변수에 등록해주세요.",
+      "Image": "/reviewBuddy/img_5.png",
+      "Description": [
+        "※ 변수의 key 값은 GITLAB_TOKEN 으로 지정해주세요."
+      ]
+    },
+    {
+      "Title": "6. 변수의 key 값은 GITLAB_TOKEN 으로 지정해주세요.",
+      "Image": "/reviewBuddy/img_6.png",
+      "Description": [
+        "※ 변수의 key 값은 GITLAB_TOKEN 으로 지정해주세요."
+      ]
+    },
+    {
+      "Title": "7. 아래 버튼을 눌러, 파일을 깃랩 레포지토리 최상위에 넣어주세요.",
+      "Image": "/reviewBuddy/img_7.png",
+      "Description": [
+        "ci"
       ]
     }
   ]

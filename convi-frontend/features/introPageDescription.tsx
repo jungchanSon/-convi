@@ -1,6 +1,9 @@
+'use client'
 import {SiteHeader} from "@/components/site-header";
 import {SidebarInset} from "@/components/ui/sidebar";
 import Image from "next/image";
+import {Button} from "@/components/ui/button";
+import {CopyBlock} from "react-code-blocks";
 
 type IntroPageDescription = {
   pageTitle: string,
@@ -21,7 +24,22 @@ const IntroPageDescription = ({
   projectNameDescription,
   descriptions
 } : IntroPageDescription) => {
+  const installRunnerCmd = "# Download the binary for your system\nsudo curl -L --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64\n\n# Give it permission to execute\nsudo chmod +x /usr/local/bin/gitlab-runner\n\n# Create a GitLab Runner user\nsudo useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bash\n\n# Install and run as a service\nsudo gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner\nsudo gitlab-runner start"
+  const runnerCmd1 = "docker run -d --name gitlab-runner --restart always \
+  -v /opt/gitlab-runner/config:/etc/gitlab-runner \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  gitlab/gitlab-runner:latest "
 
+  const runnerCmd2 = "docker exec -i gitlab-runner gitlab-runner register \
+  --non-interactive \
+  --url               \"https://lab.ssafy.com\" \
+  --registration-token ${gitlab_runner_token} \
+  --executor          \"docker\" \
+  --docker-image      \"docker:latest\" \
+  --description       \"ci-docker-runner\" \
+  --tag-list          \"docker,ci\" \
+  --run-untagged=true \
+  --locked=false"
   return (
       <SidebarInset>
         <SiteHeader siteTitle={pageTitle}/>
@@ -39,18 +57,43 @@ const IntroPageDescription = ({
                 </div>
 
                 <div className={"items-center mt-5"}>
-                  {descriptions.Desc.map( (item, key) =>
-                    <div key={key} className={"mt-5"}>
-                      <h2 className="text-xl font-semibold mx-3 mb-2">
-                        {item.Title}
-                      </h2>
-                      { item.Image && <Image src={item.Image} alt={item.Title} height={100} width={100}/>}
-                      {item.Description.map((item, key2) =>
-                        <div key={key2} className={"mx-5"}>
-                          <p className={"p-1"}> {item} </p>
-                        </div>
-                      )}
-                    </div>
+                  <hr className={"mb-5"}/>
+                  {descriptions.Desc.map((item, key) =>
+                      <div key={key} className={"mt-10"}>
+                        <h2 className="text-xl font-semibold mx-3 mb-2">
+                          {item.Title}
+                        </h2>
+                        {item.Image && <Image className={"border-black border-2"} src={item.Image} alt={item.Title} height={200} width={600}/>}
+                        {item.Description.map((item, key2) => {
+                          if(item === "intellij plugin download") {
+                            return <Button className={"mx-5"} key={key2}>
+                              <a href={"https://docs.google.com/uc?export=download&id=1hPe-lywjfgb3U4TgztaPFbacBUIekhJF&confirm=t"}>intellij
+                                플러그인 다운로드
+                              </a>
+                            </Button>
+                          } else if(item === "runner-cmd-1"){
+                            return <CopyBlock codeBlock={true} text={runnerCmd1} language={"sh"}  key={key2} />
+                          } else if(item === "runner-cmd-2") {
+                            return <CopyBlock codeBlock={true} text={runnerCmd2} language={"sh"} key={key2} />
+                          } else if(item === "ci"){
+                            return <Button className={"mx-2 my-2"} key={key2}>
+                              <a href={"https://docs.google.com/uc?export=download&id=1jmVsdccAYA7o10lfPCCBBv3QJ9S9pH-O&confirm=t"}>
+                                ci 파일 다운로드
+                              </a>
+                            </Button>
+                          } else if (item === "ollama download"){
+                            return <Button className={"mx-2 my-2"} key={key2}>
+                              <a href={"https://ollama.com/download"}>
+                                ollama 다운로드
+                              </a>
+                            </Button>
+                          }
+                              return <div key={key2} className={"mx-5"}>
+                                <p className={"p-1"}> {item} </p>
+                              </div>
+                            }
+                        )}
+                      </div>
                   )}
                 </div>
               </div>

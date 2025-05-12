@@ -14,7 +14,8 @@ const ConventionTypes = [
     },
     {
         name: "Angular", type: ConventionType.ANGULAR, value: [
-            CommitSignatures[0], CommitSignatures[9], CommitSignatures[5], CommitSignatures[2],
+            CommitSignatures[0], CommitSignatures[7], CommitSignatures[5], CommitSignatures[2],
+            CommitSignatures[4], CommitSignatures[2]
         ]
     },
     {

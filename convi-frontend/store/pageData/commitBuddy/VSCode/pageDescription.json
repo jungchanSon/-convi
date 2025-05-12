@@ -1,24 +1,37 @@
 {
-  "PageTitle": "Lint Buddy 메뉴얼",
-  "Title": "Lint Buddy",
-  "NameDesc": "Git 컨벤션, 더 쉽고 자연스럽게",
+  "PageTitle": "Commit Buddy 메뉴얼",
+  "Title": "Commit Buddy",
+  "NameDesc": "VsCode에서 간편한 커밋 추천",
   "Desc": [
     {
-      "Title": "사용법 1",
-      "Image": "/file.svg",
+      "Title": "아래 버튼을 눌러, Ollama를 설치해주세요.",
       "Description": [
-        "Convi는 초보 개발자도 자연스럽게 Git 컨벤션을 지킬 수 있도록 돕는 AI 기반 오픈소스 도우미입니다.",
-        "IDE 플러그인, Web UI, GitLab 연동을 통해 커밋, 브랜치, MR 작성 시 컨벤션을 자동 검사하고 추천합니다.",
-        "복잡한 규칙은 Convi가 알아서! 실수 없이 일관된 협업 환경을 만들어드립니다."
+        "ollama download",
+        "※ Commit Buddy는 Ollama 오픈소스를 기반으로 동작해요."
       ]
     },
     {
-      "Title": "사용법 2",
-      "Image": "/file.svg",
+      "Title": "1. visual studio code에서 extension을 들어가 주세요.",
+      "Image": "/commitBuddyVscode/img.png",
       "Description": [
-        "Convi는 초보 개발자도 자연스럽게 Git 컨벤션을 지킬 수 있도록 돕는 AI 기반 오픈소스 도우미입니다.",
-        "IDE 플러그인, Web UI, GitLab 연동을 통해 커밋, 브랜치, MR 작성 시 컨벤션을 자동 검사하고 추천합니다.",
-        "복잡한 규칙은 Convi가 알아서! 실수 없이 일관된 협업 환경을 만들어드립니다."
+      ]
+    },
+    {
+      "Title": "2. extension에서 commit-buddy를 검색 후, 설치해주세요.",
+      "Image": "/commitBuddyVscode/img_1.png",
+      "Description": [
+      ]
+    },
+    {
+      "Title": "3. Source Control 탭에서 커밋할 내역들을 Staged Changes에 올려주세욭.",
+      "Image": "/commitBuddyVscode/img_2.png",
+      "Description": [
+      ]
+    },
+    {
+      "Title": "4. Ctrl(cmd)+Shift+P를 누르고, Commit Buddy: AI 커밋 메시지 추천을 눌러주세요..",
+      "Image": "/commitBuddyVscode/img_3.png",
+      "Description": [
       ]
     }
   ]

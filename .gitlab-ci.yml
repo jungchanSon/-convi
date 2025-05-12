@@ -14,6 +14,9 @@ variables:
 mr_review:
   stage: review
   image: rnrmf/mr-review-bot:latest
+  variables:
+    CI_PROJECT_ID: $CI_PROJECT_ID
+    GITLAB_TOKEN: $GITLAB_TOKEN
   only:
     - merge_requests
   script:

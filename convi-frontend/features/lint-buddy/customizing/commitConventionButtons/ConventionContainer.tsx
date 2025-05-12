@@ -11,9 +11,13 @@ const ConventionContainer = () => {
     const {setSignature } = useSignatureStore();
 
     const sendGAClickEvent = (name: string) => {
-        gtag('event', 'click', {
-            'clickLintTypes': name,
-        });
+        if (typeof window !== "undefined" ) {
+            gtag('event', 'click', {
+                'event_category': name,
+            });
+        } else {
+            console.log("Skipping GA event: dataLayer not available");
+        }
     }
 
     return (
@@ -38,7 +42,7 @@ const ConventionContainer = () => {
                 onClick={() => {
                     setConvention(ConventionType.CUSTOMIZE)
                     setSignature([])
-                    sendGAClickEvent("직접커스터마이징")
+                    sendGAClickEvent("커스터마이징")
                 }}
             > 직접 커스터마이징하기</Button>
         </div>
