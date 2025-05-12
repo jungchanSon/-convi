@@ -59,7 +59,7 @@ def review(diff, model, key):
         return requestOpenAI(prompt, key)
 
 def getDiffFromMR(host, projectId, state, privateToken, contentType, iid):
-    requestURL = f"{host}/{projectId}/merge_requests/{iid}/changes?{state}"
+    requestURL = f"{host}/{projectId}/merge_requests/{iid}/changes"
     header = {"PRIVATE-TOKEN": privateToken, "Content-Type": contentType}
     response = requests.get(requestURL, headers = header)
     changes = response.json()["changes"]
