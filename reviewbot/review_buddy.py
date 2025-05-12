@@ -89,7 +89,7 @@ def updateRagIndex(changes):
     for change in changes:
         path = change["new_path"]
         if change.get("deleted_file"):
-            db.delete(filter={"path": {"$eq": path}})
+            db.delete(where={"path": {"$eq": path}})
         else:
             try:
                 with open(os.path.join(BASE_DIR, path), "r") as file_handle:
