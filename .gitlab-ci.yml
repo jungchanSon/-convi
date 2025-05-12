@@ -13,7 +13,7 @@ variables:
 
 mr_review:
   stage: review
-  image: rnrmf/mr-review-bot:latest
+  image: os2864/review-buddy:v0.1.0
   only:
     - merge_requests
   script:
