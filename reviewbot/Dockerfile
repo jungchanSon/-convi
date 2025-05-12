@@ -13,8 +13,6 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# RUN pip install requests ollama langchain langchain-community langchain-openai
-
 RUN curl -fsSL https://ollama.com/install.sh | bash
 
 RUN ollama serve & \
