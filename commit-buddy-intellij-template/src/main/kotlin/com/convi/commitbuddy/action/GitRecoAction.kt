@@ -19,7 +19,7 @@ import java.io.File
 class GitRecoAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.getData(CommonDataKeys.PROJECT)
-        val taskProgressDesc = "깃 메시지 추천 중..."
+        val taskProgressDesc = "Generating commit message..."
 
         val task = object : Backgroundable(project, taskProgressDesc) {
             override fun run(indicator: ProgressIndicator) {
@@ -30,7 +30,7 @@ class GitRecoAction : AnAction() {
 
                 val gitDiff = GitDiffUtil.buildGitDiff(panel.selectedChanges)
                 if (gitDiff.isBlank()) {
-                    showNotification(project, "No Changes Detected", "There are no files included for commit.", com.intellij.notification.NotificationType.WARNING)
+                    showNotification(project, "No Changes Detected", "There are no files included for commit.", NotificationType.WARNING)
                     return
                 }
                 val prompt = PromptGenerator.generatePrompt(gitDiff, regex)
