@@ -16,9 +16,9 @@ class ConviCommitOptionsDialogExtension : CommitOptionsDialogExtension {
             val graph = PropertyGraph()
             val providerProperty = graph.property(settings.selectedProvider)
             val isChatgpt = graph.property(settings.selectedProvider == "chatgpt")
+            val apiKeyProperty = graph.property(settings.chatgptApiKey)
 
             group("Convi - Commit Buddy") {
-                // ComboBox: 모델 선택 (ollama / chatgpt)
                 row("Provider:") {
                     comboBox(listOf("ollama", "chatgpt"))
                         .bindItem(providerProperty)
@@ -28,17 +28,19 @@ class ConviCommitOptionsDialogExtension : CommitOptionsDialogExtension {
                                 val value = selectedItem as? String ?: "ollama"
                                 settings.selectedProvider = value
                                 isChatgpt.set(value == "chatgpt")
-                                // 선택된 값을 직접 상태에 반영
                                 ApplicationManager.getApplication().saveSettings()
                             }
                         }
                 }
 
-                // TextField: chatgpt 선택 시에만 보이는 API token 입력창
-                row("token:") {
+                row("Api Key:") {
                     textField()
-                        .bindText(settings::chatgptApiKey)
+                        .bindText(apiKeyProperty)
                         .gap(RightGap.SMALL)
+                        .onChanged { newValue ->
+                            settings.chatgptApiKey = newValue.getText()
+                            ApplicationManager.getApplication().saveSettings()
+                        }
                 }.visibleIf(isChatgpt)
             }
         }

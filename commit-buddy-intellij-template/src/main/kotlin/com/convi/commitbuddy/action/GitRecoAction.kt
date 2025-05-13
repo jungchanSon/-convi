@@ -38,19 +38,32 @@ class GitRecoAction : AnAction() {
                 val response = try {
                     llmClient.request(prompt)
                 } catch (e: Exception) {
-                    showNotification(project, "LLM Request Failed", e.localizedMessage ?: "Unknown error", com.intellij.notification.NotificationType.ERROR)
-                    null
+                    showNotification(
+                        project,
+                        "LLM Request Failed",
+                        e.message ?: "An unknown error occurred while generating the commit message.",
+                        NotificationType.ERROR
+                    )
+                    return
                 }
 
                 if (response != null) {
-                    var message = ""
+                    var message = parseCommitMessages(response)
                     ApplicationManager.getApplication().invokeLater {
-                        message = parseCommitMessages(response)
                         panel.setCommitMessage(message)
+                        showNotification(
+                            project,
+                            "Commit Message Suggested",
+                            "A recommended commit message has been filled in. Please review or edit it before committing.",
+                            NotificationType.INFORMATION)
                     }
-                    showNotification(project, "Commit Buddy Message Applied", message, com.intellij.notification.NotificationType.INFORMATION)
                 } else {
-                    showNotification(project, "Commit Buddy Message Failed", "No response from LLM.", com.intellij.notification.NotificationType.ERROR)
+                    showNotification(
+                        project,
+                        "No Response from LLM",
+                        "No response was received from the LLM. Please try again.",
+                        NotificationType.ERROR
+                    )
                 }
             }
         }

@@ -12,7 +12,7 @@ object LlmClientFactory {
 
         return when (selected) {
             "ollama" -> OllamaClient()
-            "chatgpt" -> OpenAIClient()
+            "chatgpt" -> OpenAIClient(project)
             else -> OllamaClient() // fallback
         }
     }

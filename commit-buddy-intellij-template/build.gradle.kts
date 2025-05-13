@@ -31,6 +31,7 @@ repositories {
 
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
+    implementation("org.json:json:20231013")
     implementation ("dev.langchain4j:langchain4j:1.0.0-beta3")
     implementation ("dev.langchain4j:langchain4j-ollama:1.0.0-beta3")
     implementation ("dev.langchain4j:langchain4j-open-ai:1.0.0-beta3")
