@@ -48,7 +48,7 @@ def requestOllama(prompt):
     return ollama.generate(model="llama3.2", prompt=prompt)
 
 def requestOpenAI(prompt, key):
-    print("LLM : GPT-4")
+    print("LLM : GPT-4o")
     return ChatOpenAI(api_key=key, model_name="gpt-4o-2024-05-13", max_tokens=2048).invoke(prompt).content
 
 def review(diff, model, key):
