@@ -70,7 +70,7 @@
 
 <img src="./img/gitlab-ci-runner1.webp" alt="GitLab Runner 스크린샷" width="600" />
 
-- Gitlab Runner 생성을 위해 설정 -> CI/CD -> Runner -> New project runner 버튼을 클릭합니다.
+- Gitlab Runner 생성을 위해 <code>설정 -> CI/CD -> Runner -> New project runner</code> 버튼을 클릭합니다.
 
 <br><br>
 
@@ -181,7 +181,7 @@ docker exec -i gitlab-runner gitlab-runner register ^
 <img src="./img/gitlab-accesstoken1.webp" alt="GitLab AccessToken 발급 스크린샷" width="600" />
 
 - Runner에서 Gitlab Repository에 접근하기 위한 엑세스 토큰 발급이 필요합니다.
-- Gitlab 설정 -> 엑세스 토큰 -> 신규 토큰 추가를 통한 엑세스 토큰을 발급합니다.
+- <code>Gitlab 설정 -> 엑세스 토큰 -> 신규 토큰 추가</code>를 통한 엑세스 토큰을 발급합니다.
 
 <br><br>
 
@@ -207,7 +207,7 @@ docker exec -i gitlab-runner gitlab-runner register ^
 | `OPEN_AI_KEY`   | ▫️   | GPT-4o 리뷰를 사용할 때 입력하는 OpenAI API Key | Ollama만 쓸 경우 비워도 무방 |
 
 
-- GPT 코드 리뷰를 희망한다면 GPT OPEN API Key를 <code>OPEN_AI_KEY</code>에 Gpt Open 토큰을 저장합니다. 초기 설정은 Gpt로 되어있어 없으면 Pipeline 에러가 발생하며, Ollama를 사용 희망시 ['.gitlab-ci.yml'](4-gitlab-ci-파일-등록)를 수정해주세요
+- GPT 코드 리뷰를 희망한다면 GPT OPEN API Key를 <code>OPEN_AI_KEY</code>에 Gpt Open 토큰을 저장합니다. 초기 설정은 Gpt이므로 없으면 Pipeline 에러가 발생하니 Ollama를 사용 희망시 [.gitlab-ci.yml](#4-gitlab-ci-파일-등록)를 수정해주세요.
 
 <br><br>
 
