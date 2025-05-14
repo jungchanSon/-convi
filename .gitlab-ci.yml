@@ -7,7 +7,7 @@ variables:
   OPEN_AI_KEY: $OPEN_AI_KEY
 
   # 리뷰 모델과 RAG 사용 여부
-  REVIEW_MODEL: "OpenAI"   # "llama3.2"로 설정시 GPT-4o 리뷰 가능
+  REVIEW_MODEL: "llama3.2"   # "OpenAI"로 설정시 GPT-4o 리뷰 가능
   RAG_FLAG: "RAG"    # "" 으로 설정하면 RAG 모드로 동작
 
 mr_review:
