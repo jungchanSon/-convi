@@ -127,7 +127,6 @@ Please review the following diff:
     return requestOpenAI(prompt, key)
 
 def main():
-    # HOST = "https://lab.ssafy.com/api/v4/projects"
     STATE = "state=opened"
     CONTENT_TYPE = "application/json"
     model = sys.argv[1] if len(sys.argv) > 1 else "llama3.2"

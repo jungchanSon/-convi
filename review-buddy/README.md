@@ -8,9 +8,9 @@
 <br><br>
 
 ## Review Buddy 구성 요소
-1. Gitlab Runner
-2. .gitlab-ci.yml
-3. review-buddy Docker Image
+### 1. <code>Gitlab Runner</code>
+### 2. <code>.gitlab-ci.yml</code>
+### 3. <code>review-buddy Docker Image</code>
 
 <br>
 
@@ -93,7 +93,7 @@
 - Docker Container에서 Runner를 실행한다면 Docker 실행 환경 플랫폼을 선택하고, Step1 코드 블록 내의 token 정보를 복사합니다. 해당 정보는 아래 **<code>${gitlab_runner_token}</code>** 값으로 사용됩니다.
   - Docker Desktop의 디폴트 실행환경은 <code>Linux</code> 입니다.
   - Docker Container를 사용한다면 컨테이너 생성 및 실행 명령어는 <b>[1-2](#1-2-runner-컨테이너-생성-및-실행), [1-3](#1-3-runner-정보-최초-등록)</b>에 존재합니다.
-- 만약 Docker Container로 동작시키지 않는다면, OS 플랫폼을 선택하고 Gitlab 화면의 Step1, Step2의 명령어를 그대로 실행하면 됩니다.
+- 만약 Docker Container로 동작시키지 않는다면, OS 플랫폼을 선택하고 Gitlab 화면의 Step1, Step2, Step3의 명령어를 그대로 실행하면 됩니다.
 
 <br><br>
 
@@ -207,7 +207,7 @@ docker exec -i gitlab-runner gitlab-runner register ^
 | `OPEN_AI_KEY`   | ▫️   | GPT-4o 리뷰를 사용할 때 입력하는 OpenAI API Key | Ollama만 쓸 경우 비워도 무방 |
 
 
-- GPT 코드 리뷰를 희망한다면 GPT OPEN API Key를 <code>OPEN_AI_KEY</code>에 Gpt Open 토큰을 저장합니다. 초기 설정은 Gpt이므로 없으면 Pipeline 에러가 발생하니 Ollama를 사용 희망시 [.gitlab-ci.yml](#4-gitlab-ci-파일-등록)를 수정해주세요.
+- GPT 코드 리뷰를 희망한다면 GPT OPEN API Key를 <code>OPEN_AI_KEY</code>에 Gpt Open 토큰을 저장합니다. 초기 설정은 Gpt이므로 없으면 Pipeline 에러가 발생할 수 있으니, Ollama를 사용 희망시 [.gitlab-ci.yml](#4-gitlab-ci-파일-등록)를 수정해주세요.
 
 <br><br>
 
@@ -265,7 +265,7 @@ mr_review:
 | REVIEW_MODEL 값 | 사용 LLM | 비고 |
 |-----------------|----------|------|
 | `OpenAI`        | **GPT-4o** | OpenAI API Key 필요 |
-| `llama3.2`      | **Ollama 3.2** | 이미지에 Ollama 모델 사전 내장, Gpt AI 사용시 OpenAI API Key 필요 |
+| `llama3.2`      | **Ollama 3.2** | 이미지에 Ollama 모델 사전 내장 |
 
 <br>
 
@@ -285,3 +285,74 @@ mr_review:
 | `""`(빈 값) | 변경 코드만 사용 |
 
 ---
+
+<br>
+
+## (선택)5. Docker Image 커스터마이징
+
+```bash
+FROM ubuntu:22.04
+
+RUN apt-get update && apt-get install -y \
+  curl \
+  gnupg \
+  ca-certificates \
+  tar \
+  python3 \
+  python3-pip \
+  coreutils \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+RUN curl -fsSL https://ollama.com/install.sh | bash
+
+RUN ollama serve & \
+  sleep 5 && \
+  ollama pull llama3.2
+
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
+WORKDIR /app
+COPY review_buddy.py .
+```
+
+- `review-buddy` 기본 이미지는 review-buddy 디렉토리의 Dockerfile로 구성되어 있습니다.
+- 하지만 팀마다 쓰는 **LLM, 라이브러리, 프롬프트** 가 다르기 때문에, 필요하다면 <code>Dockerfile</code>, <code>requirements.txt</code>, <code>review_buddy.py</code>를 수정해 **전용 이미지를 빌드**할 수 있습니다.
+
+### 5-1. LLM 교체 / 추가 
+- 모델 크기에 따라 베이스 이미지를 변경하여 용량을 줄이거나 다른 LLM을 사용할 수 있습니다.
+- 예) `ollama pull mistral` 또는 `phi3:mini` 다운로드 명령을 Dockerfile에 추가  
+
+<br>
+
+### 5-2. 추가 패키지 / 도구 설치
+- 필요한 공통 라이브러리 등을 requirements.txt에 명시하여 도구를 설치할 수 있습니다.
+- 시스템 패키지가 필요하면 Dockerfile에서 `apt-get install jq`처럼 추가할 수 있습니다.
+
+<br>
+
+### 5-3. 프롬프트 및 리뷰 로직 수정  
+- 유사도 탐색 개수(K)나 토큰 길이, AI 호출 모델명을 자유롭게 변경
+- 예) `review_buddy.py`에서 `createPrompt()`를 변경하고 싶은 프롬프트로 수정 
+
+<br>
+
+### 5-4. 커스터마이징한 이미지 빌드 & 레지스트리 푸시  
+```bash
+docker build -t registry.example.com/review-buddy:1.0.0 .
+docker push registry.example.com/review-buddy:1.0.0
+```
+
+<br>
+
+### 5-5. 생성한 Image 사용으로 변경
+
+```yml
+mr_review:
+  stage: review
+  image: registry.example.com/review-buddy:1.0.0
+```
+
+- 이후 커스터마이징하여 저장된 이미지의 주소로 <code>.gitlab.yml</code>파일의 image: 값을 수정해주세요.
