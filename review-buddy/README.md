@@ -1,11 +1,11 @@
-# Review Buddy (Gitlab MergeRequest AI Code Review)
+# Review Buddy
 
 ### Review Buddy?
 - **Review Buddy**는 **Gitlab MergerRequest** 요청 시 **Gitlab Request API, AI(Ollama, GPT)** 기반으로 자동 코드 리뷰를 작성하는 서비스입니다.
     - 해당 서비스를 적용하기 위해 **Gitlab Runner** 사전 작업이 필요하며, .gitlab-ci.yml를 프로젝트 루트에 위치시켜야 합니다.
 - Gitlab Runner를 로컬 혹은 운영환경에서 동작시키고, 이후 .gitlab-ci.yml이 존재하는 Branch에서 MR 요청 시 Gitlab Pipeline을 통해 Docker Image를 실행시키며, 해당 Docker Image는 RAG 기반 AI 코드 리뷰를 제공합니다.
 
-<br>
+<br><br>
 
 ## Review Buddy 구성 요소
 1. Gitlab Runner
@@ -20,7 +20,7 @@
 
 - Gitlab Runner는 Gitlab Pipeline에서 동작이 필요한 작업을 자동으로 실행하고, 해당 정보를 Gitlab으로 보내주는 역할을 합니다.
 - 자동으로 AI 코드 리뷰를 하기 위해서는 작업을 진행할 Gitlab Runner가 **로컬 환경 혹은 운영 환경**에서 실행 중이어야 합니다.
-    - 로컬 환경도 가능하지만 Gitlab Runner가 로컬 환경에서 실행되는 경우, 현재 로컬 환경이 실행되고 있지 않고 팀원이 MR 요청을 한다면 Gitlab Runner가 실행되는 로컬 환경이 제공되지 않아 실행되지 않아 운영 환경에서 실행하는 것을 권장합니다.
+    - Gitlab Runner가 로컬 환경에서 실행되는 경우, 현재 로컬 환경이 실행되고 있지 않고 팀원이 MR 요청을 한다면 Gitlab Runner가 실행되는 로컬 환경이 제공되지 않아 실행되지 않아 운영 환경에서 실행하는 것을 권장합니다.
 - 지속적인 코드 리뷰를 원한다면 특정 환경에서 Gitlab Runner를 지속적으로 실행되어야 합니다.
 </details>
 
@@ -50,7 +50,7 @@
 - RAG는 **chromadb** 라이브러리를 사용하며, 저장된 임베딩 파일 중 **코사인 유사도 상위 5개**의 파일을 참조합니다.
 </details>
 
-<br>
+<br><br>
 
 ### 동작 순서
 1. Gitlab Runner를 로컬 환경 혹은 운영 환경에서 실행시킵니다.
@@ -60,7 +60,7 @@
 5. '.gitlab-ci.yml' 설정에 맞게 Review Buddy Docker Image를 실행시키며 완료 시 응답을 반환합니다.
 6. Gitlab Pipeline 성공시, 해당 MR에 리뷰가 성공적으로 작성됩니다.
 
-<br>
+<br><br>
 
 ## 사용 방법
 
@@ -72,13 +72,13 @@
 
 - Gitlab Runner 생성을 위해 설정 -> CI/CD -> Runner -> New project runner 버튼을 클릭합니다.
 
-<br>
+<br><br>
 
 <img src="./img/gitlab-ci-runner2.webp" alt="GitLab Runner 스크린샷2" width="600" />
 
 - Runner 실행 태그를 등록합니다. 등록된 태그의 Job을 실행하기 위한 용도입니다.
 
-<br>
+<br><br>
 
 <img src="./img/gitlab-ci-runner3.png" alt="GitLab Runner 스크린샷3" width="600" />
 
@@ -86,18 +86,16 @@
 
 | 변수명              | 용도 / 설명 | 지정 방법 |
 |--------------------|-------------|-----------|
-| `gitlab_runner_token` | GitLab **New project runner** 화면 *Step 1* 에서 복사한 Registration Token | 아래 Runner 설정 명령어에 직접 치환 <br> 혹은 Runner 사용 환경에서 `export gitlab_runner_token=…` 후 명령 실행 |
+| `gitlab_runner_token` | GitLab **New project runner** 화면 *Step 1* 에서 복사한 Registration Token | 아래 Runner 설정 명령어에 직접 치환 <br> 혹은 Runner 사용 환경에서 <code>export gitlab_runner_token=…</code> 후 명령 실행 |
 
 <br>
 
-- Docker Container에서 Runner를 실행한다면 Docker 실행 환경 플랫폼을 선택하고, Step1 코드 블록 내의 token 정보를 복사합니다. 해당 정보는 아래 **${gitlab_runner_token}** 값으로 사용됩니다.
-  - Docker Desktop의 디폴트 실행환경은 Linux 입니다.
+- Docker Container에서 Runner를 실행한다면 Docker 실행 환경 플랫폼을 선택하고, Step1 코드 블록 내의 token 정보를 복사합니다. 해당 정보는 아래 **<code>${gitlab_runner_token}</code>** 값으로 사용됩니다.
+  - Docker Desktop의 디폴트 실행환경은 <code>Linux</code> 입니다.
   - Docker Container를 사용한다면 컨테이너 생성 및 실행 명령어는 <b>[1-2](#1-2-runner-컨테이너-생성-및-실행), [1-3](#1-3-runner-정보-최초-등록)</b>에 존재합니다.
 - 만약 Docker Container로 동작시키지 않는다면, OS 플랫폼을 선택하고 Gitlab 화면의 Step1, Step2의 명령어를 그대로 실행하면 됩니다.
 
-<br>
-
-
+<br><br>
 
 ### 1-2. Runner 컨테이너 생성 및 실행
 
@@ -128,7 +126,7 @@ docker run -d --name gitlab-runner --restart always ^
 ```
 </details>
 
-<br>
+<br><br>
 
 ### 1-3. Runner 정보 최초 등록
 
@@ -136,7 +134,7 @@ docker run -d --name gitlab-runner --restart always ^
 
 
 - Runner를 Gitlab Repository와 연동하기 위한 최초 정보를 등록합니다. 사용 중인 터미널 환경에 따라 아래 명령어 중 하나를 실행하세요.
-- 해당 명령어를 Runner를 실행시킬 환경에서 실행 시, **${gitlab_runner_token}** 의 값을 Gitlab Runner Token 값으로 변경해주세요.
+- 해당 명령어를 Runner를 실행시킬 환경에서 실행 시, **<code>${gitlab_runner_token}</code>** 의 값을 Gitlab Runner Token 값으로 변경해주세요.
 
 <details>
 <summary><b>Git Bash / WSL / Linux Bash / zsh 명령어</b></summary>
@@ -166,7 +164,7 @@ docker exec -i gitlab-runner gitlab-runner register ^
 ```
 </details>
 
-<br>
+<br><br>
 
 ### 1-4. Runner 등록 성공 및 확인
 
@@ -176,7 +174,7 @@ docker exec -i gitlab-runner gitlab-runner register ^
 
 <img src="./img/gitlab-runner-created.png" alt="GitLab Runner 생성 성공 스크린샷" width="600" />
 
-<br>
+<br><br>
 
 ## 2. Gitlab Reposiotry 접근을 위한 AccessToken 발급
 
@@ -185,23 +183,23 @@ docker exec -i gitlab-runner gitlab-runner register ^
 - Runner에서 Gitlab Repository에 접근하기 위한 엑세스 토큰 발급이 필요합니다.
 - Gitlab 설정 -> 엑세스 토큰 -> 신규 토큰 추가를 통한 엑세스 토큰을 발급합니다.
 
-<br>
+<br><br>
 
 <img src="./img/gitlab-accesstoken2.webp" alt="GitLab AccessToken 발급 스크린샷2" width="600" />
 
 - 토큰 이름을 임의로 지정하고 그 외 토큰 정보를 선택하여 엑세스 토큰을 생성합니다.
 - 생성된 엑세스 토큰 정보를 복사합니다.
 
-<br>
+<br><br>
 
 ## 3. Gitlab CI/CD Variables 등록
 
 <img src="./img/gitlab-ci-variables1.webp" alt="GitLab CI/CD Variables 등록 스크린샷" width="600" />
 
 - 이후 Runner에서 코드 리뷰를 위한 환경 변수들을 등록해야합니다.
-- Gitlab 설정 -> CI/CD -> Variables -> Add variable을 통해 <code>GITLAB_TOKEN</code>으로 저장합니다.
+- <code>Gitlab 설정 -> CI/CD -> Variables -> Add variable</code>을 통해 <code>GITLAB_TOKEN</code>으로 저장합니다.
 
-<br>
+<br><br>
 
 | 변수 이름        | 필수 | 용도 / 설명 | 비고 |
 |-----------------|------|-------------|------|
@@ -211,14 +209,14 @@ docker exec -i gitlab-runner gitlab-runner register ^
 
 - GPT 코드 리뷰를 희망한다면 GPT OPEN API Key를 <code>OPEN_AI_KEY</code>에 Gpt Open 토큰을 저장합니다. 초기 설정은 Gpt로 되어있어 없으면 Pipeline 에러가 발생하며, Ollama를 사용 희망시 ['.gitlab-ci.yml'](4-gitlab-ci-파일-등록)를 수정해주세요
 
-<br>
+<br><br>
 
 <img src="./img/gitlab-ci-variables2.webp" alt="GitLab CI/CD Variables 등록 스크린샷2" width="600" />
 
-- Key 값은 위와 동일하게 각각 **GITLAB_TOKEN, OPEN_AI_KEY**로 지정하고, 토큰의 값 등록이 필요합니다.
+- Key 값은 위와 동일하게 각각 **<code>GITLAB_TOKEN</code>, <code>OPEN_AI_KEY</code>**로 지정하고, 토큰의 값 등록이 필요합니다.
     - Key의 값이 달라지면 오류가 발생합니다.
 
-<br>
+<br><br>
 
 ## 4. Gitlab CI 파일 등록
 
@@ -249,7 +247,7 @@ mr_review:
     - python /app/review_buddy.py $REVIEW_MODEL $RAG_FLAG
 ```
 
-<br>
+<br><br>
 
 ### Gitlab CI 파일 설정
 
