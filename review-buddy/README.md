@@ -82,6 +82,14 @@
 
 <img src="./img/gitlab-ci-runner3.png" alt="GitLab Runner 스크린샷3" width="600" />
 
+<br>
+
+| 변수명              | 용도 / 설명 | 지정 방법 |
+|--------------------|-------------|-----------|
+| `gitlab_runner_token` | GitLab **New project runner** 화면 *Step 1* 에서 복사한 Registration Token | 아래 Runner 설정 명령어에 직접 치환 <br> 혹은 Runner 사용 환경에서 `export gitlab_runner_token=…` 후 명령 실행 |
+
+<br>
+
 - Docker Container에서 Runner를 실행한다면 Docker 실행 환경 플랫폼을 선택하고, Step1 코드 블록 내의 token 정보를 복사합니다. 해당 정보는 아래 **${gitlab_runner_token}** 값으로 사용됩니다.
   - Docker Desktop의 디폴트 실행환경은 Linux 입니다.
   - Docker Container를 사용한다면 컨테이너 생성 및 실행 명령어는 <b>[1-2](#1-2-runner-컨테이너-생성-및-실행), [1-3](#1-3-runner-정보-최초-등록)</b>에 존재합니다.
@@ -192,6 +200,15 @@ docker exec -i gitlab-runner gitlab-runner register ^
 
 - 이후 Runner에서 코드 리뷰를 위한 환경 변수들을 등록해야합니다.
 - Gitlab 설정 -> CI/CD -> Variables -> Add variable을 통해 <code>GITLAB_TOKEN</code>으로 저장합니다.
+
+<br>
+
+| 변수 이름        | 필수 | 용도 / 설명 | 비고 |
+|-----------------|------|-------------|------|
+| `GITLAB_TOKEN`  | ✅   | **API 스코프**가 포함된 Personal Access Token. MR diff 조회·코멘트 작성에 사용 | 프로젝트 Owner 계정으로 발급 권장 |
+| `OPEN_AI_KEY`   | ▫️   | GPT-4o 리뷰를 사용할 때 입력하는 OpenAI API Key | Ollama만 쓸 경우 비워도 무방 |
+
+
 - GPT 코드 리뷰를 희망한다면 GPT OPEN API Key를 <code>OPEN_AI_KEY</code>에 Gpt Open 토큰을 저장합니다. 초기 설정은 Gpt로 되어있어 없으면 Pipeline 에러가 발생하며, Ollama를 사용 희망시 ['.gitlab-ci.yml'](4-gitlab-ci-파일-등록)를 수정해주세요
 
 <br>
@@ -234,14 +251,39 @@ mr_review:
 
 <br>
 
-### 4-1. Gitlab CI 파일 설정
+### Gitlab CI 파일 설정
 
-- 해당 yml에서 REVIEW_MODEL 종류는 다음과 같습니다.
-    - "OpenAI" : Gpt-4o
-    - "llama3.2" : Ollama 3.2
-- 해당 yml에서 RAG_FLAG를 통해 관련 코드 RAG 여부를 선택할 수 있습니다.
-    - "rag" : RAG 기반으로 동작하여 관련도가 높은 상위 5개의 임베딩 파일과 MR 코드 변경사항을 프롬프트에 추가합니다.
-    - "" : MR 코드 변경사항만을 프롬프트에 추가합니다.
-- GPT 만을 사용한 AI 리뷰를 희망하신다면 경량화된 이미지를 선택할 수 있습니다. 현재 제공되는 도커 이미지 종류는 다음과 같습니다.
-    - "os2864/review-buddy:v0.1.3" : Gpt, Ollama LLM 모두 사용하는 컨테이너 생성
-    - "os2864/review-buddy-gpt:v0.1.1" : Gpt LLM 만을 사용하는 경량 이미지
+| 구분 | 키/값 | 필수 여부 | 역할 · 동작 | 비고 |
+|------|-------|-----------|-------------|------|
+| **환경 변수** | `GITLAB_TOKEN` | ✅ | MR diff 조회·코멘트 작성용 **Personal Access Token** | `api` scope 필요 |
+| | `OPEN_AI_KEY` | 옵션 | GPT-4o 사용 시 OpenAI API Key | Ollama만 쓰면 빈 값 가능 |
+| **LLM 선택** | `REVIEW_MODEL` | 기본=`OpenAI` | 리뷰에 사용할 LLM 종류 | `OpenAI` \| `llama3.2` |
+| **RAG 사용 여부** | `RAG_FLAG` | 기본=`rag` | RAG 기반 컨텍스트 추가 여부 | `"rag"` \| `""` |
+
+<br>
+
+### REVIEW_MODEL
+
+| REVIEW_MODEL 값 | 사용 LLM | 비고 |
+|-----------------|----------|------|
+| `OpenAI`        | **GPT-4o** | OpenAI API Key 필요 |
+| `llama3.2`      | **Ollama 3.2** | 이미지에 Ollama 모델 사전 내장, Gpt AI 사용시 OpenAI API Key 필요 |
+
+<br>
+
+### Docker 이미지 목록
+| Docker 이미지                           | 내장 LLM 구성                 | 최초 pull 용량(≈) | 용도 |
+|----------------------------------------|------------------------------|------------------|------|
+| `os2864/review-buddy-gpt:v0.1.1`       | GPT-4o 전용            | 226 MB           | **GPT-4o만** 사용하는 경우 추천하는 경량 이미지 |
+| `os2864/review-buddy:v0.1.3`           | Ollama 3.2 + GPT-4o    | 3.7 GB           | GPT-4o 또는 **Ollama 3.2** 사용할 수 있는 중량 이미지 |
+
+<br>
+
+### RAG_FLAG 동작 차이
+
+| RAG_FLAG 값 | 프롬프트에 포함되는 컨텍스트 |
+|-------------|----------------------------|
+| `"rag"` | 변경 코드 + **유사도 상위 5개** 코드 조각 |
+| `""`(빈 값) | 변경 코드만 사용 |
+
+---
