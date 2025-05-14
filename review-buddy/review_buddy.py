@@ -137,7 +137,7 @@ def main():
     changes = getDiffFromMR(HOST, PROJECT_ID, STATE, GITLAB_TOKEN, CONTENT_TYPE, IID)
     diff_text = "\n".join(c["diff"] for c in changes)
     
-    if RAG_FLAG == "rag":
+    if RAG_FLAG == "RAG":
         db = updateRagIndex(changes)
         review_result = getRagReview(diff_text, model, OPEN_AI_KEY, db)
     else:
