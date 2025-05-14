@@ -19,9 +19,7 @@ PROJECT_ID         = os.getenv("CI_PROJECT_ID")
 BASE_URL           = f"{HOST}/projects/{PROJECT_ID}"
 IID                = os.getenv("CI_MERGE_REQUEST_IID")
 GITLAB_TOKEN       = os.getenv("GITLAB_TOKEN")
-# OPEN_AI_KEY        = os.getenv("OPEN_AI_KEY")
-OPEN_AI_KEY        = "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"
-REVIEW_BUDDY       = os.getenv("REVIEW_BUDDY")
+OPEN_AI_KEY        = os.getenv("OPEN_AI_KEY")
 RAG_FLAG           = os.getenv("RAG_FLAG", "")
 BASE_DIR           = "/app"
 
@@ -41,7 +39,6 @@ If you deliver a high-quality review, you will receive a $1,000 tip.
 ```
 
 """
-
 
 def requestOllama(prompt):
     print("LLM : LLaMa3.2")
@@ -72,13 +69,13 @@ def getOpenedMR(host, projectId, state, privateToken, contentType):
     header = {"PRIVATE-TOKEN": privateToken, "Content-Type": contentType}
     requests.get(requestURL, headers = header)
 
-def postMRDiscussion(host, projectId, key, iid, content):
+def postMRDiscussion(host, projectId, token, iid, content):
     requestURL = f"{BASE_URL}/merge_requests/{iid}/discussions"
     json_body = json.dumps({"body": content}, ensure_ascii=False, indent=2)
 
     requests.post(
         requestURL,
-        headers={"PRIVATE-TOKEN": key, "Content-Type": "application/json"},
+        headers={"PRIVATE-TOKEN": token, "Content-Type": "application/json"},
         data=json_body,
     )
 
@@ -147,7 +144,7 @@ def main():
     else:
         review_result = review(diff_text, model, OPEN_AI_KEY)
 
-    postMRDiscussion(HOST, PROJECT_ID, REVIEW_BUDDY, IID, review_result)
+    postMRDiscussion(HOST, PROJECT_ID, GITLAB_TOKEN, IID, review_result)
 
 def isSupportModel(model):
     return model == "llama3.2" or model == "OpenAI"
