@@ -38,7 +38,33 @@
     "configuration": {
       "title": "Commit Buddy",
       "properties": {
-        "commitBuddy.modelName": {
+        "commitBuddy.LLM": {
+          "type": "string",
+          "enum": [
+            "OpenAI",
+            "Ollama"
+          ],
+          "markdownEnumDescriptions": [
+            "OpenAI 모델 사용",
+            "LLaMa 모델 사용"
+          ],
+          "enumItemLabels": [
+            "OpenAI",
+            "Ollama"
+          ],
+          "default": "Ollama",
+          "description": "Commit Buddy에 사용할 모델"
+        },
+        "commitBuddy.openAI.ModelName": {
+          "type": "string",
+          "default": "gpt-4.1",
+          "description": "OpenAI에서 사용할 LLM 모델 이름"
+        },
+        "commitBuddy.openAI.ModelKey": {
+          "type": "string",
+          "description": "OpenAI Key"
+        },
+        "commitBuddy.ollama.ModelName": {
           "type": "string",
           "default": "llama3.2:latest",
           "description": "Ollama에서 사용할 LLM 모델 이름"
@@ -76,6 +102,7 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "openai": "^4.98.0",
     "simple-git": "^3.27.0"
   }
 }
