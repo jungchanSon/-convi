@@ -160,6 +160,8 @@ docker exec -i gitlab-runner gitlab-runner register ^
 
 <br>
 
+### 1-4. Runner 등록 성공 및 확인
+
 <img src="./img/gitlab-runner-create-success.png" alt="GitLab Runner 설정 성공 스크린샷" width="600" />
 
 <br>
