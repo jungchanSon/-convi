@@ -5,7 +5,6 @@ variables:
   CI_PROJECT_ID: $CI_PROJECT_ID
   GITLAB_TOKEN: $GITLAB_TOKEN
   OPEN_AI_KEY: $OPEN_AI_KEY
-  REVIEW_BUDDY: $REVIEW_BUDDY
 
   # 리뷰 모델과 RAG 사용 여부
   REVIEW_MODEL: "OpenAI"   # llama3.2 도 가능
