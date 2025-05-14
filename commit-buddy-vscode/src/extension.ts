@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import { isGitRepo, getStagedDiff, getWorkspacePath } from './gitUtils';
 import * as path from 'path';
 import * as fs from "fs";
+import OpenAI from 'openai';
 
 
 // 플러그인 활성화 시 호출
@@ -12,10 +13,12 @@ export function activate(context: vscode.ExtensionContext) {
 
   // 설정에서 모델 이름 가져오기 (기본값: llama3.2:latest)
   const config = vscode.workspace.getConfiguration('commitBuddy');
-  const modelName = config.get<string>('modelName') || 'llama3.2:latest';
+  const {provider, modelName, modelKey} = getLLMConfig();
   
   // 백그라운드에서 모델 미리 로드 (활성화 시 모델 준비)
-  preloadModel(modelName);
+  if(provider === "Ollama") {
+    preloadModel(modelName);
+  }
 
   // [1] Staged Diff 출력 커맨드 등록
   const diffDisposable = vscode.commands.registerCommand('commit-buddy.showStagedDiff', async () => {
@@ -121,33 +124,43 @@ export function activate(context: vscode.ExtensionContext) {
 
     // 설정에서 모델 이름 가져오기 (기본값: llama3.2:latest)
     const config = vscode.workspace.getConfiguration('commitBuddy');
-    const modelName = config.get<string>('modelName') || 'llama3.2:latest';
-    
-    const modelExists = await checkOllamaModel(modelName);
-    if (!modelExists) {
-      const installOption = '모델 설치';
-      const result = await vscode.window.showErrorMessage(
-        `${modelName} 모델이 Ollama에 설치되어 있지 않습니다.`,
-        installOption,
-        '취소'
-      );
-      
-      if (result === installOption) {
-        // 터미널 열고 모델 설치 명령어 실행
-        const terminal = vscode.window.createTerminal('Ollama Model Install');
-        terminal.sendText(`ollama pull ${modelName}`);
-        terminal.show();
+    const {provider, modelName, modelKey} = getLLMConfig();
+
+    if(provider === 'Ollama'){
+      const modelExists = await checkOllamaModel(modelName);
+      if (!modelExists) {
+        const installOption = '모델 설치';
+        const result = await vscode.window.showErrorMessage(
+          `${modelName} 모델이 Ollama에 설치되어 있지 않습니다.`,
+          installOption,
+          '취소'
+        );
+        
+        if (result === installOption) {
+          // 터미널 열고 모델 설치 명령어 실행
+          const terminal = vscode.window.createTerminal('Ollama Model Install');
+          terminal.sendText(`ollama pull ${modelName}`);
+          terminal.show();
+        }
+        return;
       }
-      return;
     }
+   
 
     try {
       // 로딩 메시지 표시
       const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+      
+      var recommendedMessages;
+
       statusBarItem.text = "$(sync~spin) 커밋 메시지 추천 중...";
       statusBarItem.show();
-
-      const recommendedMessages = await fetchLLMRecommendation(diff, modelName);
+      
+      if(provider === "OpenAI") {
+        recommendedMessages = await fetchGPTRecommendation(diff, modelName, modelKey);
+      } else {
+        recommendedMessages = await fetchOllamaRecommendation(diff, modelName);
+      }
       statusBarItem.dispose();
 
       // 각 추천 메시지를 별도의 QuickPickItem으로 변환
@@ -237,7 +250,7 @@ function readConvirc(): string|null {
   const fsPath = workspaceFolders[0].uri.fsPath;
   const convircPath = path.join(fsPath, ".convirc");
   if(!fs.existsSync(convircPath)) {
-    vscode.window.showErrorMessage(`.convirc가 없습니다. root 디렉토리에 .convirc를 추가하면, 규칙에 맞게 추천해드립니다.`);
+    vscode.window.showWarningMessage(`.convirc가 없습니다. root 디렉토리에 .convirc를 추가하면, 규칙에 맞게 추천해드립니다.`);
     return null;
   }
 
@@ -252,14 +265,15 @@ function readConvirc(): string|null {
  * @param modelName 사용할 모델 이름
  * @returns 추천 커밋 메시지 배열
  */
-async function fetchLLMRecommendation(diff: string, modelName: string): Promise<string[]> {
+async function fetchOllamaRecommendation(diff: string, modelName: string): Promise<string[]> {
   // diff 길이가 너무 길면 짧게 줄이기 (필요 시)
   const truncatedDiff = diff.length > 2000 ? diff.substring(0, 2000) + '...(truncated)' : diff;
 
   // 타임아웃 설정
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 20000); // 20초 타임아웃
-  const convirc = readConvirc();
+  const convirc = readConvirc() || '<type>: <description>';
+  const prompt = createPrompt(convirc, diff);
 
   try {
     const response = await fetch('http://localhost:11434/api/generate', {
@@ -267,23 +281,7 @@ async function fetchLLMRecommendation(diff: string, modelName: string): Promise<
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: modelName,
-        prompt: `Please suggest 3 good commit messages based on the Git diff below and follow example format.
-
-          Rules:
-            - Write exactly 3 commit messages
-            - Each message must be on a new line, prefixed with a number (1., 2., 3.)
-            - Use imperative mood (e.g., Add, Fix, Update)
-            - Keep each message under 50 characters
-            - Use the conventional commit format (feat, fix, docs, style, refactor, test, chore)
-            - Write in English
-            - follow example format below
-
-          Example regex:
-            ${convirc}
-
-          Git diff:
-            ${truncatedDiff}`,
-          
+        prompt: prompt,
         stream: false
       }),
       signal: controller.signal
@@ -344,5 +342,106 @@ async function fetchLLMRecommendation(diff: string, modelName: string): Promise<
   }
 }
 
+async function fetchGPTRecommendation(diff: string, modelName: string, modelKey: string): Promise<string[]> {
+  const client = new OpenAI({apiKey: modelKey});
+
+  // diff 길이가 너무 길면 짧게 줄이기 (필요 시)
+  const truncatedDiff = diff.length > 2000 ? diff.substring(0, 2000) + '...(truncated)' : diff;
+  
+  // 타임아웃 설정
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 20000); // 20초 타임아웃
+  const convirc = readConvirc() || '<type>: <description>';
+  const prompt = createPrompt(convirc, diff);
+
+  try {
+    const response = await client.responses.create({
+        model: modelName,
+        input: prompt,
+    });
+    
+    clearTimeout(timeoutId);
+    const data = response;
+    console.log('LLM 응답:', data);
+
+    const responseText = response.output_text;
+    let suggestions: string[] = [];
+    
+    const lines = responseText.split(/[1-3].\s/)
+      .map(line => line.trim())
+      .filter(line => line.length > 0);
+
+    lines.splice(0,1);
+    suggestions = lines;
+    // 제안 메시지가 없거나 3개 미만인 경우, 기본 메시지 추가
+    if (suggestions.length === 0) {
+      // 기본 메시지 제안
+      suggestions = [
+        'feat: Implement new feature based on changes',
+        'fix: Fix issue related to the modified code',
+        'chore: Update project dependencies and configuration'
+      ];
+      vscode.window.showWarningMessage('AI가 적절한 메시지를 생성하지 못했습니다. 기본 메시지를 제공합니다.');
+    }
+    
+    // 최대 3개의 제안으로 제한
+    return suggestions.slice(0, 3);
+  } catch (error: unknown) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      console.error('LLM 요청 타임아웃');
+      return ['응답 시간이 너무 오래 걸려 요청이 취소되었습니다.'];
+    }
+    console.error('LLM 호출 중 오류:', error);
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+type LLMConfig = {
+  provider: string,
+  modelName: string,
+  modelKey: string
+}
+
+function getLLMConfig(): LLMConfig {
+  const config = vscode.workspace.getConfiguration('commitBuddy');
+  const provider = config.get<string>("LLM") || 'Ollama';
+  
+  var modelName = '';
+  var modelKey = '';
+  
+  if(provider === "OpenAI") {
+    modelKey = config.get<string>('openAI.ModelKey') || '';
+    if(modelKey.length === 0) {
+      vscode.window.showErrorMessage("OpenAI Key값이 비어있습니다.");
+    }
+    modelName = config.get<string>('openAI.ModelName') || 'gpt-4.1';
+  } else{
+    modelName = config.get<string>('ollama.ModelName') || 'llama3.2:latest';
+  }
+
+  return {provider, modelName, modelKey} ;
+}
+
 // 플러그인 비활성화 시 호출
 export function deactivate() {}
+
+function createPrompt(convirc: string, diff: string) {
+  return `Please suggest 3 good commit messages based on the Git diff below and follow example format.
+
+          Rules:
+            - Write exactly 3 commit messages
+            - Each message must be on a new line, prefixed with a number (1., 2., 3.)
+            - Use imperative mood (e.g., Add, Fix, Update)
+            - Keep each message under 50 characters
+            - Use the conventional commit format (feat, fix, docs, style, refactor, test, chore)
+            - Write in English
+            - follow example format below
+
+          Example regex:
+            ${convirc}
+
+          Git diff:
+            ${diff}`;
+}
