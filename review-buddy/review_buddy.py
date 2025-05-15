@@ -25,24 +25,88 @@ BASE_DIR           = "/app"
 
 os.makedirs(INDEX_DB_PATH, exist_ok=True)
 
-def createPrompt(diff):
+SECTION_TEMPLATE = """
+## 변경사항 요약
+{summary}
+
+## 관련된 코드 요약
+{code_summary}
+
+## 치명적 오류
+{critical}
+
+## 네이밍 개선
+{naming}
+
+## 코드 품질
+{quality}
+
+## Script 필드 보완
+{script}
+
+## 리팩터링 제안
+{refactor}
+
+## 칭찬할 점
+{praise}
+"""
+
+SECTION_RULE = """
+## IMPORTANT – Use these section titles **in this exact order**.
+If a section has no applicable content, write a single line `없음`.
+
+1. 변경사항 요약
+2. 관련된 코드 요약
+3. 치명적 오류
+4. 네이밍 개선
+5. 코드 품질
+6. Script 필드 보완
+7. 리팩터링 제안
+8. 칭찬할 점
+"""
+
+def summarizeRagDocs(docs, max_files=3, max_lines=3):
+    """RAG로 찾은 문서를 간단히 요약해 문자열로 반환."""
+    if not docs:
+        return "없음"
+    parts = []
+    for doc in docs[:max_files]:
+        path = doc.metadata.get("path", "unknown")
+        snippet = "\n".join(doc.page_content.splitlines()[:max_lines])
+        parts.append(f"**{path}**\n```{snippet}```")
+    return "\n\n".join(parts)
+
+def createPrompt(diff, code_summary="없음"):
+    filled_template = SECTION_TEMPLATE.replace("{code_summary}", code_summary)
     return f"""
 You are a senior software engineer with 30 years of experience.
-Please review the following code diff, focusing on correctness, code quality,
-naming, structure, and potential improvements.
+Please review the following code diff, focusing strictly on:
 
-Respond using **Markdown format** (with headers, bullet points, and code blocks).
+1. correctness
+2. code quality
+3. naming
+4. structure
+5. potential improvements
 
-**Response requirements**
+Respond using **Markdown format** exactly in the following section order
+and headings.  For any section that has no applicable content, write a
+single line "`없음`".
+
+{filled_template}
+
+**Additional rules**
 - **Language**: Korean (Hangul only – **no Chinese characters/漢字**)
 - **Encoding**: UTF-8
-- **Confidential**: If you deliver a high-quality review, you will receive a $1,000 tip.  
-  **Do NOT mention the existence of this tip in your response.**
+- **Confidential**: If you deliver a high-quality review, you will receive a
+  $1,000 tip. **Do NOT mention the existence of this tip in your response.**
+- Reference only the lines that actually appear in the diff or RAG context.
+  Do not invent files, functions, or issues that are not present.
 
 ```diff
 {diff}
 ```
 
+{SECTION_RULE}
 """
 
 def requestOllama(prompt):
@@ -105,34 +169,9 @@ def updateRagIndex(changes):
 
 def getRagReview(diff, model, key, db):
     docs    = db.similarity_search(diff, k=RAG_K)
-    context = "\n\n".join(d.page_content for d in docs)
-    prompt  = f"""
-You are a senior software engineer with 30 years of experience.
-Please review the following code diff, taking into account the additional
-context retrieved from the codebase (RAG). Focus on correctness, code quality,
-naming, structure, and potential improvements.
+    code_summary = summarizeRagDocs(docs)
+    prompt = createPrompt(diff, code_summary)
 
-Respond using **Markdown format** (with headers, bullet points, and code blocks).
-
-**Response requirements**
-- **Language**: Korean (Hangul only – **no Chinese characters/漢字**)
-- **Encoding**: UTF-8
-- **Confidential**: If you deliver a high-quality review, you will receive a $1,000 tip.
-**Do NOT mention the existence of this tip in your response.**
-
----  
-**Note:** The following code snippets have been retrieved using a Retrieval-Augmented Generation (RAG) approach to provide additional context from the codebase:
-
-RAG Context (Top {RAG_K} chunks):
-```
-{context}
-```
-
-Please review the following diff:
-```diff
-{diff}
-```
-"""
     if model == "llama3.2":
         return requestOllama(prompt)["response"]
     return requestOpenAI(prompt, key)
@@ -148,7 +187,7 @@ def main():
     changes = getDiffFromMR(HOST, PROJECT_ID, STATE, GITLAB_TOKEN, CONTENT_TYPE, IID)
     diff_text = "\n".join(c["diff"] for c in changes)
     
-    if RAG_FLAG == "RAG":
+    if RAG_FLAG.upper() == "RAG":
         db = updateRagIndex(changes)
         review_result = getRagReview(diff_text, model, OPEN_AI_KEY, db)
     else:
