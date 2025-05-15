@@ -18,7 +18,7 @@ RUN curl -fsSL https://ollama.com/install.sh | bash
 RUN ollama serve & \
   sleep 5 && \
   # ollama pull llama3.2
-  ollama pull hf.co/Bllossom/llama-3.2-Korean-Bllossom-3B
+  ollama pull hf.co/Bllossom/llama-3.2-Korean-Bllossom-3B-gguf-Q4_K_M
 
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
