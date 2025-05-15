@@ -27,33 +27,12 @@ os.makedirs(INDEX_DB_PATH, exist_ok=True)
 
 def createPrompt(diff):
     return f"""
-당신은 30년 경력의 시니어 소프트웨어 엔지니어입니다.
-아래 RAG 컨텍스트와 코드 diff를 정확성, 코드 품질, 네이밍, 구조, 잠재적 개선점 순서로 리뷰하세요.
-응답은 모두 **Markdown** 을 사용해야합니다. 
-본문은 **순수 한글(UTF-8)** 로 작성(코드·식별자·라이브러리 이름만 영어 허용) 해야 하며 존댓말로 작성해주세요.
-응답 형식은 아래와 같은 방식으로 응답해야만 합니다.
+You are a senior software engineer with 30 years of experience.
+Please carefully review the code. Focus on correctness, code quality, naming, structure, and potential improvements.
+Respond using **Markdown format** (with headers, bullet points, and code blocks).  
+Please write the entire review **in Korean**.
 
-
-## 변경사항 요약
-(여기에 핵심 변경사항을 간략히 작성하세요; 없으면 '없음')
-
-## 치명적 오류
-(여기에 치명적 오류를 작성하세요; 없으면 '없음')
-
-## 네이밍 개선
-(여기에 네이밍 개선점을 작성하세요; 없으면 '없음')
-
-## 코드 품질
-(여기에 코드 품질 개선점을 작성하세요; 없으면 '없음')
-
-## 구조 개선
-(여기에 구조적 개선점을 작성하세요; 없으면 '없음')
-
-## 잠재적 개선점
-(여기에 추가 개선 아이디어를 작성하세요; 없으면 '없음')
-
-## 칭찬할 점
-(여기에 긍정적 피드백을 작성하세요; 없으면 '없음')
+If you deliver a high-quality review, you will receive a $1,000 tip.
 
 ```diff
 {diff}
@@ -125,44 +104,26 @@ def getRagReview(diff, model, key, db):
     docs    = db.similarity_search(diff, k=RAG_K)
     context = "\n\n".join(d.page_content for d in docs)
     prompt  = f"""
-당신은 30년 경력의 시니어 소프트웨어 엔지니어입니다.
-아래 RAG 컨텍스트와 코드 diff를 정확성, 코드 품질, 네이밍, 구조, 잠재적 개선점 순서로 리뷰하세요.
-응답은 모두 **Markdown** 을 사용해야합니다. 
-본문은 **순수 한글(UTF-8)** 로 작성(코드·식별자·라이브러리 이름만 영어 허용) 해야 하며 존댓말로 작성해주세요.
+You are a senior software engineer with 30 years of experience.
+Please carefully review the code. Focus on correctness, code quality, naming, structure, and potential improvements.
+Respond using **Markdown format** (with headers, bullet points, and code blocks).  
+Please write the entire review **in Korean**.
+
+If you deliver a high-quality review, you will receive a $1,000 tip.
 
 ---  
+**Note:** The following code snippets have been retrieved using a Retrieval-Augmented Generation (RAG) approach to provide additional context from the codebase:
 
-RAG 컨텍스트 (Top {RAG_K})
+RAG Context (Top {RAG_K} chunks):
 ```
 {context}
 ```
 
-응답 형식은 아래와 같은 방식으로 응답해야만 합니다.
-
-## 변경사항 요약
-(여기에 핵심 변경사항을 간략히 작성하세요; 없으면 '없음')
-
-## 치명적 오류
-(여기에 치명적 오류를 작성하세요; 없으면 '없음')
-
-## 네이밍 개선
-(여기에 네이밍 개선점을 작성하세요; 없으면 '없음')
-
-## 코드 품질
-(여기에 코드 품질 개선점을 작성하세요; 없으면 '없음')
-
-## 구조 개선
-(여기에 구조적 개선점을 작성하세요; 없으면 '없음')
-
-## 잠재적 개선점
-(여기에 추가 개선 아이디어를 작성하세요; 없으면 '없음')
-
-## 칭찬할 점
-(여기에 긍정적 피드백을 작성하세요; 없으면 '없음')
-
+Please review the following diff:
 ```diff
 {diff}
 ```
+
 """
     if model.lower().startswith("hf.co/"):
         return requestOllama(prompt, model)["response"]
