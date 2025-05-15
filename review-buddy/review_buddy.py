@@ -51,11 +51,11 @@ You are a senior software engineer with 30 years of experience.
 
 """
 
-def requestOllama(prompt):
+def requestOllama(prompt, model_name: str):
     # print("LLM : LLaMa3.2")
     # return ollama.generate(model="llama3.2", prompt=prompt)
     print(f"LLM : LLaMa 3 Open-Ko 8B")
-    return ollama.generate(model="llama3.2", prompt=prompt)
+    return ollama.generate(model=model_name, prompt=prompt)
 
 def requestOpenAI(prompt, key):
     print("LLM : GPT-4o")
@@ -64,7 +64,7 @@ def requestOpenAI(prompt, key):
 def review(diff, model, key):
     prompt = createPrompt(diff)
 
-    if model == "llama3.2":
+    if model.lower().startswith("hf.co/") or model == "llama3.2":
         return requestOllama(prompt)["response"]
     elif model == "OpenAI":
         return requestOpenAI(prompt, key)
@@ -146,7 +146,7 @@ Please review the following diff:
 {diff}
 ```
 """
-    if model == "llama3.2":
+    if model.lower().startswith("hf.co/") or model == "llama3.2":
         return requestOllama(prompt)["response"]
     return requestOpenAI(prompt, key)
 
