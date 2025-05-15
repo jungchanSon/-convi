@@ -172,7 +172,7 @@ def main():
     postMRDiscussion(HOST, PROJECT_ID, GITLAB_TOKEN, IID, review_result)
 
 def isSupportModel(model):
-    return model == "llama3.2" or model == "OpenAI"
+    return model.lower().startswith("hf.co/") or model == "OpenAI"
 
 if __name__ == "__main__":
     main()
