@@ -65,7 +65,7 @@ def review(diff, model, key):
     prompt = createPrompt(diff)
 
     if model.lower().startswith("hf.co/") or model == "llama3.2":
-        return requestOllama(prompt)["response"]
+        return requestOllama(prompt, model)["response"]
     elif model == "OpenAI":
         return requestOpenAI(prompt, key)
 
@@ -147,7 +147,7 @@ Please review the following diff:
 ```
 """
     if model.lower().startswith("hf.co/") or model == "llama3.2":
-        return requestOllama(prompt)["response"]
+        return requestOllama(prompt, model)["response"]
     return requestOpenAI(prompt, key)
 
 def main():
