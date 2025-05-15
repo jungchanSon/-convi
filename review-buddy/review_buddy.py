@@ -27,13 +27,23 @@ os.makedirs(INDEX_DB_PATH, exist_ok=True)
 
 def createPrompt(diff):
     return f"""
-You are a senior software engineer with 30 years of experience.
-Please carefully review the code. Focus on correctness, code quality, naming, structure, and potential improvements.
-Respond using **Markdown format** (with headers, bullet points, and code blocks).  
-Write the entire review in Korean Hangul only; do not use English sentences or Chinese characters.
-(English technical terms such as identifiers, library names, or keywords inside code blocks are allowed.)
+You are a senior software engineer with 30 years of experience.  
+**Task:** Review the diff below focusing on 정확성, 코드 품질, 네이밍, 구조, 잠재적 개선점.
 
-If you deliver a high-quality review, you will receive a $1,000 tip.
+### 응답 형식 (필수)
+1. **Markdown** 사용  
+2. 본문은 **순수 한글(UTF-8)** 로 작성 (코드·식별자·라이브러리 이름만 영어 허용)  
+3. 아래 고정 섹션 제목과 순서를 지킬 것  
+   - 변경사항 요약  
+   - 치명적 오류  
+   - 네이밍 개선  
+   - 코드 품질  
+   - 구조 개선  
+   - 잠재적 개선점  
+   - 칭찬할 점  
+4. 각 섹션이 비면 `없음` 한 줄만 작성  
+5. 문제 줄은 `diff` 블록 인용 후 바로 아래에 수정 예시 제시  
+6. **팁($1 000) 언급 금지**
 
 ```diff
 {diff}
@@ -42,8 +52,10 @@ If you deliver a high-quality review, you will receive a $1,000 tip.
 """
 
 def requestOllama(prompt):
-    print("LLM : LLaMa3.2")
-    return ollama.generate(model="llama3.2", prompt=prompt)
+    # print("LLM : LLaMa3.2")
+    # return ollama.generate(model="llama3.2", prompt=prompt)
+    print(f"LLM : LLaMa 3 Open-Ko 8B")
+    return ollama.generate(model=model_name, prompt=prompt)
 
 def requestOpenAI(prompt, key):
     print("LLM : GPT-4o")
@@ -103,13 +115,23 @@ def getRagReview(diff, model, key, db):
     docs    = db.similarity_search(diff, k=RAG_K)
     context = "\n\n".join(d.page_content for d in docs)
     prompt  = f"""
-You are a senior software engineer with 30 years of experience.
-Please carefully review the code. Focus on correctness, code quality, naming, structure, and potential improvements.
-Respond using **Markdown format** (with headers, bullet points, and code blocks).  
-Write the entire review in Korean Hangul only; do not use English sentences or Chinese characters.
-(English technical terms such as identifiers, library names, or keywords inside code blocks are allowed.)
+You are a senior software engineer with 30 years of experience.  
+Use the RAG context to review the diff for 정확성, 코드 품질, 네이밍, 구조, 잠재적 개선점.
 
-If you deliver a high-quality review, you will receive a $1,000 tip.
+### 응답 형식 (필수)
+1. **Markdown** 사용  
+2. 본문은 **순수 한글(UTF-8)** 로 작성 (코드·식별자·라이브러리 이름만 영어 허용)  
+3. 아래 고정 섹션 제목과 순서를 지킬 것  
+   - 변경사항 요약  
+   - 치명적 오류  
+   - 네이밍 개선  
+   - 코드 품질  
+   - 구조 개선  
+   - 잠재적 개선점  
+   - 칭찬할 점  
+4. 각 섹션이 비면 `없음` 한 줄만 작성  
+5. 문제 줄은 `diff` 블록 인용 후 바로 아래에 수정 예시 제시  
+6. **팁($1 000) 언급 금지**
 
 ---  
 **Note:** The following code snippets have been retrieved using a Retrieval-Augmented Generation (RAG) approach to provide additional context from the codebase:
