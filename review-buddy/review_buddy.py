@@ -153,7 +153,9 @@ Please review the following diff:
 def main():
     STATE = "state=opened"
     CONTENT_TYPE = "application/json"
-    model = sys.argv[1] if len(sys.argv) > 1
+    if len(sys.argv) < 2:
+        raise ValueError("리뷰에 사용할 모델 이름을 첫 번째 인자로 전달해야 합니다.")
+    model = sys.argv[1]
 
     if not isSupportModel(model):
         raise ValueError(f"지원하지 않는 모델입니다: {model}")
