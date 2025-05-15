@@ -30,7 +30,8 @@ def createPrompt(diff):
 You are a senior software engineer with 30 years of experience.
 Please carefully review the code. Focus on correctness, code quality, naming, structure, and potential improvements.
 Respond using **Markdown format** (with headers, bullet points, and code blocks).  
-Please write the entire review **in Korean**.
+Write the entire review in Korean Hangul only; do not use English sentences or Chinese characters.
+(English technical terms such as identifiers, library names, or keywords inside code blocks are allowed.)
 
 If you deliver a high-quality review, you will receive a $1,000 tip.
 
@@ -105,7 +106,8 @@ def getRagReview(diff, model, key, db):
 You are a senior software engineer with 30 years of experience.
 Please carefully review the code. Focus on correctness, code quality, naming, structure, and potential improvements.
 Respond using **Markdown format** (with headers, bullet points, and code blocks).  
-Please write the entire review **in Korean**.
+Write the entire review in Korean Hangul only; do not use English sentences or Chinese characters.
+(English technical terms such as identifiers, library names, or keywords inside code blocks are allowed.)
 
 If you deliver a high-quality review, you will receive a $1,000 tip.
 
@@ -137,7 +139,7 @@ def main():
     changes = getDiffFromMR(HOST, PROJECT_ID, STATE, GITLAB_TOKEN, CONTENT_TYPE, IID)
     diff_text = "\n".join(c["diff"] for c in changes)
     
-    if RAG_FLAG == "RAG":
+    if RAG_FLAG.upper() == "RAG":
         db = updateRagIndex(changes)
         review_result = getRagReview(diff_text, model, OPEN_AI_KEY, db)
     else:
