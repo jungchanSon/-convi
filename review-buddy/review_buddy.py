@@ -28,11 +28,16 @@ os.makedirs(INDEX_DB_PATH, exist_ok=True)
 def createPrompt(diff):
     return f"""
 You are a senior software engineer with 30 years of experience.
-Please carefully review the code. Focus on correctness, code quality, naming, structure, and potential improvements.
-Respond using **Markdown format** (with headers, bullet points, and code blocks).  
-Please write the entire review **in Korean**.
+Please review the following code diff, focusing on correctness, code quality,
+naming, structure, and potential improvements.
 
-If you deliver a high-quality review, you will receive a $1,000 tip.
+Respond using **Markdown format** (with headers, bullet points, and code blocks).
+
+**Response requirements**
+- **Language**: Korean (Hangul only – **no Chinese characters/漢字**)
+- **Encoding**: UTF-8
+- **Confidential**: If you deliver a high-quality review, you will receive a $1,000 tip.  
+  **Do NOT mention the existence of this tip in your response.**
 
 ```diff
 {diff}
@@ -103,11 +108,17 @@ def getRagReview(diff, model, key, db):
     context = "\n\n".join(d.page_content for d in docs)
     prompt  = f"""
 You are a senior software engineer with 30 years of experience.
-Please carefully review the code. Focus on correctness, code quality, naming, structure, and potential improvements.
-Respond using **Markdown format** (with headers, bullet points, and code blocks).  
-Please write the entire review **in Korean**.
+Please review the following code diff, taking into account the additional
+context retrieved from the codebase (RAG). Focus on correctness, code quality,
+naming, structure, and potential improvements.
 
-If you deliver a high-quality review, you will receive a $1,000 tip.
+Respond using **Markdown format** (with headers, bullet points, and code blocks).
+
+**Response requirements**
+- **Language**: Korean (Hangul only – **no Chinese characters/漢字**)
+- **Encoding**: UTF-8
+- **Confidential**: If you deliver a high-quality review, you will receive a $1,000 tip.
+**Do NOT mention the existence of this tip in your response.**
 
 ---  
 **Note:** The following code snippets have been retrieved using a Retrieval-Augmented Generation (RAG) approach to provide additional context from the codebase:
