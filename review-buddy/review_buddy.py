@@ -64,7 +64,7 @@ def createPrompt(diff):
 def requestOllama(prompt, model_name: str):
     # print("LLM : LLaMa3.2")
     # return ollama.generate(model="llama3.2", prompt=prompt)
-    print(f"LLM : LLaMa 3 Open-Ko 8B")
+    print(f"LLM : LLaMa 3.2 Open-Ko 3B")
     return ollama.generate(model=model_name, prompt=prompt)
 
 def requestOpenAI(prompt, key):
