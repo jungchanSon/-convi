@@ -27,23 +27,33 @@ os.makedirs(INDEX_DB_PATH, exist_ok=True)
 
 def createPrompt(diff):
     return f"""
-You are a senior software engineer with 30 years of experience.  
-**Task:** Review the diff below focusing on 정확성, 코드 품질, 네이밍, 구조, 잠재적 개선점.
+당신은 30년 경력의 시니어 소프트웨어 엔지니어입니다.
+아래 RAG 컨텍스트와 코드 diff를 정확성, 코드 품질, 네이밍, 구조, 잠재적 개선점 순서로 리뷰하세요.
+응답은 모두 **Markdown** 을 사용해야합니다. 
+본문은 **순수 한글(UTF-8)** 로 작성(코드·식별자·라이브러리 이름만 영어 허용) 해야 하며 존댓말로 작성해주세요.
+응답 형식은 아래와 같은 방식으로 응답해야만 합니다.
 
-### 응답 형식 (필수)
-1. **Markdown** 사용  
-2. 본문은 **순수 한글(UTF-8)** 로 작성 (코드·식별자·라이브러리 이름만 영어 허용)  
-3. 아래 고정 섹션 제목과 순서를 지킬 것  
-   - 변경사항 요약  
-   - 치명적 오류  
-   - 네이밍 개선  
-   - 코드 품질  
-   - 구조 개선  
-   - 잠재적 개선점  
-   - 칭찬할 점  
-4. 각 섹션이 비면 `없음` 한 줄만 작성  
-5. 문제 줄은 `diff` 블록 인용 후 바로 아래에 수정 예시 제시  
-6. **팁($1 000) 언급 금지**
+
+## 변경사항 요약
+(여기에 핵심 변경사항을 간략히 작성하세요; 없으면 '없음')
+
+## 치명적 오류
+(여기에 치명적 오류를 작성하세요; 없으면 '없음')
+
+## 네이밍 개선
+(여기에 네이밍 개선점을 작성하세요; 없으면 '없음')
+
+## 코드 품질
+(여기에 코드 품질 개선점을 작성하세요; 없으면 '없음')
+
+## 구조 개선
+(여기에 구조적 개선점을 작성하세요; 없으면 '없음')
+
+## 잠재적 개선점
+(여기에 추가 개선 아이디어를 작성하세요; 없으면 '없음')
+
+## 칭찬할 점
+(여기에 긍정적 피드백을 작성하세요; 없으면 '없음')
 
 ```diff
 {diff}
@@ -115,33 +125,41 @@ def getRagReview(diff, model, key, db):
     docs    = db.similarity_search(diff, k=RAG_K)
     context = "\n\n".join(d.page_content for d in docs)
     prompt  = f"""
-You are a senior software engineer with 30 years of experience.  
-Use the RAG context to review the diff for 정확성, 코드 품질, 네이밍, 구조, 잠재적 개선점.
-
-### 응답 형식 (필수)
-1. **Markdown** 사용  
-2. 본문은 **순수 한글(UTF-8)** 로 작성 (코드·식별자·라이브러리 이름만 영어 허용)  
-3. 아래 고정 섹션 제목과 순서를 지킬 것  
-   - 변경사항 요약  
-   - 치명적 오류  
-   - 네이밍 개선  
-   - 코드 품질  
-   - 구조 개선  
-   - 잠재적 개선점  
-   - 칭찬할 점  
-4. 각 섹션이 비면 `없음` 한 줄만 작성  
-5. 문제 줄은 `diff` 블록 인용 후 바로 아래에 수정 예시 제시  
-6. **팁($1 000) 언급 금지**
+당신은 30년 경력의 시니어 소프트웨어 엔지니어입니다.
+아래 RAG 컨텍스트와 코드 diff를 정확성, 코드 품질, 네이밍, 구조, 잠재적 개선점 순서로 리뷰하세요.
+응답은 모두 **Markdown** 을 사용해야합니다. 
+본문은 **순수 한글(UTF-8)** 로 작성(코드·식별자·라이브러리 이름만 영어 허용) 해야 하며 존댓말로 작성해주세요.
 
 ---  
-**Note:** The following code snippets have been retrieved using a Retrieval-Augmented Generation (RAG) approach to provide additional context from the codebase:
 
-RAG Context (Top {RAG_K} chunks):
+RAG 컨텍스트 (Top {RAG_K})
 ```
 {context}
 ```
 
-Please review the following diff:
+응답 형식은 아래와 같은 방식으로 응답해야만 합니다.
+
+## 변경사항 요약
+(여기에 핵심 변경사항을 간략히 작성하세요; 없으면 '없음')
+
+## 치명적 오류
+(여기에 치명적 오류를 작성하세요; 없으면 '없음')
+
+## 네이밍 개선
+(여기에 네이밍 개선점을 작성하세요; 없으면 '없음')
+
+## 코드 품질
+(여기에 코드 품질 개선점을 작성하세요; 없으면 '없음')
+
+## 구조 개선
+(여기에 구조적 개선점을 작성하세요; 없으면 '없음')
+
+## 잠재적 개선점
+(여기에 추가 개선 아이디어를 작성하세요; 없으면 '없음')
+
+## 칭찬할 점
+(여기에 긍정적 피드백을 작성하세요; 없으면 '없음')
+
 ```diff
 {diff}
 ```
