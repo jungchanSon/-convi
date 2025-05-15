@@ -41,9 +41,7 @@ If you deliver a high-quality review, you will receive a $1,000 tip.
 """
 
 def requestOllama(prompt, model_name: str):
-    # print("LLM : LLaMa3.2")
-    # return ollama.generate(model="llama3.2", prompt=prompt)
-    print(f"LLM : LLaMa 3.2 Open-Ko 3B")
+    print(f"LLM : {model_name}")
     return ollama.generate(model=model_name, prompt=prompt)
 
 def requestOpenAI(prompt, key):

@@ -26,7 +26,7 @@ GitLab에서 MR(Merge Request)이 생성되면, Convi가 변경된 코드를 자
 - **Commit-Buddy**: Intellij Plugin(Kotlin), Visual Studio Code Extension(Type Script)
 - **Lint-Buddy(Frontend)**: Next.js, TypeScript, Tailwind CSS, Shadcn, Zustand
 - **Review-Buddy-Buddy**: Python, GitLab Runner, GitLab CI/CD
-- **AI Model**: LLaMa(LLaMa 3.2) | OpenAI(Gpt-4)
+- **AI Model**: LLaMa(llama-3.2-Korean-Bllossom-3B-gguf-Q4_K_M) | OpenAI(Gpt-4o)
 
 ---
 
