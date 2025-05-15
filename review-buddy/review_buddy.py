@@ -64,7 +64,7 @@ def requestOpenAI(prompt, key):
 def review(diff, model, key):
     prompt = createPrompt(diff)
 
-    if model.lower().startswith("hf.co/") or model == "llama3.2":
+    if model.lower().startswith("hf.co/"):
         return requestOllama(prompt, model)["response"]
     elif model == "OpenAI":
         return requestOpenAI(prompt, key)
@@ -146,17 +146,17 @@ Please review the following diff:
 {diff}
 ```
 """
-    if model.lower().startswith("hf.co/") or model == "llama3.2":
+    if model.lower().startswith("hf.co/"):
         return requestOllama(prompt, model)["response"]
     return requestOpenAI(prompt, key)
 
 def main():
     STATE = "state=opened"
     CONTENT_TYPE = "application/json"
-    model = sys.argv[1] if len(sys.argv) > 1 else "llama3.2"
+    model = sys.argv[1] if len(sys.argv) > 1
 
     if not isSupportModel(model):
-        model = "llama3.2"
+        raise ValueError(f"지원하지 않는 모델입니다: {model}")
 
     changes = getDiffFromMR(HOST, PROJECT_ID, STATE, GITLAB_TOKEN, CONTENT_TYPE, IID)
     diff_text = "\n".join(c["diff"] for c in changes)
