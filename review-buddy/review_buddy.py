@@ -40,9 +40,9 @@ If you deliver a high-quality review, you will receive a $1,000 tip.
 
 """
 
-def requestOllama(prompt):
-    print("LLM : LLaMa3.2")
-    return ollama.generate(model="llama3.2", prompt=prompt)
+def requestOllama(prompt, model_name: str):
+    print(f"LLM : {model_name}")
+    return ollama.generate(model=model_name, prompt=prompt)
 
 def requestOpenAI(prompt, key):
     print("LLM : GPT-4o")
@@ -51,8 +51,8 @@ def requestOpenAI(prompt, key):
 def review(diff, model, key):
     prompt = createPrompt(diff)
 
-    if model == "llama3.2":
-        return requestOllama(prompt)["response"]
+    if model.lower().startswith("hf.co/"):
+        return requestOllama(prompt, model)["response"]
     elif model == "OpenAI":
         return requestOpenAI(prompt, key)
 
@@ -121,23 +121,26 @@ Please review the following diff:
 ```diff
 {diff}
 ```
+
 """
-    if model == "llama3.2":
-        return requestOllama(prompt)["response"]
+    if model.lower().startswith("hf.co/"):
+        return requestOllama(prompt, model)["response"]
     return requestOpenAI(prompt, key)
 
 def main():
     STATE = "state=opened"
     CONTENT_TYPE = "application/json"
-    model = sys.argv[1] if len(sys.argv) > 1 else "llama3.2"
+    if len(sys.argv) < 2:
+        raise ValueError("리뷰에 사용할 모델 이름을 첫 번째 인자로 전달해야 합니다.")
+    model = sys.argv[1]
 
     if not isSupportModel(model):
-        model = "llama3.2"
+        raise ValueError(f"지원하지 않는 모델입니다: {model}")
 
     changes = getDiffFromMR(HOST, PROJECT_ID, STATE, GITLAB_TOKEN, CONTENT_TYPE, IID)
     diff_text = "\n".join(c["diff"] for c in changes)
     
-    if RAG_FLAG == "RAG":
+    if RAG_FLAG.upper() == "RAG":
         db = updateRagIndex(changes)
         review_result = getRagReview(diff_text, model, OPEN_AI_KEY, db)
     else:
@@ -146,7 +149,7 @@ def main():
     postMRDiscussion(HOST, PROJECT_ID, GITLAB_TOKEN, IID, review_result)
 
 def isSupportModel(model):
-    return model == "llama3.2" or model == "OpenAI"
+    return model.lower().startswith("hf.co/") or model == "OpenAI"
 
 if __name__ == "__main__":
     main()
