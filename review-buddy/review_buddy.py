@@ -55,7 +55,7 @@ def requestOllama(prompt):
     # print("LLM : LLaMa3.2")
     # return ollama.generate(model="llama3.2", prompt=prompt)
     print(f"LLM : LLaMa 3 Open-Ko 8B")
-    return ollama.generate(model=model_name, prompt=prompt)
+    return ollama.generate(model="llama3.2", prompt=prompt)
 
 def requestOpenAI(prompt, key):
     print("LLM : GPT-4o")
