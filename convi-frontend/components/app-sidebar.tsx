@@ -61,24 +61,27 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             className="group/collapsible"
           >
             <SidebarGroup>
-              <SidebarGroupLabel
-                asChild
-                className="group/label text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sm"
-              >
-                <CollapsibleTrigger>
-                  {item.title}{" "}
-                  <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
-                </CollapsibleTrigger>
-              </SidebarGroupLabel>
+            <SidebarGroupLabel
+              asChild
+              className="group/label text-sidebar-foreground font-semibold text-sm px-3 py-2 tracking-wide 
+                        bg-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+            >
+              <CollapsibleTrigger className="flex items-center w-full">
+                {item.title}
+                <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
+              </CollapsibleTrigger>
+            </SidebarGroupLabel>
               <CollapsibleContent>
                 <SidebarGroupContent>
                   <SidebarMenu>
                     {item.items.map((item) => (
                       <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild onClick={() => clickNav(item.title)}>
-                          {
-                            item.url && <Link href={item.url}>&nbsp;&nbsp;{item.title}</Link>
-                          }
+                        <SidebarMenuButton
+                          asChild
+                          onClick={() => clickNav(item.title)}
+                          className="text-sm hover:text-foreground pl-6 pr-3"
+                        >
+                          {item.url && <Link href={item.url}>{item.title}</Link>}
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
