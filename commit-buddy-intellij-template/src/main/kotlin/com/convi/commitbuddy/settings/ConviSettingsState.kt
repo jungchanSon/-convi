@@ -23,6 +23,7 @@ class ConviSettingsState : PersistentStateComponent<ConviSettingsState> {
 
     var selectedProvider: String = "ollama" // 기본값
     var chatgptApiKey: String = ""
+    var commitRegex: String = ""
 
     override fun getState(): ConviSettingsState = this
 

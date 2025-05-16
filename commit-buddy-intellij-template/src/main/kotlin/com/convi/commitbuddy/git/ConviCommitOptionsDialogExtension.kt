@@ -17,6 +17,7 @@ class ConviCommitOptionsDialogExtension : CommitOptionsDialogExtension {
             val providerProperty = graph.property(settings.selectedProvider)
             val isChatgpt = graph.property(settings.selectedProvider == "chatgpt")
             val apiKeyProperty = graph.property(settings.chatgptApiKey)
+            val commitRegexProperty = graph.property(settings.commitRegex)
 
             group("Convi - Commit Buddy") {
                 row("Provider:") {
@@ -42,6 +43,16 @@ class ConviCommitOptionsDialogExtension : CommitOptionsDialogExtension {
                             ApplicationManager.getApplication().saveSettings()
                         }
                 }.visibleIf(isChatgpt)
+
+                row("Regex:") {
+                    textField()
+                        .bindText(commitRegexProperty)
+                        .gap(RightGap.SMALL)
+                        .onChanged { newValue ->
+                            settings.commitRegex = newValue.getText()
+                            ApplicationManager.getApplication().saveSettings()
+                        }
+                }
             }
         }
 
