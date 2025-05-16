@@ -87,10 +87,11 @@
 | 변수명              | 용도 / 설명 | 지정 방법 |
 |--------------------|-------------|-----------|
 | `gitlab_runner_token` | GitLab **New project runner** 화면 *Step 1* 에서 복사한 Registration Token | 아래 Runner 설정 명령어에 직접 치환 <br> 혹은 Runner 사용 환경에서 <code>export gitlab_runner_token=…</code> 후 명령 실행 |
+| `gitlab_url` |  Runner를 등록할 GitLab 인스턴스 URL (예: <code>https://lab.ssafy.com</code>) |  Runner 설정 명령어에 직접 치환 <br> 혹은 Runner 사용 환경에서 <code>export gitlab_url=…</code> 후 명령 실행 |
 
 <br>
 
-- Docker Container에서 Runner를 실행한다면 Docker 실행 환경 플랫폼을 선택하고, Step1 코드 블록 내의 token 정보를 복사합니다. 해당 정보는 아래 **<code>${gitlab_runner_token}</code>** 값으로 사용됩니다.
+- Docker Container에서 Runner를 실행한다면 Docker 실행 환경 플랫폼을 선택하고, Step1 코드 블록 내의 token 정보와 gitlab_url 정보를 복사합니다. 해당 정보는 아래 **<code>${gitlab_runner_token}</code>**, **<code>${gitlab_url}</code>** 값으로 사용됩니다.
   - Docker Desktop의 디폴트 실행환경은 <code>Linux</code> 입니다.
   - Docker Container를 사용한다면 컨테이너 생성 및 실행 명령어는 <b>[1-2](#1-2-runner-컨테이너-생성-및-실행), [1-3](#1-3-runner-정보-최초-등록)</b>에 존재합니다.
 - 만약 Docker Container로 동작시키지 않는다면, 실행 환경 OS 플랫폼을 선택하고 <b>[1-4](#1-4-선택-docker없이-runner-설치-및-설정하기)</b> 과정으로 건너뛰어 진행합니다.
@@ -104,27 +105,10 @@
 - 해당 명령어를 Runner를 실행시킬 환경(로컬 혹은 운영 환경)에서 실행하여 Runner 컨테이너 생성 및 실행합니다. 사용 중인 터미널 환경에 따라 아래 명령어 중 하나를 실행하세요.
 - 만약 위에서 컨테이너로 Runner를 실행하지 않고, OS에서 직접 실행한다면, 해당 <b>[1-2](#1-2-runner-컨테이너-생성-및-실행), [1-3](#1-3-runner-정보-최초-등록)</b> 과정은 건너뜁니다.
 
-<details>
-<summary><b>Git Bash / WSL / Linux Bash / zsh 명령어</b></summary>
-
 ```bash
-docker run -d --name gitlab-runner --restart always \
-  -v /opt/gitlab-runner/config:/etc/gitlab-runner \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  gitlab/gitlab-runner:latest
-```
-</details>
+docker run -d --name gitlab-runner --restart always -v /opt/gitlab-runner/config:/etc/gitlab-runner -v /var/run/docker.sock:/var/run/docker.sock gitlab/gitlab-runner:latest
 
-<details>
-<summary><b>Windows CMD 명령어</b></summary>
-
-```bash
-docker run -d --name gitlab-runner --restart always ^
-  -v /opt/gitlab-runner/config:/etc/gitlab-runner ^
-  -v /var/run/docker.sock:/var/run/docker.sock ^
-  gitlab/gitlab-runner:latest
 ```
-</details>
 
 <br><br>
 
@@ -135,34 +119,11 @@ docker run -d --name gitlab-runner --restart always ^
 
 - Runner를 Gitlab Repository와 연동하기 위한 최초 정보를 등록합니다. 사용 중인 터미널 환경에 따라 아래 명령어 중 하나를 실행하세요.
 - 해당 명령어를 Runner를 실행시킬 환경에서 실행 시, **<code>${gitlab_runner_token}</code>** 의 값을 Gitlab Runner Token 값으로 변경해주세요.
-
-<details>
-<summary><b>Git Bash / WSL / Linux Bash / zsh 명령어</b></summary>
+- 또한, **<code>${gitlab_url}</code>** 의 값도 Gitlab Url 값으로 변경해주세요.
 
 ```bash
-docker exec -i gitlab-runner gitlab-runner register \
-  --non-interactive \
-  --url               "https://lab.ssafy.com" \
-  --token             "${gitlab_runner_token}" \
-  --executor          "docker" \
-  --docker-image      "docker:latest" \
-  --name              "ci-docker-runner"
+docker exec -i gitlab-runner gitlab-runner register --non-interactive --url "${gitlab_url}" --token "${gitlab_runner_token}" --executor "docker" --docker-image "docker:latest" --name "ci-docker-runner"
 ```
-</details>
-
-<details>
-<summary><b>Windows CMD 명령어 명령어</b></summary>
-
-```bash
-docker exec -i gitlab-runner gitlab-runner register ^
-  --non-interactive ^
-  --url               "https://lab.ssafy.com" ^
-  --token             "${gitlab_runner_token}" ^
-  --executor          "docker" ^
-  --docker-image      "docker:latest" ^
-  --name              "ci-docker-runner"
-```
-</details>
 
 <br><br>
 
