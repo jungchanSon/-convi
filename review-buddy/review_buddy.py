@@ -40,13 +40,9 @@ If you deliver a high-quality review, you will receive a $1,000 tip.
 
 """
 
-def requestOllama(prompt, model_name: str):
-    print(f"LLM : {model_name}")
-    return ollama.generate(model=model_name, prompt=prompt)
-
-def requestOpenAI(prompt, key):
-    print("LLM : GPT-4o")
-    return ChatOpenAI(api_key=key, model_name="gpt-4o-2024-05-13", max_tokens=2048).invoke(prompt).content
+def requestOpenAI(prompt: str, key: str) -> str:
+    print(f"LLM : Gpt OpenAI o1")
+    return ChatOpenAI(api_key=key, model_name="o1", max_tokens=2048).invoke(prompt).content
 
 def review(diff, model, key):
     prompt = createPrompt(diff)
