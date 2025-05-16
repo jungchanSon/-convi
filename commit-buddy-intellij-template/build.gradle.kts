@@ -31,13 +31,14 @@ repositories {
 
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
-    implementation("org.json:json:20231013")
-    implementation ("dev.langchain4j:langchain4j:1.0.0-beta3")
-    implementation ("dev.langchain4j:langchain4j-ollama:1.0.0-beta3")
-    implementation ("dev.langchain4j:langchain4j-open-ai:1.0.0-beta3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.7.3")
-    implementation("org.slf4j:slf4j-simple:2.0.9")
+    implementation(libs.json)
+    implementation(libs.langchain4j)
+    implementation(libs.langchain4j.ollama)
+    implementation(libs.langchain4j.open.ai)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.swing)
+    implementation(libs.slf4j.simple)
+
     testImplementation(libs.junit)
     testImplementation(libs.opentest4j)
 
