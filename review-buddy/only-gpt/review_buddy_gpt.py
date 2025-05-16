@@ -42,8 +42,11 @@ If you deliver a high-quality review, you will receive a $1,000 tip.
 
 
 def requestOpenAI(prompt: str, key: str) -> str:
-    print("LLM : GPT-4o")
-    return ChatOpenAI(api_key=key, model_name="gpt-4o-2024-05-13", max_tokens=2048).invoke(prompt).content
+    print(f"LLM : Gpt OpenAI o3")
+    return ChatOpenAI(api_key=key, model_name="o3", max_tokens=2048, additional_kwargs={
+            "reasoning": {
+                "effort": "high"
+            }}).invoke(prompt).content
 
 
 def getDiffFromMR():
