@@ -36,5 +36,14 @@ export enum Parenthesis {
     OPEN = `\(`,
     CLOSE = `\)`,
 }
-
+export const SingleQuote = `\'`
+export const DoubleQuote = `\"`
 export const Colon = `:`
+export const Dot = `\\.`
+export const Slash = `/`
+export const At = `@`
+export const Hash = `#`
+export const dash = `-`
+export const Underscore = `_`
+export const Equal = `=`
+export const Number = `\\d+`

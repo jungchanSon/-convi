@@ -31,14 +31,17 @@ const ConventionCustomizeBoard = () => {
 
   return (
 <div className="flex flex-col w-full h-full overflow-x-hidden">
-  <div className="w-full h-2/5 overflow-y-auto space-y-4 p-2">
+  
+  <div className="w-full h-1/2 overflow-y-auto space-y-4 p-2">
     {Object.entries(CommitSignatures).map(([category, list]) => (
       <div key={category} className="space-y-2">
-        <div className="flex items-center justify-between min-w-0">
-          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+        <div className="flex items-center w-full">
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide whitespace-nowrap">
             {category}
           </h3>
-          <Separator className="flex-grow ml-2 max-w-full" />
+          <div className="flex-grow ml-2">
+            <Separator />
+          </div>
         </div>
         <div className="flex flex-wrap gap-2 min-w-0">
           {list.map((item, key) => (
