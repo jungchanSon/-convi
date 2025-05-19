@@ -16,7 +16,7 @@
 
 ### Gitlab Runner?
 <details>
-<summary><b>설명</summary>
+<summary><b>설명</b></summary>
 
 - Gitlab Runner는 Gitlab Pipeline에서 동작이 필요한 작업을 자동으로 실행하고, 해당 정보를 Gitlab으로 보내주는 역할을 합니다.
 - 자동으로 AI 코드 리뷰를 하기 위해서는 작업을 진행할 Gitlab Runner가 **로컬 환경 혹은 운영 환경**에서 실행 중이어야 합니다.
@@ -28,7 +28,7 @@
 
 ### .gitlab-ci.yml?
 <details>
-<summary><b>설명</summary>
+<summary><b>설명</b></summary>
 
 - 해당 파일은 파이프라인 설계도로서 GitLab CI/CD가 **'어떤 작업(Job)을 언제, 어떤 Runner에서 실행할지'** 를 정의합니다.
 - Gitlab CI 발생 시 자동으로 참조하며, **Gitlab CI/CD Variables** 환경 변수 정보를 주입할 수 있습니다.
@@ -40,7 +40,7 @@
 
 ### Review Buddy Docker Image?
 <details>
-<summary><b>설명</summary>
+<summary><b>설명</b></summary>
 
 - **LangChain 환경의 RAG 기반**으로 코드 리뷰 환경을 쉽게 구축하고, 실행하기 위해 Review Buddy는 **Public Docker Image**를 사용하여 AI 코드 리뷰를 진행합니다.
 - 제공되는 Docker Image는 Gpt-4o Image, Ollama 3.2 + Gpt-4o Image를 선택할 수 있습니다.
@@ -91,7 +91,8 @@
 
 <br>
 
-- Docker Container에서 Runner를 실행한다면 Docker 실행 환경 플랫폼을 선택하고, Step1 코드 블록 내의 token 정보와 gitlab_url 정보를 복사합니다. 해당 정보는 아래 **<code>${gitlab_runner_token}</code>**, **<code>${gitlab_url}</code>** 값으로 사용됩니다.
+- Docker Container에서 Runner를 실행한다면 Docker 실행 환경 플랫폼을 선택하고, Step1 코드 블록 내의 token 정보와 gitlab_url 정보를 복사합니다.
+- 해당 정보는 아래 `${gitlab_runner_token}`, `${gitlab_url}` 값으로 사용됩니다.
   - Docker Desktop의 디폴트 실행환경은 <code>Linux</code> 입니다.
   - Docker Container를 사용한다면 컨테이너 생성 및 실행 명령어는 <b>[1-2](#1-2-runner-컨테이너-생성-및-실행), [1-3](#1-3-runner-정보-최초-등록)</b>에 존재합니다.
 - 만약 Docker Container로 동작시키지 않는다면, 실행 환경 OS 플랫폼을 선택하고 <b>[1-4](#1-4-선택-docker없이-runner-설치-및-설정하기)</b> 과정으로 건너뛰어 진행합니다.
@@ -118,8 +119,8 @@ docker run -d --name gitlab-runner --restart always -v /opt/gitlab-runner/config
 
 
 - Runner를 Gitlab Repository와 연동하기 위한 최초 정보를 등록합니다. 사용 중인 터미널 환경에 따라 아래 명령어 중 하나를 실행하세요.
-- 해당 명령어를 Runner를 실행시킬 환경에서 실행 시, **<code>${gitlab_runner_token}</code>** 의 값을 Gitlab Runner Token 값으로 변경해주세요.
-- 또한, **<code>${gitlab_url}</code>** 의 값도 Gitlab Url 값으로 변경해주세요.
+- 해당 명령어를 Runner를 실행시킬 환경에서 실행 시, <code>${gitlab_runner_token}</code> 의 값을 Gitlab Runner Token 값으로 변경해주세요.
+- 또한, <code>${gitlab_url}</code> 의 값도 Gitlab Url 값으로 변경해주세요.
 
 ```bash
 docker exec -i gitlab-runner gitlab-runner register --non-interactive --url "${gitlab_url}" --token "${gitlab_runner_token}" --executor "docker" --docker-image "docker:latest" --name "ci-docker-runner"
@@ -134,7 +135,7 @@ docker exec -i gitlab-runner gitlab-runner register --non-interactive --url "${g
 ### 1-4. (선택) Docker없이 Runner 설치 및 설정하기
 - Docker 없이 Runner를 설치한다면 다음 명령어 순서를 따릅니다.
 - 실행 환경의 플랫폼을 선택하면 해당 플랫폼에 맞춰 Docker Gitlab 설정 명령어가 변경됩니다.
-- Gitlab 화면의 Step1, Step2, Step3의 명령어를 그대로 실행합니다.
+- Gitlab Runner를 먼저 설치하고, 이후 Gitlab 화면의 Step1, Step2, Step3의 명령어를 그대로 실행합니다.
 
 <br>
 
@@ -179,7 +180,7 @@ docker exec -i gitlab-runner gitlab-runner register --non-interactive --url "${g
 | `OPEN_AI_KEY`   | ▫️   | GPT-4o 리뷰를 사용할 때 입력하는 OpenAI API Key | Ollama만 쓸 경우 비워도 무방 |
 
 
-- GPT 코드 리뷰를 희망한다면 GPT OPEN API Key를 <code>OPEN_AI_KEY</code>에 Gpt Open 토큰을 저장합니다. 초기 설정은 Gpt이므로 없으면 Pipeline 에러가 발생할 수 있으니, Ollama를 사용 희망시 [.gitlab-ci.yml](#4-gitlab-ci-파일-등록)를 수정해주세요.
+- GPT 코드 리뷰를 희망한다면 GPT OPEN API Key를 <code>OPEN_AI_KEY</code>에 저장합니다. 초기 설정은 Gpt이므로 없으면 Pipeline 에러가 발생할 수 있으니, Ollama를 사용 희망시 [.gitlab-ci.yml](#4-gitlab-ci-파일-등록)를 수정해주세요.
 
 <br><br>
 
@@ -206,12 +207,15 @@ variables:
   GITLAB_TOKEN: $GITLAB_TOKEN
   OPEN_AI_KEY: $OPEN_AI_KEY 
 
-  REVIEW_MODEL: "OpenAI"   # llama3.2
-  RAG_FLAG: "rag"    # ""
+  REVIEW_MODEL: "OpenAI"
+  # REVIEW_MODEL: "hf.co/Bllossom/llama-3.2-Korean-Bllossom-3B-gguf-Q4_K_M"
+  RAG_FLAG: "rag"
+  # RAG_FLAG: ""
 
 mr_review:
   stage: review
-  image: os2864/review-buddy:v0.1.6 # "os2864/review-buddy-gpt:v0.1.2"
+  image: os2864/review-buddy:v0.1.6
+  # image: os2864/review-buddy-gpt:v0.1.2
   only:
     - merge_requests
   script:
