@@ -15,6 +15,7 @@ const SsafyLoginButton = () => {
         Cookie.remove("refresh_token")
 
         router.push('/')
+        window.location.reload()
     }
 
     return (
