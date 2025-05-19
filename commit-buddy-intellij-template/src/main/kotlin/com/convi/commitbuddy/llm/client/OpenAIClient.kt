@@ -12,7 +12,7 @@ class OpenAIClient(private val project: Project) : LlmClient {
         println("apikey: ${settings.chatgptApiKey}")
         OpenAiChatModel.builder()
             .apiKey(settings.chatgptApiKey)
-            .modelName("gpt-4")
+            .modelName("o1")
             .build()
     }
 

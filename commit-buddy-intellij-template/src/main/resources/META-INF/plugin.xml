@@ -21,7 +21,10 @@
     </extensions>
 
     <actions>
-        <action id="GitRecoAction" class="com.convi.commitbuddy.action.GitRecoAction" text="AI 추천" icon="/icons/pluginIcon.png">
+        <action id="GitRecoAction" class="com.convi.commitbuddy.action.GitRecoAction" text="Suggest Commit Message" icon="/icons/commitBuddyIcon.png">
+            <add-to-group group-id="Vcs.MessageActionGroup" anchor="last" />
+        </action>
+        <action id="CreateGitHookAction" class="com.convi.commitbuddy.action.CreateGitHookAction" text="Generate Commit Hook" icon="/icons/lintBuddyIcon.png">
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="last" />
         </action>
     </actions>
