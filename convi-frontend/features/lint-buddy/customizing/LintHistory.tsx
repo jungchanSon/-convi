@@ -82,7 +82,7 @@ const LintHistory = () => {
                                 setSignatureFromHistory(item.sample)
                             }}
                             key={key}
-                            className={"mb-3 p-0.5 w-full truncate bg-white border-1 border-gray drop-shadow text-black hover:bg-gray-200"}
+                            className={"p-0.5 w-full my-1 truncate bg-white border-1 border-gray drop-shadow text-black hover:bg-gray-200"}
                         >
                             <span className={'w-full text-ellipsis '}>
                                 {item.sampleMessage}
@@ -103,7 +103,7 @@ const LintHistory = () => {
     }
 
     return (
-        <div className={"overflow-auto mb-1 border-1 border-gray h-2/5 border-gray drop-shadow p-2"}>
+        <div className={"overflow-auto border-1 border-gray max-h-[40vh] border-gray drop-shadow p-2"}>
             {
                 name && email ? historyComponent() : noLogin()
             }
