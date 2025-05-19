@@ -59,7 +59,7 @@ const CommitRegexCopyButton = ({text, disable} : CommitRegexCopyProp) => {
     }
     return (
         <>
-            <Button disabled={disable} className={"mx-1 hover:bg-[#1C9288] bg-[#21A79A]"} onClick={() => copyLint()}> {text} </Button>
+            <Button id={'step-7'} disabled={disable} className={"mx-1 hover:bg-[#1C9288] bg-[#21A79A]"} onClick={() => copyLint()}> {text} </Button>
         </>
     )
 }

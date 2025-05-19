@@ -83,7 +83,7 @@ fi`
 
     return (
         <>
-            <Button disabled={disable} className={"hover:bg-[#1C9288] bg-[#21A79A]"} onClick={() => downloadCommitHook()}> {text} </Button>
+            <Button id={'step-8'} disabled={disable} className={"hover:bg-[#1C9288] bg-[#21A79A]"} onClick={() => downloadCommitHook()}> {text} </Button>
         </>
     )
 }

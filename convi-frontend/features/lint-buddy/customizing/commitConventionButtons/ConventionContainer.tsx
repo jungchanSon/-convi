@@ -5,6 +5,7 @@ import ConventionTypes  from "@/features/lint-buddy/customizing/commitConvention
 import ConventionType from "@/features/lint-buddy/customizing/commitConventionButtons/enums/ConventionType";
 import {useSignatureStore} from "@/store/lintBuddy/signature-store";
 import {gtag} from "ga-gtag";
+import {Heading1} from "lucide-react";
 
 const ConventionContainer = () => {
     const {setConvention} = useConventionStore();
@@ -21,7 +22,9 @@ const ConventionContainer = () => {
     }
 
     return (
-        <div className={"flex flex-col"}>
+        <div className={"flex flex-col"} id={'step-4'}>
+            <h1 className={'text-center'}> 컨벤션 양식 </h1>
+            <hr className={'my-3'}/>
             {
                 ConventionTypes.map((item, key) =>
                     <div key={key}>
