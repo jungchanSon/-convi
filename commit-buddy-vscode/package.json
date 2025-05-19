@@ -21,8 +21,16 @@
         "command": "commit-buddy.recommendMessage",
         "title": "Commit Buddy: AI 커밋 메시지 추천",
         "icon": {
-          "light": "resources/light/convi.svg",
-          "dark": "resources/dark/convi.svg"
+          "light": "resources/icons/commitBuddyIcon.png",
+          "dark": "resources/icons/commitBuddyIcon.png"
+        }
+      },
+      {
+        "command": "commit-buddy.createGitHook",
+        "title": "Commit Buddy: Git Hook 생성",
+        "icon": {
+          "light": "resources/icons/lintBuddyIcon.png",
+          "dark": "resources/icons/lintBuddyIcon.png"
         }
       }
     ],
@@ -30,6 +38,11 @@
       "scm/title": [
         {
           "command": "commit-buddy.recommendMessage",
+          "group": "navigation",
+          "when": "scmProvider == git"
+        },
+        {
+          "command": "commit-buddy.createGitHook",
           "group": "navigation",
           "when": "scmProvider == git"
         }
@@ -78,6 +91,11 @@
           "type": "number",
           "default": 3,
           "description": "생성할 추천 메시지 개수"
+        },
+        "commitBuddy.regex": {
+          "type": "string",
+          "default": "<type>: <description>",
+          "description": "커밋 메시지 추천 시 사용할 형식을 정의하는 정규식 또는 예시입니다. 예: ^(feat|fix|chore)(\\(.+\\))?: .+$"
         }
       }
     }

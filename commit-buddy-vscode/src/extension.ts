@@ -5,6 +5,7 @@ import { isGitRepo, getStagedDiff, getWorkspacePath } from './gitUtils';
 import * as path from 'path';
 import * as fs from "fs";
 import OpenAI from 'openai';
+import { createGitHook } from './createGitHook';
 
 
 // 플러그인 활성화 시 호출
@@ -198,6 +199,11 @@ export function activate(context: vscode.ExtensionContext) {
     }
   });
   context.subscriptions.push(recommendDisposable);
+
+  // Git Hook 파일 생성 커맨드 등록
+  context.subscriptions.push(
+    vscode.commands.registerCommand('commit-buddy.createGitHook', createGitHook)
+  );
 
   // 플러그인 설정 등록
   context.subscriptions.push(
