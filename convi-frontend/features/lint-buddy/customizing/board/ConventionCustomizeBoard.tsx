@@ -13,6 +13,7 @@ import TestingPopupContent from "@/features/lint-buddy/customizing/popup/Testing
 import SettingsPopupContent from "@/features/lint-buddy/customizing/popup/SettingsPopupCentent";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
+import CommitRegexCopyButton from "@/features/lint-buddy/customizing/board/CommitRegexCopyButton";
 
 const ConventionCustomizeBoard = () => {
   const { signatureList, addSignature, removeAll } = useSignatureStore();
@@ -90,6 +91,7 @@ const ConventionCustomizeBoard = () => {
         </div>
         <div className="flex flex-row place-items-center">
           <Button className={"mx-1 border-1 text-black bg-white border-[#9bd3ce] hover:bg-[#9bd3ce] my-1"} onClick={() => removeAll()}> 모두 지우기 </Button>
+          <CommitRegexCopyButton disable={signatureList.length === 0} text={"정규식 복사하기"} />
           <CommitHookDownloader disable={signatureList.length === 0} text={"생성"} />
         </div>
       </div>
