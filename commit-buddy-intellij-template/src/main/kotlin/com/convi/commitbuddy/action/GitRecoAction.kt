@@ -4,6 +4,7 @@ import com.convi.commitbuddy.git.GitDiffUtil
 import com.convi.commitbuddy.llm.client.LlmClient
 import com.convi.commitbuddy.llm.LlmClientFactory
 import com.convi.commitbuddy.llm.PromptGenerator
+import com.convi.commitbuddy.settings.ConviSettingsState
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -26,8 +27,8 @@ class GitRecoAction : AnAction() {
                 val panel = e.getData(CheckinProjectPanel.PANEL_KEY) as? CheckinProjectPanel ?: return
                 val project = e.project ?: return
                 val llmClient: LlmClient = LlmClientFactory.getClient(project)
-                val regex = readConvicRegex(project) ?: ""
 
+                val regex = ConviSettingsState.getInstance(project).commitRegex ?: ""
                 val gitDiff = GitDiffUtil.buildGitDiff(panel.selectedChanges)
                 if (gitDiff.isBlank()) {
                     showNotification(project, "No Changes Detected", "There are no files included for commit.", NotificationType.WARNING)
