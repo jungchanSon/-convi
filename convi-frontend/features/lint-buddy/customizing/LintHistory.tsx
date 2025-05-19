@@ -54,15 +54,12 @@ const LintHistory = () => {
     }, [historyVersion]);
 
     const setSignatureFromHistory = (s: CommitSignatureType[]) => {
-        console.log(s)
         const result = s.map(item => {
             const arr = CommitSignatures.filter(sig =>
                 sig.sample === item.sample
             )
             return arr[0]
         })
-
-        console.log("result", result)
 
         setSignature(result)
     }

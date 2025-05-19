@@ -40,7 +40,6 @@ const CommitSignatureSampleButton = ({name, sample, k}: CommitSignatureProps) =>
         accept: "signatureSample",
         drop: (item: CommitSignatureProps) => {
             moveSignature(item.k, k)
-            console.log(item.k, k )
         }
     });
     const [, dropMoveRight] = useDrop({
