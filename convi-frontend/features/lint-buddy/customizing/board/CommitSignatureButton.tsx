@@ -4,13 +4,14 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useSignatureStore } from "@/store/lintBuddy/signature-store";
 
 type CommitSignatureProps = {
+    id?: string;
     name: string;
     sample: string;
     tooltip?: string;
     regex: string;
 };
 
-const CommitSignatureButton = ({ name, sample, tooltip, regex }: CommitSignatureProps) => {
+const CommitSignatureButton = ({id, name, sample, tooltip, regex }: CommitSignatureProps) => {
     const { addSignature, signatureList } = useSignatureStore();
 
     const [{ isDragging }, drag] = useDrag({
@@ -27,7 +28,7 @@ const CommitSignatureButton = ({ name, sample, tooltip, regex }: CommitSignature
                 <TooltipTrigger asChild>
                     <Button
                         ref={(node) => { drag(node); }}
-                        className={`m-1 bg-white hover:bg-[#9BD3CE] border-1 text-black font-bold border-gray-200 drop-shadow ${isDragging ? 'opacity-50' : 'opacity-100'}`}
+                        className={`${id} m-1 bg-white hover:bg-[#9BD3CE] border-1 text-black font-bold border-gray-200 drop-shadow ${isDragging ? 'opacity-50' : 'opacity-100'}`}
                         onClick={() => addSignature(signatureList.length, { name, sample, regex })}
                     >
                         {name}

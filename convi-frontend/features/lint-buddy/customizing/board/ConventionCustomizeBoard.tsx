@@ -14,8 +14,10 @@ import SettingsPopupContent from "@/features/lint-buddy/customizing/popup/Settin
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import CommitRegexCopyButton from "@/features/lint-buddy/customizing/board/CommitRegexCopyButton";
+import {useTour} from "@reactour/tour";
 
 const ConventionCustomizeBoard = () => {
+  const {isOpen, setIsOpen} = useTour()
   const { signatureList, addSignature, removeAll } = useSignatureStore();
   const [isTestOpen, setIsTestOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -30,8 +32,8 @@ const ConventionCustomizeBoard = () => {
   });
 
   return (
-<div className="flex flex-col w-full h-full overflow-x-hidden">
-  <div className="w-full h-2/5 overflow-y-auto space-y-4 p-2">
+<div className="flex flex-col w-full h-full overflow-x-hidden .second-step step-5">
+  <div className="w-full h-2/5 overflow-y-auto space-y-4 p-2" id={'step-1'}>
     {Object.entries(CommitSignatures).map(([category, list]) => (
       <div key={category} className="space-y-2">
         <div className="flex items-center justify-between min-w-0">
@@ -41,21 +43,21 @@ const ConventionCustomizeBoard = () => {
           <Separator className="flex-grow ml-2 max-w-full" />
         </div>
         <div className="flex flex-wrap gap-2 min-w-0">
-          {list.map((item, key) => (
-            <CommitSignatureButton
+          {list.map((item, key) => {
+            return <CommitSignatureButton
               key={`${category}-${key}`}
               name={item.name}
               sample={item.sample}
               tooltip={item.tooltip}
-              regex={item.regex}
-            />
-          ))}
+              regex={item.regex}/>
+            })}
         </div>
       </div>
     ))}
   </div>
       <div
-        className="border-1 border-r-0 border-gray-200 w-full h-3/5 p-3"
+        className="border-1 border-r-0 border-gray-200 w-full h-3/5 p-3 step-3 step-6"
+        id={'step-2'}
         ref={(node) => { drop(node); }}
       >
         {signatureList.length === 0 &&
@@ -88,6 +90,8 @@ const ConventionCustomizeBoard = () => {
           >
             린트 테스트
           </Button>
+
+          <Button onClick={() => setIsOpen(true)}>도우말</Button>
         </div>
         <div className="flex flex-row place-items-center">
           <Button className={"mx-1 border-1 text-black bg-white border-[#9bd3ce] hover:bg-[#9bd3ce] my-1"} onClick={() => removeAll()}> 모두 지우기 </Button>

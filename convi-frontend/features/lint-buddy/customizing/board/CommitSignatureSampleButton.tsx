@@ -4,6 +4,7 @@ import {Button} from "@/components/ui/button";
 import {useDrag, useDrop} from "react-dnd";
 import {useSignatureStore} from "@/store/lintBuddy/signature-store";
 import CommitSignatureType from "@/features/lint-buddy/customizing/board/CommitSignatureType";
+import {useTour} from "@reactour/tour";
 
 type CommitSignatureProps = {
     name: string,
@@ -12,6 +13,7 @@ type CommitSignatureProps = {
 }
 
 const CommitSignatureSampleButton = ({name, sample, k}: CommitSignatureProps) => {
+    const {isOpen} = useTour()
     const { removeSignature, addSignature,  moveSignature} = useSignatureStore();
 
     const [, dropLeft] = useDrop({
@@ -59,6 +61,7 @@ const CommitSignatureSampleButton = ({name, sample, k}: CommitSignatureProps) =>
 
     return (
         <Button
+            id={isOpen ? 'step-6' : undefined}
             variant={"ghost"}
             className={`shadow border-r-1 border-b-1 border-1 border-gray-300 relative px-2 ${isSampleDragging ? 'opacity-50' : 'opacity-100'}`}
             key={k}
