@@ -27,7 +27,7 @@
       },
       {
         "command": "commit-buddy.createGitHook",
-        "title": "Commit Buddy: Git Hook 생성",
+        "title": "Commit Buddy: 커밋 메시지 컨벤션 설정",
         "icon": {
           "light": "resources/icons/lintBuddyIcon.png",
           "dark": "resources/icons/lintBuddyIcon.png"
@@ -38,11 +38,6 @@
       "scm/title": [
         {
           "command": "commit-buddy.recommendMessage",
-          "group": "navigation",
-          "when": "scmProvider == git"
-        },
-        {
-          "command": "commit-buddy.createGitHook",
           "group": "navigation",
           "when": "scmProvider == git"
         }
@@ -94,8 +89,8 @@
         },
         "commitBuddy.regex": {
           "type": "string",
-          "default": "<type>: <description>",
-          "description": "커밋 메시지 추천 시 사용할 형식을 정의하는 정규식 또는 예시입니다. 예: ^(feat|fix|chore)(\\(.+\\))?: .+$"
+          "default": "",
+          "description": "커밋 메시지 추천 & 컨벤션 규칙에 사용할 형식을 정의하는 정규식 예: (feat|fix|docs|style|refactor|test|chore):\\s(.+)"
         }
       }
     }
