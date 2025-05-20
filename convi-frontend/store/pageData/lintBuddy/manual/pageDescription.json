@@ -5,9 +5,16 @@
   "Desc": [
     {
       "Title": "1. 커스터마이징 페이지로 이동",
-      "Image": "/lintBuddy/img1.png",
+      "Image": "/lintBuddy/img_1.png",
       "Description": [
         "커스터마이징 페이지로 이동해주세요."
+      ]
+    },
+    {
+      "Title": "1-1. 도움말",
+      "Image": "/lintBuddy/img_5.png",
+      "Description": [
+        "'도움말' 버튼을 클릭해, 자세한 사용법을 따라갈 수 있습니다."
       ]
     },
     {
@@ -21,21 +28,56 @@
       "Title": "3. 자주 쓰이는 컨벤션",
       "Image": "/lintBuddy/img3.png",
       "Description": [
-        "좌측 메뉴에서 이미 만들어진 컨벤션들을 이용할 수 있습니다."
+        "만약, 컨벤션을 정하기 어렵다면, 이미 보편적으로 쓰이는 컨벤션들을 이용할 수 있습니다.",
+        "<br/>",
+        "• 기본: 커밋 타입과 설명만 간략히 작성하는 컨벤션입니다.",
+        "ㅤㅤ⸰ 예시) feat: 카카오 소셜 로그인 개발",
+        "• Gitmoji: Git 이모지와 함께 작성하는 컨벤션입니다.",
+        "ㅤㅤ⸰ 예시) :sparkles: feat: 카카오 소셜 로그인 개발",
+        "• Angular: 커밋 타입과 짧은 설명 그리고 구체적인 설명을 함께 작성하는 컨벤션입니다.",
+        "ㅤㅤ⸰ 예시) feat: 카카오 소셜 로그인 개발",
+        "ㅤㅤㅤㅤㅤ - 카카오 Oauth 로그인 API 개발",
+        "• Jira: Jira의 티켓 ID를 함께 작성하는 컨벤션입니다.",
+        "ㅤㅤ⸰ 예시) [S12P31A101-45] feat: 카카오 소셜 로그인 개발"
       ]
     },
     {
-      "Title": "4. 다운로드",
+      "Title": "4. 정규식 복사해서 적용하기 (Commit Buddy 필요)",
+      "Description": [
+      ]
+    },
+    {
+      "Title": "4-1. 복사하기",
       "Image": "/lintBuddy/img4.png",
       "Description": [
-        "생성 버튼을 클릭해, 파일을 다운로드해주세요."
+        "복사하기 버튼을 클릭해, 컨벤션에 대한 정규식을 복사할 수 있습니다.",
+        "복하한 정규식은 Commit Buddy를 이용해 컨벤션을 적용할 수 있습니다."
       ]
     },
     {
-      "Title": "5. 프로젝트에 적용",
+      "Title": "4-2. Commit Buddy Vscode에 적용하기",
+      "Image": "/lintBuddy/img_2.png",
+      "Description": [
+        "Settings(Ctrl+,) > Commit Buddy 검색 > Commit Buddy 설정 이동 > Regex 입력 창에 붙여넣기"
+      ]
+    },
+    {
+      "Title": "5. Git Hook 파일로 적용하기",
+      "Description": [
+      ]
+    },
+    {
+      "Title": "5-1. Git Hook 파일 다운로드",
+      "Image": "/lintBuddy/img_4.png",
+      "Description": [
+        "'다운로드' 버튼을 클릭해주세요."
+      ]
+    },
+    {
+      "Title": "5-2. Git Hook 파일 적용하기",
       "Image": "/lintBuddy/img5.png",
       "Description": [
-        "다운로드 받은 .git 폴더와 .convirc를 적용할 프로젝트에 옮겨주세요."
+        "다운로드 받은 .git 폴더를 프로젝트에 덮어씌워주세요."
       ]
     }
   ]

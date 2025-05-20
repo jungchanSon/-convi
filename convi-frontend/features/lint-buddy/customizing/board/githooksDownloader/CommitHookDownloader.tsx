@@ -46,7 +46,7 @@ if ! grep -Pz '${commitRegex}' "$1"; then
   exit 1
 fi`
 
-        zip.file(".convirc", sampleMessage).folder(".git")?.folder("hooks")?.file("commit-msg", shellScript)
+        zip.folder(".git")?.folder("hooks")?.file("commit-msg", shellScript)
         zip.generateAsync({type: 'blob'}).then((blob) => {
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");

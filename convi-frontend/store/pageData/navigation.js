@@ -74,21 +74,9 @@ const navigation = [
         url: "https://docs.google.com/forms/d/e/1FAIpQLSdC_suRrDbCePtcQikHbR0BGE3oGEXPi4froUwNMwej_tyGVg/viewform?usp=dialog"
       },
       {
-        title: pageNavData.Community.ContributionGuide,
-        url: process.env.NEXT_PUBLIC_COMMUNITY_CONTRIBUTE_GUIDE_URL
-      },
-      {
         title: pageNavData.Community.Github,
         url: process.env.NEXT_PUBLIC_COMMUNITY_GITHUB_URL
       },
-      {
-        title: pageNavData.Community.Gitlab,
-        url: process.env.NEXT_PUBLIC_COMMUNITY_GITLAB_URL
-      },
-      {
-        title: pageNavData.Community.version,
-        url: process.env.NEXT_PUBLIC_COMMUNITY_VERSION_URL
-      }
     ]
   }
 ]

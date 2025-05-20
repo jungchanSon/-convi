@@ -1,0 +1,37 @@
+{
+  "PageTitle": "Github",
+  "Title": "Convi",
+  "NameDesc": "프로젝트 별 레포지토리",
+  "Desc": [
+    {
+      "Title": "Convi 프로젝트 레포지토리",
+      "Description": [
+        "Convi 프로젝트에 대한 Github 레포지토리 주소는 아래와 같습니다."
+      ]
+    },
+    {
+      "Title": "Lint Buddy",
+      "Description": [
+        "LintBuddy"
+      ]
+    },
+    {
+      "Title": "Commit Buddy - Intellij",
+      "Description": [
+        "CBI"
+      ]
+    },
+    {
+      "Title": "Commit Buddy - VS Code",
+      "Description": [
+        "CBVS"
+      ]
+    },
+    {
+      "Title": "Review Buddy",
+      "Description": [
+        "RB"
+      ]
+    }
+  ]
+}

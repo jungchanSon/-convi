@@ -23,9 +23,6 @@
   },
   "Community": {
     "Title": "Community",
-    "ContributionGuide": "Contribution Guide",
-    "Github": "Github",
-    "Gitlab": "Gitlab",
-    "version": "버전 히스토리"
+    "Github": "Github"
   }
 }

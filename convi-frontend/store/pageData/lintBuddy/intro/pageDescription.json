@@ -5,6 +5,7 @@
   "Desc": [
     {
       "Title": "\uD83D\uDE80 Lint Buddy란?",
+      "Image": "/lintBuddy/img_6.png",
       "Description": [
         "Lint Buddy(Convi)는 누구나 손쉽게 일관된 Git 커밋 메시지 컨벤션을 생성하고 관리할 수 있도록 도와주는 도구입니다.",
         "커밋 메시지 컨벤션에 어긋나는 커밋은 중단시켜, 커밋 메시지 컨벤션을 준수할 수 있도록 도와줍니다."

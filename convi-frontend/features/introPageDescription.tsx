@@ -14,6 +14,7 @@ import DockerImageTable from "@/features/DockerImageTable";
 import RagFlagTable from "@/features/RagFlagTable";
 import Custom1 from "@/features/Custom1";
 import Custom2 from "@/features/Custom2";
+import Link from "next/link";
 
 type IntroPageDescription = {
   pageTitle: string,
@@ -133,6 +134,38 @@ const IntroPageDescription = ({
                               } else if (item === "Custom2") {
                                 return <div key={key}>
                                   <Custom2 />
+                                </div>
+                              } else if (item === "LintBuddy") {
+                                return <div key={key}>
+                                  <Link className={'ml-8'} href={"https://github.com/Convi-buddy/lint-buddy-frontend"}>
+                                    <Button>
+                                      Lint Buddy Repository
+                                    </Button>
+                                  </Link>
+                                </div>
+                              } else if (item === "CBI") {
+                                return <div key={key}>
+                                  <Link className={'ml-8'} href={"https://github.com/Convi-buddy/commit-buddy-intellij"}>
+                                    <Button>
+                                      Commit Buddy Intellij Repository
+                                    </Button>
+                                  </Link>
+                                </div>
+                              } else if (item === "CBVS") {
+                                return <div key={key}>
+                                  <Link className={'ml-8'} href={"https://github.com/Convi-buddy/commit-buddy-vscode"}>
+                                    <Button>
+                                      Commit Buddy VS-Code Repository
+                                    </Button>
+                                  </Link>
+                                </div>
+                              } else if (item === "RB") {
+                                return <div key={key}>
+                                  <Link className={'ml-8'} href={"https://github.com/Convi-buddy/review-buddy"}>
+                                    <Button>
+                                      Review Buddy Repository
+                                    </Button>
+                                  </Link>
                                 </div>
                               }
                               return <div key={key2} className={"mx-5"}>
