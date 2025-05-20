@@ -3,7 +3,17 @@ import {SiteHeader} from "@/components/site-header";
 import {SidebarInset} from "@/components/ui/sidebar";
 import Image from "next/image";
 import {Button} from "@/components/ui/button";
-import {CopyBlock} from "react-code-blocks";
+import {CopyBlock, monokai} from "react-code-blocks";
+import RunnerTable from '@/features/RunnerTable'
+import parse from 'html-react-parser';
+import EnvVarTable from "@/features/EnvVarTable";
+import GitlabCI from "@/features/GitlabCI";
+import SettingTable from "@/features/SettingTable";
+import ReviewModelTable from "@/features/ReviewModelTable";
+import DockerImageTable from "@/features/DockerImageTable";
+import RagFlagTable from "@/features/RagFlagTable";
+import Custom1 from "@/features/Custom1";
+import Custom2 from "@/features/Custom2";
 
 type IntroPageDescription = {
   pageTitle: string,
@@ -55,41 +65,78 @@ const IntroPageDescription = ({
                     – {projectNameDescription}
                   </h3>
                 </div>
-
                 <div className={"items-center mt-5"}>
                   <hr className={"mb-5"}/>
                   {descriptions.Desc.map((item, key) =>
                       <div key={key} className={"mt-10"}>
                         <h2 className="text-xl font-semibold mx-3 mb-2">
-                          {item.Title}
+                          {parse(item.Title)}
                         </h2>
-                        {item.Image && <Image className={"border-black border-2"} src={item.Image} alt={item.Title} height={200} width={600}/>}
+                        {item.Image &&
+                            <Image className={"border-black border-2"} src={item.Image} alt={item.Title} height={200}
+                                   width={600}/>}
                         {item.Description.map((item, key2) => {
-                          if(item === "intellij plugin download") {
-                            return <Button className={"mx-5"} key={key2}>
-                              <a href={"https://docs.google.com/uc?export=download&id=1hPe-lywjfgb3U4TgztaPFbacBUIekhJF&confirm=t"}>intellij
-                                플러그인 다운로드
-                              </a>
-                            </Button>
-                          } else if(item === "runner-cmd-1"){
-                            return <CopyBlock codeBlock={true} text={runnerCmd1} language={"sh"}  key={key2} />
-                          } else if(item === "runner-cmd-2") {
-                            return <CopyBlock codeBlock={true} text={runnerCmd2} language={"sh"} key={key2} />
-                          } else if(item === "ci"){
-                            return <Button className={"mx-2 my-2"} key={key2}>
-                              <a href={"https://docs.google.com/uc?export=download&id=1jmVsdccAYA7o10lfPCCBBv3QJ9S9pH-O&confirm=t"}>
-                                ci 파일 다운로드
-                              </a>
-                            </Button>
-                          } else if (item === "ollama download"){
-                            return <Button className={"mx-2 my-2"} key={key2}>
-                              <a href={"https://ollama.com/download"}>
-                                ollama 다운로드
-                              </a>
-                            </Button>
-                          }
+                              if (item === "intellij plugin download") {
+                                return <Button className={"mx-5"} key={key2}>
+                                  <a href={"https://docs.google.com/uc?export=download&id=1hPe-lywjfgb3U4TgztaPFbacBUIekhJF&confirm=t"}>intellij
+                                    플러그인 다운로드
+                                  </a>
+                                </Button>
+                              } else if (item === "runner-cmd-1") {
+                                return <CopyBlock theme={monokai} codeBlock={true} text={runnerCmd1} language={"sh"} key={key2}/>
+                              } else if (item === "runner-cmd-2") {
+                                return <CopyBlock theme={monokai}  codeBlock={true} text={runnerCmd2} language={"sh"} key={key2}/>
+                              } else if (item === "ci") {
+                                return <Button className={"mx-2 my-2"} key={key2}>
+                                  <a href={"https://docs.google.com/uc?export=download&id=1jmVsdccAYA7o10lfPCCBBv3QJ9S9pH-O&confirm=t"}>
+                                    ci 파일 다운로드
+                                  </a>
+                                </Button>
+                              } else if (item === "ollama download") {
+                                return  <Button className={"mx-2 my-2"} key={key2}>
+                                  <a href={"https://ollama.com/download"}>
+                                    ollama 다운로드
+                                  </a>
+                                </Button>
+                              } else if (item === "runnerTable") {
+                                return <div key={ key}>
+                                  <RunnerTable />
+                                </div>
+                              } else if (item === "runnerTable2") {
+                                return <div key={key}>
+                                  <EnvVarTable/>
+                                </div>
+                              } else if (item === "gitlabcicode") {
+                                return <div key={key}>
+                                  <GitlabCI />
+                                </div>
+                              } else if (item === "SettingTable") {
+                                return <div key={key}>
+                                  <SettingTable />
+                                </div>
+                              } else if (item === "ReviewModelTable") {
+                                return <div key={key}>
+                                  <ReviewModelTable />
+                                </div>
+                              } else if (item === "DockerImageTable") {
+                                return <div key = {key}>
+                                  <DockerImageTable />
+                                </div>
+                              } else if(item === "RagFlagTable") {
+                                return <div key = {key}>
+                                  <RagFlagTable />
+                                </div>
+                              } else if(item === "Custom1") {
+                                return <div key={key}>
+                                  <Custom1 />
+                                </div>
+                              } else if (item === "Custom2") {
+                                return <div key={key}>
+                                  <Custom2 />
+                                </div>
+                              }
                               return <div key={key2} className={"mx-5"}>
-                                <p className={"p-1"}> {item} </p>
+                                <div className={"p-1"}> {parse(item)} </div>
                               </div>
                             }
                         )}
