@@ -101,7 +101,7 @@
 
 ### 1-2. Runner 컨테이너 생성 및 실행
 
-<img src="./img/docker-ci-runner-container.png" alt="GitLab Runner 생성 스크린샷" width="600" />
+<img src="./img/docker-install.gif" alt="GitLab Runner 생성 스크린샷" width="600" />
 
 - 해당 명령어를 Runner를 실행시킬 환경(로컬 혹은 운영 환경)에서 실행하여 Runner 컨테이너 생성 및 실행합니다. 사용 중인 터미널 환경에 따라 아래 명령어 중 하나를 실행하세요.
 - 만약 위에서 컨테이너로 Runner를 실행하지 않고, OS에서 직접 실행한다면, 해당 <b>[1-2](#1-2-runner-컨테이너-생성-및-실행), [1-3](#1-3-runner-정보-최초-등록)</b> 과정은 건너뜁니다.
@@ -115,7 +115,7 @@ docker run -d --name gitlab-runner --restart always -v /opt/gitlab-runner/config
 
 ### 1-3. Runner 정보 최초 등록
 
-<img src="./img/docker-ci-runner-config.png" alt="GitLab Runner 설정 스크린샷" width="600" />
+<img src="./img/docker-config.gif" alt="GitLab Runner 설정 스크린샷" width="600" />
 
 
 - Runner를 Gitlab Repository와 연동하기 위한 최초 정보를 등록합니다. 사용 중인 터미널 환경에 따라 아래 명령어 중 하나를 실행하세요.
@@ -242,6 +242,10 @@ mr_review:
 |-----------------|----------|------|
 | `OpenAI`        | **GPT Open API** | OpenAI API Key 필요 |
 | `llama3.2`      | **Ollama 3.2** | 이미지에 Ollama 모델 사전 내장 |
+
+<br>
+
+<img src="./img/docker-image.png" alt="Docker Image 스크린샷2" width="600" />
 
 <br>
 
