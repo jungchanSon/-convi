@@ -21,7 +21,7 @@ export async function createGitHook() {
   }
 
   const config = vscode.workspace.getConfiguration('commitBuddy');
-  const commitRegex = config.get<string>('regex') || '<type>: <description>'; // fallback
+  const commitRegex = config.get<string>('regex') || ''; // fallback
   
   // Shell-safe escape 처리 (특수문자 대비)
   const safeRegex = commitRegex.replace(/'/g, "'\"'\"'");
