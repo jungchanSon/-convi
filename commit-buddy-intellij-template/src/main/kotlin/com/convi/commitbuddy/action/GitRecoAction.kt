@@ -28,7 +28,7 @@ class GitRecoAction : AnAction() {
                 val project = e.project ?: return
                 val llmClient: LlmClient = LlmClientFactory.getClient(project)
 
-                val regex = ConviSettingsState.getInstance(project).commitRegex ?: ""
+                val regex = ConviSettingsState.getInstance(project).commitRegex ?: "<type>: <description>"
                 val gitDiff = GitDiffUtil.buildGitDiff(panel.selectedChanges)
                 if (gitDiff.isBlank()) {
                     showNotification(project, "No Changes Detected", "There are no files included for commit.", NotificationType.WARNING)
