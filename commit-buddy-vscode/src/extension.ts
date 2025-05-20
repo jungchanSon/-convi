@@ -5,6 +5,7 @@ import { isGitRepo, getStagedDiff, getWorkspacePath } from './gitUtils';
 import * as path from 'path';
 import * as fs from "fs";
 import OpenAI from 'openai';
+import { createGitHook } from './createGitHook';
 
 
 // 플러그인 활성화 시 호출
@@ -199,6 +200,11 @@ export function activate(context: vscode.ExtensionContext) {
   });
   context.subscriptions.push(recommendDisposable);
 
+  // Git Hook 파일 생성 커맨드 등록
+  context.subscriptions.push(
+    vscode.commands.registerCommand('commit-buddy.createGitHook', createGitHook)
+  );
+
   // 플러그인 설정 등록
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration(e => {
@@ -240,24 +246,24 @@ async function commitWithMessage(message: string): Promise<void> {
   }
 }
 
-function readConvirc(): string|null {
-  const workspaceFolders = vscode.workspace.workspaceFolders;
+// function readConvirc(): string|null {
+//   const workspaceFolders = vscode.workspace.workspaceFolders;
   
-  if(!workspaceFolders || workspaceFolders.length === 0) {
-    return null;
-  }
+//   if(!workspaceFolders || workspaceFolders.length === 0) {
+//     return null;
+//   }
 
-  const fsPath = workspaceFolders[0].uri.fsPath;
-  const convircPath = path.join(fsPath, ".convirc");
-  if(!fs.existsSync(convircPath)) {
-    vscode.window.showWarningMessage(`.convirc가 없습니다. root 디렉토리에 .convirc를 추가하면, 규칙에 맞게 추천해드립니다.`);
-    return null;
-  }
+//   const fsPath = workspaceFolders[0].uri.fsPath;
+//   const convircPath = path.join(fsPath, ".convirc");
+//   if(!fs.existsSync(convircPath)) {
+//     vscode.window.showWarningMessage(`.convirc가 없습니다. root 디렉토리에 .convirc를 추가하면, 규칙에 맞게 추천해드립니다.`);
+//     return null;
+//   }
 
-  const content = fs.readFileSync(convircPath, 'utf-8');
+//   const content = fs.readFileSync(convircPath, 'utf-8');
 
-  return content;
-}
+//   return content;
+// }
 
 /**
  * Ollama LLM API 호출 함수
@@ -272,8 +278,9 @@ async function fetchOllamaRecommendation(diff: string, modelName: string): Promi
   // 타임아웃 설정
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 20000); // 20초 타임아웃
-  const convirc = readConvirc() || '<type>: <description>';
-  const prompt = createPrompt(convirc, diff);
+  const config = vscode.workspace.getConfiguration('commitBuddy');
+  const regex = config.get<string>('regex') || '<type>: <description>';
+  const prompt = createPrompt(regex, diff);
 
   try {
     const response = await fetch('http://localhost:11434/api/generate', {
@@ -308,7 +315,7 @@ async function fetchOllamaRecommendation(diff: string, modelName: string): Promi
     //   suggestions = numberedMatches;
     // } else {
       // 패턴 2: 각 줄이 <type>: <subject> 형식인지 확인
-    const lines = responseText.split(/[1-3].\s/)
+    const lines = responseText.split(/\d\.\s+/)
       .map(line => line.trim())
       .filter(line => line.length > 0);
 
@@ -351,8 +358,9 @@ async function fetchGPTRecommendation(diff: string, modelName: string, modelKey:
   // 타임아웃 설정
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 20000); // 20초 타임아웃
-  const convirc = readConvirc() || '<type>: <description>';
-  const prompt = createPrompt(convirc, diff);
+  const config = vscode.workspace.getConfiguration('commitBuddy');
+  const regex = config.get<string>('regex') || '<type>: <description>';
+  const prompt = createPrompt(regex, diff);
 
   try {
     const response = await client.responses.create({
@@ -367,11 +375,10 @@ async function fetchGPTRecommendation(diff: string, modelName: string, modelKey:
     const responseText = response.output_text;
     let suggestions: string[] = [];
     
-    const lines = responseText.split(/[1-3].\s/)
+    const lines = responseText.split(/\d\.\s+/)
       .map(line => line.trim())
       .filter(line => line.length > 0);
 
-    lines.splice(0,1);
     suggestions = lines;
     // 제안 메시지가 없거나 3개 미만인 경우, 기본 메시지 추가
     if (suggestions.length === 0) {

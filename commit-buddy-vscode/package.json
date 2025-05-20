@@ -21,8 +21,16 @@
         "command": "commit-buddy.recommendMessage",
         "title": "Commit Buddy: AI 커밋 메시지 추천",
         "icon": {
-          "light": "resources/light/convi.svg",
-          "dark": "resources/dark/convi.svg"
+          "light": "resources/icons/commitBuddyIcon.png",
+          "dark": "resources/icons/commitBuddyIcon.png"
+        }
+      },
+      {
+        "command": "commit-buddy.createGitHook",
+        "title": "Commit Buddy: 커밋 메시지 컨벤션 설정",
+        "icon": {
+          "light": "resources/icons/lintBuddyIcon.png",
+          "dark": "resources/icons/lintBuddyIcon.png"
         }
       }
     ],
@@ -78,6 +86,11 @@
           "type": "number",
           "default": 3,
           "description": "생성할 추천 메시지 개수"
+        },
+        "commitBuddy.regex": {
+          "type": "string",
+          "default": "",
+          "description": "커밋 메시지 추천 & 컨벤션 규칙에 사용할 형식을 정의하는 정규식 예: (feat|fix|docs|style|refactor|test|chore):\\s(.+)"
         }
       }
     }
