@@ -1,9 +1,9 @@
 "use client";
 
-import { TourProvider } from "@reactour/tour";
+import {StepType, TourProvider} from "@reactour/tour";
 import { ReactNode } from "react";
 
-const steps = [
+const steps : StepType[] = [
     {
         selector: "#intro",
         content: "반갑습니다. Lint-Buddy를 처음 써보시는 군요. 친절히 안내해드릴게요",
@@ -26,11 +26,30 @@ const steps = [
     },
     {
         selector: ".step-5",
-        content: "위 Core 하위 Type을 클릭 혹은 아래로 드래그 해보세요.",
+        position: [100, 100],
+        content: (
+          <div className="flex flex-col items-center text-center">
+              <p className="mb-2 font-semibold">위 Core 하위 Type을 클릭 혹은 아래로 드래그 해보세요.</p>
+              <img
+                src="/tutorial/toturial.gif" //
+                alt="드래그 예시"
+                className="w-64 h-auto rounded shadow"
+              />
+          </div>
+        ),
     },
     {
         selector: ".step-6",
-        content: "여기 표시된 요소들은 클릭해서 제거할 수 있으며, 드래그로 이동할 수 있어요.",
+        content: (
+          <div className="flex flex-col items-center text-center">
+              <p className="mb-2 font-semibold">여기 표시된 요소들은 클릭해서 제거할 수 있으며, 드래그로 이동할 수 있어요.</p>
+              <img
+                src="/tutorial/toturial2.gif" //
+                alt="드래그 예시"
+                className="w-64 h-auto rounded shadow"
+              />
+          </div>
+        ),
     },
     {
         selector: "#step-7",
@@ -52,7 +71,7 @@ const steps = [
 
 export default function TourClientProvider({ children }: { children: ReactNode }) {
     return (
-        <TourProvider steps={steps}>
+        <TourProvider steps={steps} startAt={0}>
             {children}
         </TourProvider>
     );

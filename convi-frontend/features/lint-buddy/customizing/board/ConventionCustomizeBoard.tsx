@@ -90,8 +90,9 @@ const ConventionCustomizeBoard = () => {
           >
             린트 테스트
           </Button>
-
-          <Button onClick={() => setIsOpen(true)}>도우말</Button>
+          <Button
+            className={"m-1"}
+            onClick={() => setIsOpen(true)}>도우말</Button>
         </div>
         <div className="flex flex-row place-items-center">
           <Button className={"mx-1 border-1 text-black bg-white border-[#9bd3ce] hover:bg-[#9bd3ce] my-1"} onClick={() => removeAll()}> 모두 지우기 </Button>
