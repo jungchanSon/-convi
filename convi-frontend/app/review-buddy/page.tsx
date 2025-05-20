@@ -2,8 +2,8 @@ import { AppSidebar } from "@/components/app-sidebar"
 import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
-import IntroPageDescription from "@/features/introPageDescription";
 import descriptions from "@/store/pageData/reviewBuddy/intro/pageDescription.json"
+import ReviewBuddyIntroPageDescription from "@/features/ReviewBuddyIntroPageDescription";
 
 export default function Page() {
   return (
@@ -16,7 +16,7 @@ export default function Page() {
       }
     >
       <AppSidebar variant="inset" />
-      <IntroPageDescription
+      <ReviewBuddyIntroPageDescription
         pageTitle={descriptions.PageTitle}
         projectName={descriptions.Title}
         projectNameDescription={descriptions.NameDesc}

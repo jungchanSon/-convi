@@ -6,7 +6,7 @@ const CommitSignatures: Record<string, CommitSignatureType[]> = {
         { name: "type", sample: "feat", tooltip: "커밋 타입을 입력하세요 (예: feat, fix, docs 등)", regex: Regex.Type.LOWER_CASE },
         { name: "scope", sample: "api", tooltip: "변경 범위를 입력하세요 (예: api, ui, service 등)", regex: Regex.Scope },
         { name: "description", sample: "카카오 소셜 로그인 추가", tooltip: "커밋 내용을 한 줄로 요약하세요", regex: Regex.Subject },
-        { name: "emoji", sample: "✨ ", tooltip: "커밋에 사용할 이모지를 추가하세요 (:text: + 띄어쓰기)", regex: Regex.Emoji },
+        { name: "emoji", sample: ":spark: ", tooltip: "커밋에 사용할 이모지를 추가하세요 (:text: + 띄어쓰기)", regex: Regex.Emoji },
         { name: "jira-ticket", sample: "S12P31A101-45", tooltip: "관련 Jira 티켓 번호를 입력하세요", regex: Regex.JiraTicket },
     ],
     formatting: [
