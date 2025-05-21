@@ -94,7 +94,7 @@ const LintHistory = () => {
     const noLogin = () => {
         return (
             <div>
-                로그인하면, 기록이 표시되요.
+                로그인하면, 기록이 표시 됩니다.
             </div>
         )
     }
