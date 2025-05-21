@@ -216,6 +216,8 @@ mr_review:
   stage: review
   image: os2864/review-buddy:v0.1.6
   # image: os2864/review-buddy-gpt:v0.1.3
+  tags:
+    - review-buddy
   only:
     - merge_requests
   script:
