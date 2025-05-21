@@ -215,7 +215,7 @@ variables:
 mr_review:
   stage: review
   image: os2864/review-buddy:v0.1.6
-  # image: os2864/review-buddy-gpt:v0.1.2
+  # image: os2864/review-buddy-gpt:v0.1.3
   only:
     - merge_requests
   script:
@@ -252,7 +252,7 @@ mr_review:
 ### Docker 이미지 목록
 | Docker 이미지                           | 내장 LLM 구성                 | 최초 pull 용량(≈) | 용도 |
 |----------------------------------------|------------------------------|------------------|------|
-| `os2864/review-buddy-gpt:v0.1.2`       | GPT-1o 전용            | 226 MB           | **GPT-1o만** 사용하는 경우 추천하는 경량 이미지 |
+| `os2864/review-buddy-gpt:v0.1.3`       | GPT-1o 전용            | 226 MB           | **GPT-1o만** 사용하는 경우 추천하는 경량 이미지 |
 | `os2864/review-buddy-gpt:v0.1.1`       | GPT-4o 전용            | 226 MB           | **GPT-4o만** 사용하는 경우 추천하는 경량 이미지 |
 | `os2864/review-buddy:v0.1.6`           | Ollama 3.2 + GPT-1o    | 3.7 GB           | GPT-1o 또는 **Ollama 3.2** 사용할 수 있는 중량 이미지 |
 | `os2864/review-buddy:v0.1.5`           | Ollama 3.2 + GPT-4o    | 3.7 GB           | GPT-4o 또는 **Ollama 3.2** 사용할 수 있는 중량 이미지 |
