@@ -97,7 +97,7 @@ const ReviewBuddyIntroPageDescription = ({
                       </ul>
                     </details>
                     <details className={'mb-2'}>
-                      <summary className={'text-xl'}>2. .gitlab-ci.yml</summary>
+                      <summary className={'text-xl'}>3. Review Buddy Docker Image</summary>
                       <ul className={"list-disc ml-13 mt-3"}>
                         <li>LangChain 환경의 RAG 기반으로 코드 리뷰 환경을 쉽게 구축하고, 실행하기 위해 Review Buddy는 Public Docker Image를 사용하여 AI
                           코드 리뷰를 진행합니다.
