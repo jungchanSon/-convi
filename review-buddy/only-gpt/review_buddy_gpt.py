@@ -30,20 +30,50 @@ os.makedirs(INDEX_DB_PATH, exist_ok=True)
 def createPrompt(diff: str) -> str:
     return f"""
 You are a senior software engineer with 30 years of experience.
-Please carefully review the code. Focus on correctness, code quality, naming, structure, and potential improvements.
-Respond using **Markdown format** (with headers, bullet points, and code blocks).  
-Please write the entire review **in Korean**.
 
-If you deliver a high-quality review, you will receive a $1,000 tip.
+Please review the following Git diff and provide structured, high-quality feedback. Follow these guidelines:
+
+1. Clearly reference which part of the diff you're commenting on (quote the code).
+2. Explain the issue and the reason (e.g., naming, performance, security, maintainability).
+3. Provide an improved code example as a suggestion.
+4. Use **Markdown** formatting.
+5. Write the entire response **in English**.
+
+For each issue, follow this format:
+
+---
+
+### 🔍 Review Title (e.g., Poor Naming)
+
+**Relevant Code**:
+
+```diff
++ def foo(bar):
+```
+
+**Review Comment**:
+- The function name `foo` is too vague.
+- The parameter `bar` lacks context.
+- Consider more descriptive naming for clarity.
+
+**Suggested Improvement**:
+```python
+def calculate_sum(numbers):
+```
+
+---
+
+Now, review the following Git diff:
 
 ```diff
 {diff}
-```"""
+```
+"""
 
 
 def requestOpenAI(prompt: str, key: str) -> str:
     print(f"LLM : Gpt OpenAI o1")
-    return ChatOpenAI(api_key=key, model_name="o1", max_tokens=2048).invoke(prompt).content
+    return ChatOpenAI(api_key=key, model_name="o1").invoke(prompt).content
 
 
 def getDiffFromMR():
@@ -88,24 +118,50 @@ def getRagReview(diff: str, db):
     context = "\n\n".join(d.page_content for d in docs)
     prompt = f"""
 You are a senior software engineer with 30 years of experience.
-Please carefully review the code. Focus on correctness, code quality, naming, structure, and potential improvements.
-Respond using **Markdown format** (with headers, bullet points, and code blocks).  
-Please write the entire review **in Korean**.
 
-If you deliver a high-quality review, you will receive a $1,000 tip.
+Please review the following Git diff and provide structured, high-quality feedback. Follow these guidelines:
 
----  
-**Note:** The following code snippets have been retrieved using a Retrieval-Augmented Generation (RAG) approach:
+1. Clearly reference which part of the diff you're commenting on (quote the code).
+2. Explain the issue and the reason (e.g., naming, performance, security, maintainability).
+3. Provide an improved code example as a suggestion.
+4. Use **Markdown** formatting.
+5. Write the entire response **in English**.
 
-RAG Context (Top {RAG_K} chunks):
+For each issue, follow this format:
+
+---
+
+### 🔍 Review Title (e.g., Poor Naming)
+
+**Relevant Code**:
+
+```diff
++ def foo(bar):
+```
+
+**Review Comment**:
+- The function name `foo` is too vague.
+- The parameter `bar` lacks context.
+- Consider more descriptive naming for clarity.
+
+**Suggested Improvement**:
+```python
+def calculate_sum(numbers):
+```
+
+---
+The following context has been retrieved using Retrieval-Augmented Generation (RAG) and may help you understand the diff better:
+
 ```
 {context}
 ```
 
-Please review the following diff:
+Now, review the following Git diff:
+
 ```diff
 {diff}
-```"""
+```
+"""
     return requestOpenAI(prompt, OPEN_AI_KEY)
 
 
